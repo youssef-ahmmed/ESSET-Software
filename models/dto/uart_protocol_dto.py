@@ -5,4 +5,3 @@ class UartProtocolDTO:
         self.data_size = data_size
         self.stop_bit = stop_bit
         self.parity_bit = parity_bit
-        self.sniffed_data = sniffed_data
