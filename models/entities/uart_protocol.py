@@ -1,16 +1,21 @@
-from sqlalchemy import Column, Integer, CHAR
-from base_table import Base
+from sqlalchemy import Column, Integer, CHAR, CheckConstraint, ForeignKey
+from sqlalchemy.orm import relationship
+
+from models.entities import Base
 
 
-class UartProtocol(Base):
-
-    __tablename__ = 'uart_protocols'
+class Uart(Base):
+    __tablename__ = 'uart'
 
     id = Column('id', Integer, primary_key=True)
-    input_channel_number = Column('input_channel_number', Integer, nullable=False)
-    output_channel_number = Column('output_channel_number', Integer, nullable=False)
-    clocks_per_bit = Column('clocks_per_bit', Integer, default=217)
-    baud_rate = Column('baud_rate', Integer, default=115200)
-    data_size = Column('data_size', Integer, default=8)
-    stop_bit = Column('stop_bit', Integer, default=1)
-    parity_bit = Column('parity_bit', CHAR, default='N')
+    sniffed_data_id = Column(Integer, ForeignKey('sniffed_data.id'), nullable=False)
+    clk_per_bit = Column(Integer, nullable=False, default=217)
+    baud_rate = Column(Integer, nullable=False, default=115200)
+    data_size = Column(Integer, nullable=False, default=8)
+    stop_bit = Column(Integer, default=1)
+    parity_bit = Column(CHAR(1), default='N')
+    sniffed_data = relationship('SniffedData', backref='uart', cascade='all, delete')
+
+    __table_args__ = (
+        CheckConstraint("parity_bit IN ('N', 'E', 'O')"),
+    )

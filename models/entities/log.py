@@ -1,7 +1,8 @@
 from datetime import datetime
 
 from sqlalchemy import Column, Integer, String, DateTime
-from base_table import Base
+
+from models.entities import Base
 
 
 class Log(Base):

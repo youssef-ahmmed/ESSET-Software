@@ -1,15 +1,20 @@
-from sqlalchemy import Column, Integer, CHAR
-from base_table import Base
+from sqlalchemy import Column, Integer, CHAR, CheckConstraint, ForeignKey
+from sqlalchemy.orm import relationship
+
+from models.entities import Base
 
 
-class SpiProtocol(Base):
+class Spi(Base):
+    __tablename__ = 'spi'
 
-    __tablename__ = 'spi_protocols'
+    id = Column(Integer, primary_key=True)
+    sniffed_data_id = Column(Integer, ForeignKey('sniffed_data.id'), nullable=False)
+    significant_bit = Column(CHAR(1), nullable=False, default='M')
+    clk_state = Column(Integer, nullable=False, default=0)
+    clk_phase = Column(Integer, nullable=False, default=0)
+    data_size = Column(Integer, nullable=False, default=8)
+    sniffed_data = relationship('SniffedData', backref='spi', cascade='all, delete')
 
-    id = Column('id', Integer, primary_key=True)
-    input_channel_number = Column('input_channel_number', Integer, nullable=False)
-    output_channel_number = Column('output_channel_number', Integer, nullable=False)
-    significant_bit = Column('significant_bit', CHAR, default='M')
-    data_size = Column('data_size', Integer, default=8)
-    clock_state = Column('clock_state', Integer, default=0)
-    clock_phase = Column('clock_phase', Integer, default=0)
+    __table_args__ = (
+        CheckConstraint("significant_bit IN ('M', 'L')"),
+    )

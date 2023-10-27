@@ -1,10 +1,13 @@
-from sqlalchemy import Column, Integer
-from base_table import Base
+from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy.orm import relationship
+
+from models.entities import Base
 
 
-class NBitSniffing(Base):
+class NBit(Base):
+    __tablename__ = 'n_bit'
 
-    __tablename__ = 'n_bits_sniffing'
-
-    id = Column('id', Integer, primary_key=True)
-    channel_numbers = Column('channel_numbers', Integer, nullable=False)
+    id = Column(Integer, primary_key=True)
+    sniffed_data_id = Column(Integer, ForeignKey('sniffed_data.id'), nullable=False)
+    channel_number = Column(Integer, nullable=False)
+    sniffed_data = relationship('SniffedData', backref='n_bit', cascade='all, delete')
