@@ -8,7 +8,7 @@ class Uart(Base):
     __tablename__ = 'uart'
 
     id = Column('id', Integer, primary_key=True)
-    sniffed_data_id = Column(Integer, ForeignKey('sniffed_data.id'), nullable=False)
+    sniffed_data_id = Column(Integer, ForeignKey('sniffed_data.id'))
     clk_per_bit = Column(Integer, nullable=False, default=217)
     baud_rate = Column(Integer, nullable=False, default=115200)
     data_size = Column(Integer, nullable=False, default=8)
