@@ -15,6 +15,12 @@ class ChannelPinsDAO:
         self.channel_pins.hardware_pin = self.channel_pins_dto.hardware_pin
         self.channel_pins.direction = self.channel_pins_dto.direction
 
+    def get_by_id(self, id):
+        return storage.get_by_id(ChannelPins, id)
+
+    def get_all(self):
+        return storage.list_all(ChannelPins)
+
     def insert(self):
         storage.insert(self.channel_pins)
         storage.save()
@@ -24,7 +30,7 @@ class ChannelPinsDAO:
         storage.save()
 
     def update(self, id, channel_name, hardware_pin, direction):
-        channel_pins_record = storage.get_by_id(ChannelPins, id)
+        channel_pins_record = self.get_by_id(id)
         if channel_pins_record:
             channel_pins_record.channel_name = channel_name
             channel_pins_record.hardware_pin = hardware_pin
