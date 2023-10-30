@@ -6,12 +6,12 @@ from models.entities import Base
 class SniffedData(Base):
     __tablename__ = 'sniffed_data'
 
-    id = Column(Integer, primary_key=True)
-    start_time = Column(DateTime, nullable=False)
-    time_taken = Column(Integer, nullable=False)
-    data = Column(BLOB)
-    connection_way = Column(String(10), nullable=False)
-    communication_protocol_name = Column(String(10))
+    id = Column('Id', Integer, primary_key=True)
+    start_time = Column('Start Time', DateTime, nullable=False)
+    time_taken = Column('Time Taken', Integer, nullable=False)
+    data = Column('Data', BLOB)
+    connection_way = Column('Connection Way', String(10), nullable=False)
+    communication_protocol_name = Column('Communication Protocol Name', String(10))
 
     __table_args__ = (
         CheckConstraint("connection_way LIKE '_Bit'"),
