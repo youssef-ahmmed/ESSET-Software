@@ -10,6 +10,7 @@ class SpiProtocolDAO:
         self.create_spi_protocol()
 
     def create_spi_protocol(self):
+        self.spi.sniffed_data_id = self.spi_protocol_dto.sniffed_data_id
         self.spi.significant_bit = self.spi_protocol_dto.significant_bit
         self.spi.clk_state = self.spi_protocol_dto.clk_state
         self.spi.clk_phase = self.spi_protocol_dto.clk_phase

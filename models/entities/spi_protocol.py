@@ -8,7 +8,7 @@ class Spi(Base):
     __tablename__ = 'spi'
 
     id = Column(Integer, primary_key=True)
-    sniffed_data_id = Column(Integer, ForeignKey('sniffed_data.id'), nullable=False)
+    sniffed_data_id = Column(Integer, ForeignKey('sniffed_data.id'))
     significant_bit = Column(CHAR(1), nullable=False, default='M')
     clk_state = Column(Integer, nullable=False, default=0)
     clk_phase = Column(Integer, nullable=False, default=0)
