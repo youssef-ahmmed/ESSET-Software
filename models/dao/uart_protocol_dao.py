@@ -10,6 +10,7 @@ class UartProtocolDAO:
         self.create_uart_protocol()
 
     def create_uart_protocol(self):
+        self.uart.sniffed_data_id = self.uart_protocol_dto.sniffed_data_id
         self.uart.clk_per_bit = self.uart_protocol_dto.clk_per_bit
         self.uart.baud_rate = self.uart_protocol_dto.baud_rate
         self.uart.data_size = self.uart_protocol_dto.data_size

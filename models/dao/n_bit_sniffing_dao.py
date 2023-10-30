@@ -10,6 +10,7 @@ class NBitSniffingDAO:
         self.create_n_bit_sniffing()
 
     def create_n_bit_sniffing(self):
+        self.nbit.sniffed_data_id = self.n_bit_dto.sniffed_data_id
         self.nbit.channel_number = self.n_bit_dto.channel_number
 
     def insert(self):

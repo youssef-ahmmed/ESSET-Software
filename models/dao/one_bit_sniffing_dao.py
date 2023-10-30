@@ -10,6 +10,7 @@ class OneBitDTO:
         self.create_one_bit()
 
     def create_one_bit(self):
+        self.one_bit.sniffed_data_id = self.one_bit_dto.sniffed_data_id
         self.one_bit.output_channel_number = self.one_bit_dto.output_channel_number
 
     def insert(self):

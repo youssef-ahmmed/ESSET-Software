@@ -10,6 +10,7 @@ class ChannelPinsDAO:
         self.create_channel_pins()
 
     def create_channel_pins(self):
+        self.channel_pins.sniffed_data_id = self.channel_pins_dto.sniffed_data_id
         self.channel_pins.channel_name = self.channel_pins_dto.channel_name
         self.channel_pins.hardware_pin = self.channel_pins_dto.hardware_pin
         self.channel_pins.direction = self.channel_pins_dto.direction
