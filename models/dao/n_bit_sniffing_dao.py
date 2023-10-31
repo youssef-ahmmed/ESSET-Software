@@ -13,6 +13,12 @@ class NBitSniffingDAO:
         self.nbit.sniffed_data_id = self.n_bit_dto.sniffed_data_id
         self.nbit.channel_number = self.n_bit_dto.channel_number
 
+    def get_by_id(self, id):
+        return storage.get_by_id(NBit, id)
+
+    def get_all(self):
+        return storage.list_all(NBit)
+
     def insert(self):
         storage.insert(self.nbit)
         storage.save()
@@ -22,7 +28,7 @@ class NBitSniffingDAO:
         storage.save()
 
     def update(self, id, channel_number):
-        n_bit_record = storage.get_by_id(NBit, id)
+        n_bit_record = self.get_by_id(id)
         if n_bit_record:
             n_bit_record.channel_number = channel_number
 

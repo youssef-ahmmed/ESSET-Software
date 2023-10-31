@@ -16,6 +16,12 @@ class SniffedDataDAO:
         self.sniffed_data.connection_way = self.sniffed_data_dto.connection_way
         self.sniffed_data.communication_protocol_name = self.sniffed_data_dto.communication_protocol_name
 
+    def get_by_id(self, id):
+        return storage.get_by_id(SniffedData, id)
+
+    def get_all(self):
+        return storage.list_all(SniffedData)
+
     def insert(self):
         storage.insert(self.sniffed_data)
         storage.save()
@@ -25,7 +31,7 @@ class SniffedDataDAO:
         storage.save()
 
     def update(self, id, start_time, time_taken, data, connection_way, communication_protocol_name):
-        sniffed_data_record = storage.get_by_id(SniffedData, id)
+        sniffed_data_record = self.get_by_id(id)
         if sniffed_data_record:
             sniffed_data_record.start_time = start_time
             sniffed_data_record.time_taken = time_taken

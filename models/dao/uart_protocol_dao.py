@@ -17,6 +17,12 @@ class UartProtocolDAO:
         self.uart.stop_bit = self.uart_protocol_dto.stop_bit
         self.uart.parity_bit = self.uart_protocol_dto.parity_bit
 
+    def get_by_id(self, id):
+        return storage.get_by_id(Uart, id)
+
+    def get_all(self):
+        return storage.list_all(Uart)
+
 
     def insert(self):
         storage.insert(self.uart)
@@ -27,7 +33,7 @@ class UartProtocolDAO:
         storage.save()
 
     def update(self, id, clk_per_bit, baud_rate, data_size, stop_bit, parity_bit):
-        uart_protocol_record = storage.get_by_id(Uart, id)
+        uart_protocol_record = self.get_by_id(id)
         if uart_protocol_record:
             uart_protocol_record.uart.clk_per_bit = clk_per_bit
             uart_protocol_record.uart.baud_rate = baud_rate
