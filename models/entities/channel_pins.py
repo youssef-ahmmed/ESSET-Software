@@ -13,4 +13,4 @@ class ChannelPins(Base):
     channel_name = Column('channel_name', String(50), nullable=False)
     direction = Column('direction', String(10), nullable=False)
     hardware_pin = Column('hardware_pin', String(20), nullable=False)
-    sniffed_data = relationship('sniffed_data', backref='channel_pins', cascade='all, delete')
+    sniffed_data = relationship('SniffedData', backref='channel_pins', cascade='all, delete')

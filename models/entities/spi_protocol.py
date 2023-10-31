@@ -13,7 +13,7 @@ class Spi(Base):
     clk_state = Column('clk_state', Integer, nullable=False, default=0)
     clk_phase = Column('clk_phase', Integer, nullable=False, default=0)
     data_size = Column('data_size', Integer, nullable=False, default=8)
-    sniffed_data = relationship('sniffed_data', backref='spi', cascade='all, delete')
+    sniffed_data = relationship('SniffedData', backref='spi', cascade='all, delete')
 
     __table_args__ = (
         CheckConstraint("significant_bit IN ('M', 'L')"),

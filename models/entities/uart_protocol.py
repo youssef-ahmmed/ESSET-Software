@@ -14,7 +14,7 @@ class Uart(Base):
     data_size = Column('data_size', Integer, nullable=False, default=8)
     stop_bit = Column('stop_bit', Integer, default=1)
     parity_bit = Column('parity_bit', CHAR(1), default='N')
-    sniffed_data = relationship('sniffed_data', backref='uart', cascade='all, delete')
+    sniffed_data = relationship('SniffedData', backref='uart', cascade='all, delete')
 
     __table_args__ = (
         CheckConstraint("parity_bit IN ('N', 'E', 'O')"),
