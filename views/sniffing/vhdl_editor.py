@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QSize, Qt, QRect, QPoint, QRegExp
-from PyQt5.QtGui import QKeySequence, QTextCharFormat, QBrush, QColor, QFont, QTextFormat, QPainter, QWheelEvent, \
+from PyQt5.QtGui import QTextCharFormat, QBrush, QColor, QFont, QTextFormat, QPainter, QWheelEvent, \
     QKeyEvent, QTextCursor
-from PyQt5.QtWidgets import QPlainTextEdit, QWidget, QAction, QTextEdit, QLineEdit
+from PyQt5.QtWidgets import QPlainTextEdit, QWidget, QTextEdit, QLineEdit
 
 
 class Editor(QPlainTextEdit):
