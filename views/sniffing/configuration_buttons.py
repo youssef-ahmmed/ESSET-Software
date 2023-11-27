@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout
 
 
 class ConfigurationButtons(QWidget):
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.synthesis_button = QPushButton('Synthesis')

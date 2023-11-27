@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QPlainTextEdit, QVBoxLayout, QWidget
 
 
-class TerminalWidget(QWidget):
+class OutputTerminal(QWidget):
     def __init__(self):
         super().__init__()
 

@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QWidget, QComboBox, QLabel, QHBoxLayout
 from PyQt5.QtCore import Qt
 
 
-class BitsNumberSettingsWidget(QWidget):
+class NumberBitsSelect(QWidget):
     def __init__(self):
         super().__init__()
 

@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QVBoxLayout, QWidget, QPushButton
 from views.sniffing.channel_pins_dialog import ChannelPinsDialog
 
 
-class SelectChannelPins(QWidget):
+class SelectChannelPinsButton(QWidget):
     def __init__(self):
         super().__init__()
 
