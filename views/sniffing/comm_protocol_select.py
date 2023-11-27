@@ -1,10 +1,12 @@
-from PyQt5.QtWidgets import QWidget, QStackedWidget, QComboBox, QLabel, QHBoxLayout
 from PyQt5.QtCore import Qt
-from uart_config import UartConfigurations
-from spi_config import SpiConfigurations
+from PyQt5.QtWidgets import QWidget, QStackedWidget, QComboBox, QLabel, QHBoxLayout
+
+from views.sniffing.spi_config import SpiConfigurations
+from views.sniffing.uart_config import UartConfigurations
 
 
-class CommunicationSettingsWidget(QWidget):
+class CommunicationProtocolSelect(QWidget):
+
     def __init__(self):
         super().__init__()
 
@@ -22,7 +24,7 @@ class CommunicationSettingsWidget(QWidget):
         self.comm_label = QLabel("Communication Protocol")
         self.protocol_combo = QComboBox()
         self.protocol_combo.addItem("Select Comm Protocol")
-        self.protocol_combo.addItems(["SPI", "UART", "I2C"])
+        self.protocol_combo.addItems(["SPI", "UART", "I2C", "None"])
         self.protocol_combo.setItemData(0, 0, role=Qt.UserRole - 1)
         self.protocol_combo.setCurrentIndex(0)
         self.protocol_combo.currentIndexChanged.connect(self.show_selected_settings)
@@ -42,12 +44,12 @@ class CommunicationSettingsWidget(QWidget):
 
     def show_selected_settings(self, index):
         if index >= 0:
-            selected_protocol = self.protocol_combo.currentText()
+            self.selected_protocol = self.protocol_combo.currentText()
 
-            if selected_protocol == "SPI":
+            if self.selected_protocol == "SPI":
                 self.show_spi_settings()
 
-            elif selected_protocol == "UART":
+            elif self.selected_protocol == "UART":
                 self.show_uart_settings()
 
     def show_spi_settings(self):

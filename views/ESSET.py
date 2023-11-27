@@ -8,7 +8,8 @@ from PyQt5.QtWidgets import QTabWidget, QVBoxLayout
 from views.sniffing.sniffing_widget import SniffingWidget
 
 
-class MyApp(QMainWindow):
+class ESSET(QMainWindow):
+
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -28,8 +29,8 @@ class MyApp(QMainWindow):
         tab_widget = QTabWidget()
         tab_widget.setTabPosition(QTabWidget.West)
 
-        tab1 = SniffingWidget()
-        tab_widget.addTab(tab1, 'Sniffing')
+        sniffing_tab = SniffingWidget()
+        tab_widget.addTab(sniffing_tab, 'Sniffing')
 
         plain_text_edit = QPlainTextEdit()
         splitter = QSplitter(Qt.Vertical)
@@ -40,6 +41,6 @@ class MyApp(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = MyApp()
+    window = ESSET()
     window.showMaximized()
     sys.exit(app.exec_())

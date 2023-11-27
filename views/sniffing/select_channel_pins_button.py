@@ -1,9 +1,9 @@
-from PyQt5.QtWidgets import QVBoxLayout, QWidget
-from views.custom_component.custom_button import RoundButton
-from channel_pins_dialog import ChannelPinsDialog
+from PyQt5.QtWidgets import QVBoxLayout, QWidget, QPushButton
+
+from views.sniffing.channel_pins_dialog import ChannelPinsDialog
 
 
-class SelectChannelPins(QWidget):
+class SelectChannelPinsButton(QWidget):
     def __init__(self):
         super().__init__()
 
@@ -15,7 +15,7 @@ class SelectChannelPins(QWidget):
 
         layout = QVBoxLayout()
 
-        self.channel_pins_button = RoundButton("Select Channel Pins")
+        self.channel_pins_button = QPushButton("Select Channel Pins")
         self.channel_pins_button.clicked.connect(self.show_channel_pins_dialog)
         layout.addWidget(self.channel_pins_button)
         self.setLayout(layout)

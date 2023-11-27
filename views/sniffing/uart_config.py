@@ -1,7 +1,8 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, \
     QPushButton, QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication
-from PyQt5.QtCore import Qt
-from channel_pins_dialog import ChannelPinsDialog
+
+from views.sniffing.channel_pins_dialog import ChannelPinsDialog
 
 
 class UartConfigurations(QDialog):
@@ -16,8 +17,8 @@ class UartConfigurations(QDialog):
         self.setGeometry(100, 100, 400, 300)
 
         screen_geometry = QApplication.desktop().availableGeometry()
-        x = (screen_geometry.width() - self.width()) / 2
-        y = (screen_geometry.height() - self.height()) / 2
+        x = int((screen_geometry.width() - self.width()) / 2)
+        y = int((screen_geometry.height() - self.height()) / 2)
         self.move(x, y)
 
         self.uart_settings()
@@ -123,3 +124,4 @@ class UartConfigurations(QDialog):
     def save_settings(self):
         input_channel = self.get_selected_input_channel()
         ChannelPinsDialog.selected_uart_channel(input_channel, 'UART')
+        self.close()

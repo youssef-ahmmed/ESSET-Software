@@ -12,8 +12,8 @@ class ChannelPinsDialog(QDialog):
         self.setGeometry(200, 200, 400, 300)
 
         screen_geometry = QApplication.desktop().availableGeometry()
-        x = (screen_geometry.width() - self.width()) / 2
-        y = (screen_geometry.height() - self.height()) / 2
+        x = int((screen_geometry.width() - self.width()) / 2)
+        y = int((screen_geometry.height() - self.height()) / 2)
         self.move(x, y)
 
         self.update_channels()

@@ -1,7 +1,8 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, \
     QPushButton, QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication
-from PyQt5.QtCore import Qt
-from channel_pins_dialog import ChannelPinsDialog
+
+from views.sniffing.channel_pins_dialog import ChannelPinsDialog
 
 
 class SpiConfigurations(QDialog):
@@ -15,8 +16,8 @@ class SpiConfigurations(QDialog):
         self.setGeometry(100, 100, 400, 300)
 
         screen_geometry = QApplication.desktop().availableGeometry()
-        x = (screen_geometry.width() - self.width()) / 2
-        y = (screen_geometry.height() - self.height()) / 2
+        x = int((screen_geometry.width() - self.width()) / 2)
+        y = int((screen_geometry.height() - self.height()) / 2)
         self.move(x, y)
 
         self.spi_settings()
@@ -146,3 +147,4 @@ class SpiConfigurations(QDialog):
     def save_settings(self):
         mosi, miso, clock, enable = self.get_selected_channels()
         ChannelPinsDialog.selected_spi_channels(mosi, miso, clock, enable, "SPI")
+        self.close()

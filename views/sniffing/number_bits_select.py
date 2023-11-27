@@ -1,8 +1,8 @@
-from PyQt5.QtWidgets import QWidget, QComboBox, QLabel, QHBoxLayout
 from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget, QComboBox, QLabel, QHBoxLayout
 
 
-class BitsNumberSettingsWidget(QWidget):
+class NumberBitsSelect(QWidget):
     def __init__(self):
         super().__init__()
 
@@ -20,7 +20,7 @@ class BitsNumberSettingsWidget(QWidget):
         self.bits_label = QLabel("Sniffing Bit Numbers")
         self.bits_combo = QComboBox()
         self.bits_combo.addItem("Select bits number")
-        self.bits_combo.addItems(["1Bit", "NBits"])
+        self.bits_combo.addItems(["1Bit", "NBits", "None"])
         self.bits_combo.setItemData(0, 0, role=Qt.UserRole - 1)
         self.bits_combo.setCurrentIndex(0)
 
