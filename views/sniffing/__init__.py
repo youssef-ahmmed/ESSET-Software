@@ -1,10 +1,10 @@
 import sys
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QApplication
-from comm_protocol_select import CommunicationSettingsWidget
-from no_bits_select import BitsNumberSettingsWidget
-from select_channel_button import SelectChannelPins
+from views.sniffing.comm_protocol_select import CommunicationSettingsWidget
+from views.sniffing.no_bits_select import BitsNumberSettingsWidget
+from views.sniffing.select_channel_button import SelectChannelPins
 from views.custom_component.custom_button import RoundButton
-from output_terminal import TerminalWidget
+from views.sniffing.output_terminal import TerminalWidget
 
 
 class Test(QMainWindow):
@@ -38,6 +38,10 @@ class Test(QMainWindow):
         selected_protocol = self.comm_protocol.get_selected_protocol()
         if selected_protocol == "Select Comm Protocol":
             self.no_bits.setEnabled(True)
+
+        elif selected_protocol == "None":
+            self.no_bits.setEnabled(True)
+
         else:
             self.no_bits.setEnabled(False)
             self.channel_button.setEnabled(True)
@@ -45,6 +49,9 @@ class Test(QMainWindow):
     def handle_bits_number_change(self):
         selected_bits_number = self.no_bits.get_selected_pin_number()
         if selected_bits_number == "Select bits number":
+            self.comm_protocol.setEnabled(True)
+
+        elif selected_bits_number == "None":
             self.comm_protocol.setEnabled(True)
 
         else:

@@ -146,3 +146,4 @@ class SpiConfigurations(QDialog):
     def save_settings(self):
         mosi, miso, clock, enable = self.get_selected_channels()
         ChannelPinsDialog.selected_spi_channels(mosi, miso, clock, enable, "SPI")
+        self.close()

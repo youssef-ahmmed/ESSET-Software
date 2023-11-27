@@ -123,3 +123,4 @@ class UartConfigurations(QDialog):
     def save_settings(self):
         input_channel = self.get_selected_input_channel()
         ChannelPinsDialog.selected_uart_channel(input_channel, 'UART')
+        self.close()
