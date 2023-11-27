@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QVBoxLayout, QWidget, QPushButton
 
-from views.sniffing.channel_pins_dialog import ChannelPinsDialog
+from views.sniffing.hardware_pin_planner import HardwarePinPlanner
 
 
 class SelectChannelPinsButton(QWidget):
@@ -16,10 +16,10 @@ class SelectChannelPinsButton(QWidget):
         layout = QVBoxLayout()
 
         self.channel_pins_button = QPushButton("Select Channel Pins")
-        self.channel_pins_button.clicked.connect(self.show_channel_pins_dialog)
+        self.channel_pins_button.clicked.connect(self.show_pin_planner_dialog)
         layout.addWidget(self.channel_pins_button)
         self.setLayout(layout)
 
-    def show_channel_pins_dialog(self):
-        dialog = ChannelPinsDialog()
-        dialog.exec_()
+    def show_pin_planner_dialog(self):
+        pin_planner_table = HardwarePinPlanner()
+        pin_planner_table.exec_()
