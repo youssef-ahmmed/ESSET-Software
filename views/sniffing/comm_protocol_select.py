@@ -15,8 +15,6 @@ class CommunicationProtocolSelect(QWidget):
         self.setWindowTitle("Communication Settings")
         self.setGeometry(100, 100, 400, 300)
 
-        self.current_protocol = None
-
         self.create_layout()
 
     def create_layout(self):
