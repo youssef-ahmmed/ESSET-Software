@@ -1,8 +1,10 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
 
-from views.custom_component.custom_button import RoundButton
-from views.sniffing import CommunicationSettingsWidget, BitsNumberSettingsWidget, SelectChannelPins, TerminalWidget
+from views.sniffing.comm_protocol_select import CommunicationSettingsWidget
 from views.sniffing.configuration_buttons import ConfigurationButtons
+from views.sniffing.no_bits_select import BitsNumberSettingsWidget
+from views.sniffing.output_terminal import TerminalWidget
+from views.sniffing.select_channel_button import SelectChannelPins
 from views.sniffing.vhdl_editor_buttons import VhdlEditorButtons
 from views.sniffing.vhdl_widget import VhdlWidget
 
