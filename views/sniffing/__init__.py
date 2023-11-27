@@ -1,6 +1,5 @@
 import sys
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QApplication
-
 from comm_protocol_select import CommunicationSettingsWidget
 from no_bits_select import BitsNumberSettingsWidget
 from select_channel_button import SelectChannelPins

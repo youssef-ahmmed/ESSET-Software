@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, \
     QPushButton, QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication
 from PyQt5.QtCore import Qt
+from channel_pins_dialog import ChannelPinsDialog
 
 
 class SpiConfigurations(QDialog):
@@ -107,6 +108,7 @@ class SpiConfigurations(QDialog):
         self.cancel_button.clicked.connect(self.cancel_settings)
 
         self.save_button = QPushButton("Save")
+        self.save_button.clicked.connect(self.save_settings)
 
         layout.addWidget(self.settings_widget)
 
@@ -142,4 +144,5 @@ class SpiConfigurations(QDialog):
         self.close()
 
     def save_settings(self):
-        pass
+        mosi, miso, clock, enable = self.get_selected_channels()
+        ChannelPinsDialog.selected_spi_channels(mosi, miso, clock, enable, "SPI")

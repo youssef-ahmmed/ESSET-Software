@@ -23,4 +23,3 @@ class SelectChannelPins(QWidget):
     def show_channel_pins_dialog(self):
         dialog = ChannelPinsDialog()
         dialog.exec_()
-

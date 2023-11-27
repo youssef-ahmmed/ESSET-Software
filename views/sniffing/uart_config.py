@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, \
     QPushButton, QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication
-
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import Qt
+from channel_pins_dialog import ChannelPinsDialog
 
 
 class UartConfigurations(QDialog):
@@ -121,4 +121,5 @@ class UartConfigurations(QDialog):
         self.close()
 
     def save_settings(self):
-        pass
+        input_channel = self.get_selected_input_channel()
+        ChannelPinsDialog.selected_uart_channel(input_channel, 'UART')

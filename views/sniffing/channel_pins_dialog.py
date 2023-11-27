@@ -1,10 +1,10 @@
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QHBoxLayout, QPushButton, QComboBox, QApplication
 from PyQt5.QtCore import Qt
-from uart_config import UartConfigurations
-from spi_config import SpiConfigurations
 
 
 class ChannelPinsDialog(QDialog):
+    mosi, miso, clock, enable, input_channel, comm_protocol = '', '', '', '', '', ''
+
     def __init__(self):
         super().__init__()
 
@@ -16,15 +16,15 @@ class ChannelPinsDialog(QDialog):
         y = (screen_geometry.height() - self.height()) / 2
         self.move(x, y)
 
+        self.update_channels()
+
         self.init_ui()
 
     def init_ui(self):
         layout = QVBoxLayout()
         h2_layout = QHBoxLayout()
 
-        channels = ["Channel 1", "Channel 2", "Channel 3", "Channel 4"]
-
-        for channel in channels:
+        for channel in self.channels:
             label = QLabel(channel)
             channel_combo = QComboBox()
 
@@ -52,6 +52,30 @@ class ChannelPinsDialog(QDialog):
 
         self.setLayout(layout)
 
+    def update_channels(self):
+        self.channels = []
+        if ChannelPinsDialog.comm_protocol == "UART":
+            self.channels.append(ChannelPinsDialog.input_channel)
+        elif ChannelPinsDialog.comm_protocol == "SPI":
+            spi_channels = ['MOSI ' + '(' + ChannelPinsDialog.mosi + ')', 'MISO ' + '(' + ChannelPinsDialog.miso + ')',
+                            'CLK ' + '(' + ChannelPinsDialog.clock + ')', 'Enable ' + '(' + ChannelPinsDialog.enable + ')']
+
+            for item in spi_channels:
+                self.channels.append(item)
+
+    @staticmethod
+    def selected_spi_channels(mosi, miso, clock, enable, protocol):
+        ChannelPinsDialog.mosi = mosi
+        ChannelPinsDialog.miso = miso
+        ChannelPinsDialog.clock = clock
+        ChannelPinsDialog.enable = enable
+        ChannelPinsDialog.comm_protocol = protocol
+
+    @staticmethod
+    def selected_uart_channel(input_channel, protocol):
+        ChannelPinsDialog.input_channel = input_channel
+        ChannelPinsDialog.comm_protocol = protocol
+
     def reset_settings(self):
         for i in range(self.layout().count()):
             widget = self.layout().itemAt(i).widget()
@@ -63,5 +87,3 @@ class ChannelPinsDialog(QDialog):
 
     def save_settings(self):
         pass
-
-
