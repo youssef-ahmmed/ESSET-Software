@@ -1,7 +1,8 @@
-from PyQt5.QtWidgets import QWidget, QStackedWidget, QComboBox, QLabel, QHBoxLayout
 from PyQt5.QtCore import Qt
-from views.sniffing.uart_config import UartConfigurations
+from PyQt5.QtWidgets import QWidget, QStackedWidget, QComboBox, QLabel, QHBoxLayout
+
 from views.sniffing.spi_config import SpiConfigurations
+from views.sniffing.uart_config import UartConfigurations
 
 
 class CommunicationProtocolSelect(QWidget):

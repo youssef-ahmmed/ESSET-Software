@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QVBoxLayout, QWidget, QPushButton
+
 from views.sniffing.channel_pins_dialog import ChannelPinsDialog
 
 
