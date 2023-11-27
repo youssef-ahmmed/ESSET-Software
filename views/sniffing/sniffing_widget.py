@@ -50,6 +50,10 @@ class SniffingWidget(QWidget):
         selected_protocol = self.comm_protocol.get_selected_protocol()
         if selected_protocol == "Select Comm Protocol":
             self.no_bits.setEnabled(True)
+
+        elif selected_protocol == "None":
+            self.no_bits.setEnabled(True)
+            self.channel_button.setEnabled(False)
         else:
             self.no_bits.setEnabled(False)
             self.channel_button.setEnabled(True)
@@ -58,6 +62,10 @@ class SniffingWidget(QWidget):
         selected_bits_number = self.no_bits.get_selected_pin_number()
         if selected_bits_number == "Select bits number":
             self.comm_protocol.setEnabled(True)
+
+        elif selected_bits_number == "None":
+            self.comm_protocol.setEnabled(True)
+            self.channel_button.setEnabled(False)
 
         else:
             self.comm_protocol.setEnabled(False)

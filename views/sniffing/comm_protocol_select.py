@@ -52,8 +52,6 @@ class CommunicationSettingsWidget(QWidget):
             elif self.selected_protocol == "UART":
                 self.show_uart_settings()
 
-            # self.protocol_combo.setCurrentIndex(-1)
-
     def show_spi_settings(self):
         spi_dialog = SpiConfigurations()
         spi_dialog.exec_()
