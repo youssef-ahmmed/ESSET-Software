@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QVBoxLayout, QWidget
 from views.custom_component.custom_button import RoundButton
-from channel_pins_dialog import ChannelPinsDialog
+from views.sniffing.channel_pins_dialog import ChannelPinsDialog
 
 
 class SelectChannelPins(QWidget):

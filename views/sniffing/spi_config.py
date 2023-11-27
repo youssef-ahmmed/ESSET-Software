@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, \
     QPushButton, QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication
 from PyQt5.QtCore import Qt
-from channel_pins_dialog import ChannelPinsDialog
+from views.sniffing.channel_pins_dialog import ChannelPinsDialog
 
 
 class SpiConfigurations(QDialog):
