@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QFrame, QTabWidget, QLabel, QVBoxLayout, QWidget
 
 from views.sniffing.editor import Editor
+from views.sniffing.highlighter import Highlighter
 
 
 class VhdlEditor(QFrame):
@@ -11,6 +12,7 @@ class VhdlEditor(QFrame):
         self.tab_widget = QTabWidget(self)
         self.quartus_directory_path_label = QLabel("Quartus Project Path: ")
         self.quartus_directory_path = ""
+        self.highlighter = Highlighter(self.vhdl_editor.document())
 
         self.init_ui()
 
