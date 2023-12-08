@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QTabWidget, QVBoxLayout
 from views.sniffing.sniffing_widget import SniffingWidget
 from views.display.display_widget import DisplayWidget
 
+
 class ESSET(QMainWindow):
 
     def __init__(self):
@@ -39,6 +40,9 @@ class ESSET(QMainWindow):
         splitter = QSplitter(Qt.Vertical)
         splitter.addWidget(tab_widget)
         splitter.addWidget(plain_text_edit)
+
+        splitter.setSizes([9, 1])
+
         layout.addWidget(splitter)
 
 

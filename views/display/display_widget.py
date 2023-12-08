@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QSplitter
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QSplitter
 from PyQt5.QtCore import Qt
 from views.display.waveform_widget import WaveformWidget
 from views.display.display_setting_widget import DisplaySettingsWidget
@@ -21,5 +21,12 @@ class DisplayWidget(QWidget):
         splitter = QSplitter(Qt.Horizontal)
         splitter.addWidget(self.waveform_widget)
         splitter.addWidget(self.display_settings_widget)
+
+        total_size = self.waveform_widget.sizeHint().width() + self.display_settings_widget.sizeHint().width()
+
+        size_waveform = 0.99 * total_size
+        size_settings = 0.01 * total_size
+
+        splitter.setSizes([size_waveform, size_settings])
 
         self.layout().addWidget(splitter)
