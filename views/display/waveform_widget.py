@@ -37,7 +37,16 @@ class WaveformWidget(QWidget):
 
         self.setLayout(main_layout)
 
+    def check_visibility(self):
+        for plot_number in range(1, len(self.plot_widgets)):
+            if not self.plot_widgets[plot_number].isVisible():
+                return True
+        return False
+
     def toggle_visibility(self, channel_number):
+        if channel_number == 0 and self.check_visibility():
+            return
+
         self.plot_widgets[channel_number].setVisible(
            not self.plot_widgets[channel_number].isVisible()
         )
