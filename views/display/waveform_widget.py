@@ -3,12 +3,12 @@ from views.display.plot_widget import PlotWidget
 
 
 class WaveformWidget(QWidget):
-    plot_widgets = []
 
     def __init__(self):
         super().__init__()
 
-        self.no_channels = 8
+        self.channel_numbers = 8
+        self.plot_widgets = []
 
         self.init_ui()
 
@@ -17,11 +17,11 @@ class WaveformWidget(QWidget):
         self.base_layout = QFormLayout()
         self.base_layout.setVerticalSpacing(row_spacing)
 
-        for channel in range(self.no_channels):
+        for channel in range(self.channel_numbers):
             plot_widget = PlotWidget(channel)
-            WaveformWidget.plot_widgets.append(plot_widget)
+            self.plot_widgets.append(plot_widget)
 
-        for plot_widget in WaveformWidget.plot_widgets:
+        for plot_widget in self.plot_widgets:
             self.base_layout.addWidget(plot_widget)
 
         scroll_area = QScrollArea()
@@ -36,3 +36,16 @@ class WaveformWidget(QWidget):
         main_layout.addWidget(scroll_area)
 
         self.setLayout(main_layout)
+
+    def toggle_visibility(self, channel_number):
+        self.plot_widgets[channel_number].setVisible(
+           not self.plot_widgets[channel_number].isVisible()
+        )
+
+    def hide_all_channels(self):
+        for plot_number in range(1, len(self.plot_widgets)):
+            self.plot_widgets[plot_number].hide()
+
+    def show_all_channels(self):
+        for i in range(1, len(self.plot_widgets)):
+            self.plot_widgets[i].show()

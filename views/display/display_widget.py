@@ -5,6 +5,7 @@ from views.display.display_setting_widget import DisplaySettingsWidget
 
 
 class DisplayWidget(QWidget):
+
     def __init__(self):
         super().__init__()
 
@@ -12,6 +13,12 @@ class DisplayWidget(QWidget):
         self.display_settings_widget = DisplaySettingsWidget()
 
         self.init_ui()
+        self.start_communication()
+
+    def start_communication(self):
+        self.display_settings_widget.channel_visibility.connect(self.waveform_widget.toggle_visibility)
+        self.display_settings_widget.show_plots.connect(self.waveform_widget.show_all_channels)
+        self.display_settings_widget.clear_plots.connect(self.waveform_widget.hide_all_channels)
 
     def init_ui(self):
         self.setLayout(QHBoxLayout())
@@ -27,6 +34,6 @@ class DisplayWidget(QWidget):
         size_waveform = 0.99 * total_size
         size_settings = 0.01 * total_size
 
-        splitter.setSizes([size_waveform, size_settings])
+        splitter.setSizes([int(size_waveform), int(size_settings)])
 
         self.layout().addWidget(splitter)

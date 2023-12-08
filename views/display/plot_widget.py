@@ -3,6 +3,7 @@ import pyqtgraph as pg
 
 
 class PlotWidget(QWidget):
+
     def __init__(self, channel_name):
         super().__init__()
 
