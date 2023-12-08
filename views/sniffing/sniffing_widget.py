@@ -24,4 +24,11 @@ class SniffingWidget(QWidget):
         splitter.addWidget(self.vhdl_widget)
         splitter.addWidget(self.hardware_config_widget)
 
+        total_size = self.vhdl_widget.sizeHint().width() + self.hardware_config_widget.sizeHint().width()
+
+        size_vhdl = 0.99 * total_size
+        size_settings = 0.01 * total_size
+
+        splitter.setSizes([int(size_vhdl), int(size_settings)])
+
         self.layout().addWidget(splitter)

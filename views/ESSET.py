@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QPlainTextEdit, QWidget, QApplication
 from PyQt5.QtWidgets import QTabWidget, QVBoxLayout
 
 from views.sniffing.sniffing_widget import SniffingWidget
+from views.display.display_widget import DisplayWidget
 
 
 class ESSET(QMainWindow):
@@ -32,10 +33,16 @@ class ESSET(QMainWindow):
         sniffing_tab = SniffingWidget()
         tab_widget.addTab(sniffing_tab, 'Sniffing')
 
+        display_tab = DisplayWidget()
+        tab_widget.addTab(display_tab, 'Display')
+
         plain_text_edit = QPlainTextEdit()
         splitter = QSplitter(Qt.Vertical)
         splitter.addWidget(tab_widget)
         splitter.addWidget(plain_text_edit)
+
+        splitter.setSizes([9, 1])
+
         layout.addWidget(splitter)
 
 
