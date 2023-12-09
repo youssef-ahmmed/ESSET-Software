@@ -6,7 +6,6 @@ from PyQt5.QtWidgets import QPlainTextEdit, QWidget, QApplication
 from PyQt5.QtWidgets import QTabWidget, QVBoxLayout
 
 from views.common.menubar import MenuBar
-from views.sniffing.sniffing_widget import SniffingWidget
 from views.display.display_widget import DisplayWidget
 from views.sniffing.sniffing_widget import SniffingWidget
 
