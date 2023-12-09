@@ -21,7 +21,6 @@ class ESSET(QMainWindow):
         self.log = QPlainTextEdit()
 
         self.init_ui()
-        self.start_communication()
 
     def init_ui(self):
         self.setMenuBar(self.menu_bar)
@@ -40,9 +39,6 @@ class ESSET(QMainWindow):
         splitter.setSizes([9, 1])
 
         layout.addWidget(splitter)
-
-    def start_communication(self):
-        self.menu_bar.add_new_path.connect(self.sniffing_tab.emit_add_new_path)
 
 
 if __name__ == '__main__':

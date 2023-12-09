@@ -4,8 +4,6 @@ from PyQt5.QtWidgets import QApplication, QAction, QMenuBar, QFileDialog
 
 class MenuBar(QMenuBar):
 
-    add_new_path = pyqtSignal(str)
-
     def __init__(self, parent=None):
         super().__init__(parent)
         self.init_ui()
@@ -26,11 +24,8 @@ class MenuBar(QMenuBar):
     def open_directory_dialog(self):
         directory_path = QFileDialog.getExistingDirectory(self, 'Select Project Directory')
         if directory_path:
-            self.emit_add_new_path(directory_path)
+            print(directory_path)
 
     @staticmethod
     def close_application():
         QApplication.instance().quit()
-
-    def emit_add_new_path(self, project_path):
-        self.add_new_path.emit(project_path)
