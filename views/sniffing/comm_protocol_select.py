@@ -27,7 +27,7 @@ class CommunicationProtocolSelect(QWidget):
         self.protocol_combo.addItems(["SPI", "UART", "I2C", "None"])
         self.protocol_combo.setItemData(0, 0, role=Qt.UserRole - 1)
         self.protocol_combo.setCurrentIndex(0)
-        self.protocol_combo.currentIndexChanged.connect(self.show_selected_settings)
+        self.protocol_combo.activated.connect(self.show_selected_settings)
 
         self.protocol_pages = QStackedWidget()
 
@@ -44,7 +44,7 @@ class CommunicationProtocolSelect(QWidget):
 
     def show_selected_settings(self, index):
         if index >= 0:
-            self.selected_protocol = self.protocol_combo.currentText()
+            self.selected_protocol = self.protocol_combo.itemText(index)
 
             if self.selected_protocol == "SPI":
                 self.show_spi_settings()
