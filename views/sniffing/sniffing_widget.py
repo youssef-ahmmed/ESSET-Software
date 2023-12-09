@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QSplitter
 
 from views.sniffing.hardware_configuration_widget import HardwareConfigurations
@@ -32,3 +32,6 @@ class SniffingWidget(QWidget):
         splitter.setSizes([int(size_vhdl), int(size_settings)])
 
         self.layout().addWidget(splitter)
+
+    def emit_add_new_path(self, project_path):
+        self.vhdl_widget.emit_add_new_path(project_path)

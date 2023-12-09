@@ -19,3 +19,6 @@ class VhdlWidget(QWidget):
 
         self.layout().addWidget(self.vhdl_editor)
         self.layout().addWidget(self.vhdl_editor_buttons)
+
+    def emit_add_new_path(self, project_path):
+        self.vhdl_editor.update_project_path_label(project_path)
