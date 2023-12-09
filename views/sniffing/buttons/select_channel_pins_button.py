@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QVBoxLayout, QWidget, QPushButton
 
-from views.sniffing.hardware_pin_planner import HardwarePinPlanner
+from views.sniffing.dialogs.hardware_pin_planner import HardwarePinPlanner
 
 
 class SelectChannelPinsButton(QWidget):
