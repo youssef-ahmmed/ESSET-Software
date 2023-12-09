@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QFrame, QTabWidget, QLabel, QVBoxLayout, QWidget
 
 from views.sniffing.editor import Editor
-from views.sniffing.highlighter import Highlighter
+from views.sniffing.editor.highlighter import Highlighter
 
 
 class VhdlEditor(QFrame):
