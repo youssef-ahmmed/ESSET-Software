@@ -16,8 +16,6 @@ class ESSET(QMainWindow):
         super().__init__()
         self.menu_bar = MenuBar()
         self.tab_widget = QTabWidget()
-        self.sniffing_tab = SniffingWidget()
-        self.display_tab = DisplayWidget()
         self.log = QPlainTextEdit()
 
         self.init_ui()
@@ -30,8 +28,8 @@ class ESSET(QMainWindow):
         layout = QVBoxLayout(central_widget)
 
         self.tab_widget.setTabPosition(QTabWidget.West)
-        self.tab_widget.addTab(self.sniffing_tab, 'Sniffing')
-        self.tab_widget.addTab(self.display_tab, 'Display')
+        self.tab_widget.addTab(SniffingWidget(), 'Sniffing')
+        self.tab_widget.addTab(DisplayWidget(), 'Display')
 
         splitter = QSplitter(Qt.Vertical)
         splitter.addWidget(self.tab_widget)
