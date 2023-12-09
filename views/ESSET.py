@@ -2,12 +2,13 @@ import sys
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow, QSplitter
-from PyQt5.QtWidgets import QPlainTextEdit, QWidget, QApplication
 from PyQt5.QtWidgets import QTabWidget, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QApplication
 
+from views.common.log_widget import LogWidget
 from views.common.menubar import MenuBar
-from views.sniffing.sniffing_widget import SniffingWidget
 from views.display.display_widget import DisplayWidget
+from views.sniffing.sniffing_widget import SniffingWidget
 
 
 class ESSET(QMainWindow):
@@ -18,7 +19,7 @@ class ESSET(QMainWindow):
         self.tab_widget = QTabWidget()
         self.sniffing_tab = SniffingWidget()
         self.display_tab = DisplayWidget()
-        self.log = QPlainTextEdit()
+        self.log = LogWidget()
 
         self.init_ui()
 
