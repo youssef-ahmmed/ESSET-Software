@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout
 
-from views.sniffing.sniffing_timer import SniffingTimer
+from views.sniffing.dialogs.sniffing_timer import SniffingTimer
 
 
 class ConfigurationButtons(QWidget):

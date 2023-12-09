@@ -6,8 +6,8 @@ from PyQt5.QtWidgets import QPlainTextEdit, QWidget, QApplication
 from PyQt5.QtWidgets import QTabWidget, QVBoxLayout
 
 from views.common.menubar import MenuBar
-from views.sniffing.sniffing_widget import SniffingWidget
 from views.display.display_widget import DisplayWidget
+from views.sniffing.sniffing_widget import SniffingWidget
 
 
 class ESSET(QMainWindow):
@@ -39,6 +39,16 @@ class ESSET(QMainWindow):
         splitter.setSizes([9, 1])
 
         layout.addWidget(splitter)
+
+    def init_tabs(self):
+        self.tab_widget = QTabWidget()
+        self.tab_widget.setTabPosition(QTabWidget.West)
+
+        sniffing_tab = SniffingWidget()
+        self.tab_widget.addTab(sniffing_tab, 'Sniffing')
+
+        display_tab = DisplayWidget()
+        self.tab_widget.addTab(display_tab, 'Display')
 
 
 if __name__ == '__main__':
