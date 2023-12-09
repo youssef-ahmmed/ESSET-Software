@@ -10,8 +10,8 @@ class VhdlEditor(QFrame):
         super(VhdlEditor, self).__init__(parent)
         self.vhdl_editor = Editor(self)
         self.tab_widget = QTabWidget(self)
-        self.quartus_directory_path_label = QLabel("Quartus Project Path: ")
-        self.quartus_directory_path = ""
+        self.project_path = ""
+        self.project_path_label = QLabel("Quartus Project Path: ")
         self.highlighter = Highlighter(self.vhdl_editor.document())
 
         self.init_ui()
@@ -29,8 +29,7 @@ class VhdlEditor(QFrame):
         self.tab_widget.setTabEnabled(-1, False)
         self.setLayout(QVBoxLayout())
         self.layout().addWidget(self.tab_widget)
-        self.layout().addWidget(self.quartus_directory_path_label)
-
+        self.layout().addWidget(self.project_path_label)
         self.tab_widget.currentChanged.connect(self.tab_changed)
 
     def tab_changed(self, index):
@@ -42,3 +41,7 @@ class VhdlEditor(QFrame):
         tab_index = self.tab_widget.count() - 1
         self.tab_widget.insertTab(tab_index, new_editor, 'Untitled')
         self.tab_widget.setCurrentIndex(tab_index)
+
+    def update_project_path_label(self, project_path):
+        self.project_path = project_path
+        self.project_path_label.setText(f"Quartus Project Path: {self.project_path}")
