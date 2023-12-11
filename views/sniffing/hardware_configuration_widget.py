@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 
+from controllers.sniffing_controller.terminal_controller import TerminalController
 from controllers.sniffing_controller.bits_input_dialog_controller import BitsInputDialogController
 from controllers.sniffing_controller.number_bits_select_controller import NumberBitsSelectController
 from views.sniffing.bits_input_dialog import BitsInputDialog
@@ -27,6 +28,8 @@ class HardwareConfigurations(QWidget):
         self.channel_button.setEnabled(False)
         self.terminal = OutputTerminal()
         self.configuration_buttons = ConfigurationButtons()
+
+        TerminalController.get_instance(self.terminal.terminal)
 
         self.init_ui()
         self.start_ui_communication()

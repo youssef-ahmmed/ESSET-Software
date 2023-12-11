@@ -1,0 +1,40 @@
+library ieee;
+use ieee.std_logic_1164.all;
+-- use work.Common_Ports.all;
+
+entity 1Bit_Sniffing is
+
+	generic (
+		N: positive := {{ output_channels_number }}  -- Number of output channels
+	);
+
+	port (
+		i_1bit: in std_logic;
+		o_Nbit: out std_logic_vector(N-1 downto 0);
+		clk: in std_logic;
+		o_status: out std_logic
+    );
+
+end 1Bit_Sniffing;
+
+architecture behav of 1Bit_Sniffing is
+    signal out_buffer: std_logic_vector(N-1 downto 0) := (others => '0');
+
+begin
+    process(clk)
+        variable counter: natural := 0;
+        begin
+            if rising_edge(clk) then
+                out_buffer <= out_buffer(N-2 downto 0) & i_1bit;
+                counter := counter + 1;
+                if counter = N+1 then
+                    o_status <= '1';
+                    o_Nbit <= out_buffer;
+                    out_buffer <= (others => '0');
+                    counter := 0;
+                else
+                    o_status <= '0';
+                end if;
+            end if;
+    end process;
+end behav;
