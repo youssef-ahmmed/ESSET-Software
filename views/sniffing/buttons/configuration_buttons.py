@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout
 
+from controllers.sniffing_controller.buttons_controller.synthesis_button_controller import SynthesisButtonController
 from views.sniffing.dialogs.sniffing_timer import SniffingTimer
 
 
@@ -9,6 +10,8 @@ class ConfigurationButtons(QWidget):
         super().__init__(parent)
         self.synthesis_button = QPushButton('Synthesis')
         self.start_sniffing = QPushButton('Start Sniffing')
+
+        SynthesisButtonController.get_instance(self.synthesis_button)
 
         self.init_ui()
 
