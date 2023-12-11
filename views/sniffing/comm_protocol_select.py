@@ -1,6 +1,8 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QStackedWidget, QComboBox, QLabel, QHBoxLayout
 
+from controller.sniffing_controller.sommunication_protocol_controller.spi_dialog_controller import SpiDialogController
+from controller.sniffing_controller.sommunication_protocol_controller.uart_dialog_controller import UartDialogController
 from views.sniffing.communication_protocols.spi_config import SpiConfigurations
 from views.sniffing.communication_protocols.uart_config import UartConfigurations
 
@@ -9,6 +11,12 @@ class CommunicationProtocolSelect(QWidget):
 
     def __init__(self):
         super().__init__()
+
+        self.spi_page = SpiConfigurations()
+        self.spi_controller = SpiDialogController(self.spi_page)
+
+        self.uart_page = UartConfigurations()
+        self.uart_controller = UartDialogController(self.uart_page)
 
         self.init_ui()
 
@@ -31,11 +39,8 @@ class CommunicationProtocolSelect(QWidget):
 
         self.protocol_pages = QStackedWidget()
 
-        spi_page = SpiConfigurations()
-        self.protocol_pages.addWidget(spi_page)
-
-        uart_page = UartConfigurations()
-        self.protocol_pages.addWidget(uart_page)
+        self.protocol_pages.addWidget(self.spi_page)
+        self.protocol_pages.addWidget(self.uart_page)
 
         layout.addWidget(self.comm_label)
         layout.addWidget(self.protocol_combo)
@@ -53,12 +58,10 @@ class CommunicationProtocolSelect(QWidget):
                 self.show_uart_settings()
 
     def show_spi_settings(self):
-        spi_dialog = SpiConfigurations()
-        spi_dialog.exec_()
+        self.spi_controller.show_spi_dialog()
 
     def show_uart_settings(self):
-        uart_dialog = UartConfigurations()
-        uart_dialog.exec_()
+        self.uart_controller.show_uart_dialog()
 
     def get_selected_protocol(self):
         return self.protocol_combo.currentText()
