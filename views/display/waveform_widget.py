@@ -43,6 +43,7 @@ class WaveformWidget(QWidget):
             self.plot_widgets[0].show()
 
         elif no_visible_plots == 1 and channel_number != 0:
+            self.plot_widgets[0].show()
             self.plot_widgets[channel_number].setVisible(not self.plot_widgets[channel_number].isVisible())
 
         elif no_visible_plots > 1:
@@ -61,7 +62,7 @@ class WaveformWidget(QWidget):
 
     def get_number_of_visible_channels(self):
         visible_plots_number = 0
-        for plot_number in range(0, len(self.plot_widgets)):
-            if self.plot_widgets[plot_number].isVisible():
+        for plot_widget in self.plot_widgets:
+            if plot_widget.isVisible():
                 visible_plots_number += 1
         return visible_plots_number
