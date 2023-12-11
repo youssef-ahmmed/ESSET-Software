@@ -1,8 +1,8 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QStackedWidget, QComboBox, QLabel, QHBoxLayout
 
-from controllers.sniffing_controller.sommunication_protocol_controller.spi_dialog_controller import SpiDialogController
-from controllers.sniffing_controller.sommunication_protocol_controller.uart_dialog_controller import UartDialogController
+from controllers.sniffing_controller.communication_protocol_controller.spi_dialog_controller import SpiDialogController
+from controllers.sniffing_controller.communication_protocol_controller.uart_dialog_controller import UartDialogController
 from views.sniffing.communication_protocols.spi_config import SpiConfigurations
 from views.sniffing.communication_protocols.uart_config import UartConfigurations
 
