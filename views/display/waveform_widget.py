@@ -56,13 +56,6 @@ class WaveformWidget(QWidget):
             else:
                 self.plot_widgets[plot_number].hide()
 
-    def show_all_channels(self):
-        for plot_widget in self.plot_widgets:
-            plot_widget.show()
-
     def get_number_of_visible_channels(self):
-        visible_plots_number = 0
-        for plot_widget in self.plot_widgets:
-            if plot_widget.isVisible():
-                visible_plots_number += 1
-        return visible_plots_number
+        return sum(1 for plot_widget in self.plot_widgets if plot_widget.isVisible())
+
