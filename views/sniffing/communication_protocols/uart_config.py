@@ -1,7 +1,8 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, \
-    QPushButton, QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication
+    QPushButton, QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication, QMessageBox
 
+from controller.sniffing_controller.sommunication_protocol_controller.uart_dialog_controller import UartDialogController
 from views.sniffing.dialogs.channel_pins_dialog import ChannelPinsDialog
 
 
@@ -10,7 +11,13 @@ class UartConfigurations(QDialog):
     def __init__(self):
         super().__init__()
 
+        self.reset_button = None
+        self.cancel_button = None
+        self.save_button = None
+
         self.init_ui()
+
+        # self.controller = UartDialogController(self)
 
     def init_ui(self):
         self.setWindowTitle("Uart Settings")
@@ -87,13 +94,8 @@ class UartConfigurations(QDialog):
         layout = QVBoxLayout()
 
         self.reset_button = QPushButton("Reset")
-        self.reset_button.clicked.connect(self.reset_settings)
-
         self.cancel_button = QPushButton("Cancel")
-        self.cancel_button.clicked.connect(self.cancel_settings)
-
         self.save_button = QPushButton("Save")
-        self.save_button.clicked.connect(self.save_settings)
 
         layout.addWidget(self.settings_widget)
 
@@ -118,10 +120,11 @@ class UartConfigurations(QDialog):
         self.parity_combo.setCurrentText('N')
         self.significant_bit_combo.setCurrentText('L')
 
-    def cancel_settings(self):
-        self.close()
-
     def save_settings(self):
         input_channel = self.get_selected_input_channel()
         ChannelPinsDialog.selected_uart_channel(input_channel, 'UART')
         self.close()
+
+    @staticmethod
+    def show_uart_channel_warning():
+        QMessageBox.warning(None, "Warning", f"No channel selected for input channel")
