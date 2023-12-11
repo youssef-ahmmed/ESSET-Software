@@ -1,5 +1,8 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 
+from controllers.sniffing_controller.bits_input_dialog_controller import BitsInputDialogController
+from controllers.sniffing_controller.number_bits_select_controller import NumberBitsSelectController
+from views.sniffing.bits_input_dialog import BitsInputDialog
 from views.sniffing.comm_protocol_select import CommunicationProtocolSelect
 from views.sniffing.buttons.configuration_buttons import ConfigurationButtons
 from views.sniffing.number_bits_select import NumberBitsSelect
@@ -12,8 +15,14 @@ class HardwareConfigurations(QWidget):
     def __init__(self):
         super().__init__()
 
+        self.dialog = BitsInputDialog()
+        self.input_dialog_controller = BitsInputDialogController(self.dialog)
+
         self.comm_protocol = CommunicationProtocolSelect()
+
         self.no_bits = NumberBitsSelect()
+        self.bits_select_controller = NumberBitsSelectController(self.no_bits, self.dialog)
+
         self.channel_button = SelectChannelPinsButton()
         self.channel_button.setEnabled(False)
         self.terminal = OutputTerminal()

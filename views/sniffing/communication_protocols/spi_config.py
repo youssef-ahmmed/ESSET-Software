@@ -1,13 +1,19 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, \
-    QPushButton, QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication
+    QPushButton, QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication, QMessageBox
 
+from controllers.sniffing_controller.sommunication_protocol_controller.spi_dialog_controller import SpiDialogController
 from views.sniffing.dialogs.channel_pins_dialog import ChannelPinsDialog
+import sys
 
 
 class SpiConfigurations(QDialog):
     def __init__(self):
         super().__init__()
+
+        self.reset_button = None
+        self.cancel_button = None
+        self.save_button = None
 
         self.init_ui()
 
@@ -103,13 +109,8 @@ class SpiConfigurations(QDialog):
         layout = QVBoxLayout()
 
         self.reset_button = QPushButton("Reset")
-        self.reset_button.clicked.connect(self.reset_settings)
-
         self.cancel_button = QPushButton("Cancel")
-        self.cancel_button.clicked.connect(self.cancel_settings)
-
         self.save_button = QPushButton("Save")
-        self.save_button.clicked.connect(self.save_settings)
 
         layout.addWidget(self.settings_widget)
 
@@ -141,10 +142,11 @@ class SpiConfigurations(QDialog):
         self.clock_state_combo.setCurrentText('0')
         self.clock_phase_combo.setCurrentText('0')
 
-    def cancel_settings(self):
-        self.close()
-
     def save_settings(self):
         mosi, miso, clock, enable = self.get_selected_channels()
         ChannelPinsDialog.selected_spi_channels(mosi, miso, clock, enable, "SPI")
         self.close()
+
+    @staticmethod
+    def show_spi_channel_warning(channel_name):
+        QMessageBox.warning(None, "Warning", f"No channel selected for {channel_name}")
