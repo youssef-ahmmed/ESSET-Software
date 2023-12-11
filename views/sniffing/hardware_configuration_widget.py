@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 
-from controller.sniffing_controller.bits_input_dialog_controller import BitsInputDialogController
-from controller.sniffing_controller.number_bits_select_controller import NumberBitsSelectController
+from controllers.sniffing_controller.bits_input_dialog_controller import BitsInputDialogController
+from controllers.sniffing_controller.number_bits_select_controller import NumberBitsSelectController
 from views.sniffing.bits_input_dialog import BitsInputDialog
 from views.sniffing.comm_protocol_select import CommunicationProtocolSelect
 from views.sniffing.buttons.configuration_buttons import ConfigurationButtons
