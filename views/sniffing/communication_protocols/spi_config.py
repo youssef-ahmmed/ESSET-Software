@@ -2,7 +2,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, \
     QPushButton, QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication, QMessageBox
 
-from controllers.sniffing_controller.sommunication_protocol_controller.spi_dialog_controller import SpiDialogController
+from controllers.sniffing_controller.communication_protocol_controller.spi_dialog_controller import SpiDialogController
 from views.sniffing.dialogs.channel_pins_dialog import ChannelPinsDialog
 import sys
 
