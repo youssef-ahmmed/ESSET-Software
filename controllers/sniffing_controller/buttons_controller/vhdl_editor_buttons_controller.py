@@ -1,7 +1,7 @@
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QFileDialog, QMessageBox, QPushButton
 
-from controller.project_path_controller import ProjectPathController
+from controllers.project_path_controller import ProjectPathController
 
 
 class VhdlEditorButtonsController(QObject):

@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout
-from controller.sniffing_controller.buttons_controller.vhdl_editor_buttons_controller import \
+from controllers.sniffing_controller.buttons_controller.vhdl_editor_buttons_controller import \
     VhdlEditorButtonsController
 
 

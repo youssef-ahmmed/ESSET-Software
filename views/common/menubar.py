@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QAction, QMenuBar
 
-from controller.project_path_controller import ProjectPathController
+from controllers.project_path_controller import ProjectPathController
 
 
 class MenuBar(QMenuBar):

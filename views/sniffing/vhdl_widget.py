@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 
-from controller.project_path_controller import ProjectPathController
-from controller.sniffing_controller.buttons_controller.vhdl_editor_buttons_controller import \
+from controllers.project_path_controller import ProjectPathController
+from controllers.sniffing_controller.buttons_controller.vhdl_editor_buttons_controller import \
     VhdlEditorButtonsController
 from views.sniffing.buttons.vhdl_editor_buttons import VhdlEditorButtons
 from views.sniffing.vhdl_editor import VhdlEditor
