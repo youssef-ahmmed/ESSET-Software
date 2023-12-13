@@ -19,16 +19,17 @@ class Editor(QPlainTextEdit):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.lineNumberArea = Editor.NumberArea(self)
-        self.findHighlightFormat = QTextCharFormat()
-        self.searchTxtBx = None
-        self.currentIndex = -1
-        self.currentPattern = None
+        self.line_number_area = Editor.NumberArea(self)
+        self.find_highlight_format = QTextCharFormat()
+        self.search_text_box = None
+        self.current_index = -1
+        self.current_pattern = None
+        self.current_file_path = None
 
         self.start_ui_communication()
         self.reset_font()
         self.update_line_number_area_margin(0)
-        self.findHighlightFormat.setBackground(QBrush(QColor("green")))
+        self.find_highlight_format.setBackground(QBrush(QColor("green")))
 
     def start_ui_communication(self):
         self.blockCountChanged.connect(self.update_line_number_area_margin)
@@ -42,10 +43,10 @@ class Editor(QPlainTextEdit):
     def resizeEvent(self, event):
         super().resizeEvent(event)
         cr = self.contentsRect()
-        self.lineNumberArea.setGeometry(QRect(cr.left(), cr.top(), self.line_number_area_width(), cr.height()))
+        self.line_number_area.setGeometry(QRect(cr.left(), cr.top(), self.line_number_area_width(), cr.height()))
 
     def line_number_area_paint_event(self, event):
-        painter = QPainter(self.lineNumberArea)
+        painter = QPainter(self.line_number_area)
         block_color = QColor(233, 233, 233)
         painter.fillRect(event.rect(), block_color)
         block = self.firstVisibleBlock()
@@ -60,7 +61,7 @@ class Editor(QPlainTextEdit):
                 font = QFont("Courier New", 11)
                 painter.setPen(font_color)
                 painter.setFont(font)
-                painter.drawText(0, int(top), self.lineNumberArea.width(), height, Qt.AlignCenter, number)
+                painter.drawText(0, int(top), self.line_number_area.width(), height, Qt.AlignCenter, number)
             block = block.next()
             top = bottom
             bottom = top + self.blockBoundingRect(block).height()
@@ -77,9 +78,9 @@ class Editor(QPlainTextEdit):
 
     def update_line_number_area(self, rect, dy):
         if dy:
-            self.lineNumberArea.scroll(0, dy)
+            self.line_number_area.scroll(0, dy)
         else:
-            self.lineNumberArea.update(0, rect.y(), self.lineNumberArea.width(), rect.height())
+            self.line_number_area.update(0, rect.y(), self.line_number_area.width(), rect.height())
         if rect.contains(self.viewport().rect()):
             self.update_line_number_area_margin(0)
 
@@ -121,11 +122,11 @@ class Editor(QPlainTextEdit):
         elif event.key() == Qt.Key_Z and (event.modifiers() & Qt.ControlModifier):
             super().keyPressEvent(event)
         elif event.key() == Qt.Key_Escape:
-            if self.searchTxtBx is not None:
-                self.searchTxtBx.hide()
-                self.searchTxtBx = None
+            if self.search_text_box is not None:
+                self.search_text_box.hide()
+                self.search_text_box = None
                 self.clear_format()
-        elif self.searchTxtBx is not None:
+        elif self.search_text_box is not None:
             if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
                 self.next_pattern()
                 event.ignore()
@@ -149,13 +150,13 @@ class Editor(QPlainTextEdit):
         cursor.endEditBlock()
 
     def find_key(self):
-        if self.searchTxtBx is None:
-            self.searchTxtBx = QLineEdit(self)
-            position = self.geometry().topRight() - self.searchTxtBx.geometry().topRight() - QPoint(50, 0)
-            self.searchTxtBx.move(position)
-            self.searchTxtBx.show()
-            self.searchTxtBx.textChanged.connect(self.find_with_pattern)
-        self.searchTxtBx.setFocus()
+        if self.search_text_box is None:
+            self.search_text_box = QLineEdit(self)
+            position = self.geometry().topRight() - self.search_text_box.geometry().topRight() - QPoint(50, 0)
+            self.search_text_box.move(position)
+            self.search_text_box.show()
+            self.search_text_box.textChanged.connect(self.find_with_pattern)
+        self.search_text_box.setFocus()
 
     def find_with_pattern(self, pattern):
         self.setUndoRedoEnabled(False)
@@ -166,37 +167,37 @@ class Editor(QPlainTextEdit):
         regex = QRegExp(pattern)
         pos = 0
         index = regex.indexIn(self.toPlainText(), pos)
-        self.currentIndex = index
+        self.current_index = index
         while index != -1:
             cursor.setPosition(index)
             cursor.movePosition(QTextCursor.EndOfWord, QTextCursor.KeepAnchor, 1)
-            cursor.mergeCharFormat(self.findHighlightFormat)
+            cursor.mergeCharFormat(self.find_highlight_format)
             pos = index + regex.matchedLength()
             index = regex.indexIn(self.toPlainText(), pos)
-        if self.currentIndex != -1:
-            cursor.setPosition(self.currentIndex)
+        if self.current_index != -1:
+            cursor.setPosition(self.current_index)
             cursor.movePosition(QTextCursor.EndOfWord, QTextCursor.KeepAnchor, 1)
             self.setTextCursor(cursor)
         self.setUndoRedoEnabled(True)
-        self.currentPattern = pattern
+        self.current_pattern = pattern
 
     def next_pattern(self):
         self.setUndoRedoEnabled(False)
-        if self.currentIndex == -1 and self.currentPattern is not None:
+        if self.current_index == -1 and self.current_pattern is not None:
             return
         cursor = self.textCursor()
-        regex = QRegExp(self.currentPattern)
-        pos = self.currentIndex + regex.matchedLength()
-        self.currentIndex = regex.indexIn(self.toPlainText(), pos)
-        pos = self.currentIndex + regex.matchedLength()
-        self.currentIndex = regex.indexIn(self.toPlainText(), pos)
-        if self.currentIndex != -1:
-            cursor.setPosition(self.currentIndex)
+        regex = QRegExp(self.current_pattern)
+        pos = self.current_index + regex.matchedLength()
+        self.current_index = regex.indexIn(self.toPlainText(), pos)
+        pos = self.current_index + regex.matchedLength()
+        self.current_index = regex.indexIn(self.toPlainText(), pos)
+        if self.current_index != -1:
+            cursor.setPosition(self.current_index)
             cursor.movePosition(QTextCursor.EndOfWord, QTextCursor.KeepAnchor, 1)
             self.setTextCursor(cursor)
         else:
-            self.currentIndex = regex.indexIn(self.toPlainText(), 0)
-            cursor.setPosition(self.currentIndex)
+            self.current_index = regex.indexIn(self.toPlainText(), 0)
+            cursor.setPosition(self.current_index)
             cursor.movePosition(QTextCursor.EndOfWord, QTextCursor.KeepAnchor, 1)
             self.setTextCursor(cursor)
         self.setUndoRedoEnabled(True)
@@ -209,8 +210,8 @@ class Editor(QPlainTextEdit):
         cursor.clearSelection()
         cursor.setPosition(pos)
         self.setTextCursor(cursor)
-        self.currentIndex = -1
-        self.currentPattern = None
+        self.current_index = -1
+        self.current_pattern = None
 
     def zoom_in(self):
         self.zoomIn(1)
