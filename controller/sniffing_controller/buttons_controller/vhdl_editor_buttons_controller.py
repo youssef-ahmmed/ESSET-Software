@@ -13,7 +13,6 @@ class VhdlEditorButtonsController(QObject):
 
         self.editor = editor
         self.editor_buttons = editor_buttons
-        print(self.editor)
 
         self.start_communication()
 
@@ -25,8 +24,6 @@ class VhdlEditorButtonsController(QObject):
     def set_new_editor_view(self, editor, current_file_path):
         self.editor = editor
         self.editor.current_file_path = current_file_path
-        print(self.editor)
-        print(self.editor.current_file_path)
 
     def load_file(self):
         project_path = ProjectPathController.get_instance().get_project_path()
