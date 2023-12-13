@@ -38,16 +38,6 @@ class ESSET(QMainWindow):
 
         layout.addWidget(splitter)
 
-    def init_tabs(self):
-        self.tab_widget = QTabWidget()
-        self.tab_widget.setTabPosition(QTabWidget.West)
-
-        sniffing_tab = SniffingWidget()
-        self.tab_widget.addTab(sniffing_tab, 'Sniffing')
-
-        display_tab = DisplayWidget()
-        self.tab_widget.addTab(display_tab, 'Display')
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
