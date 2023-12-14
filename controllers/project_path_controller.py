@@ -33,6 +33,7 @@ class ProjectPathController(QObject):
     def get_project_path(self):
         return self.project_path
 
+
     def get_top_level_name(self):
         qsf_files = [file for file in os.listdir(self.project_path) if file.endswith('.qsf')]
 
