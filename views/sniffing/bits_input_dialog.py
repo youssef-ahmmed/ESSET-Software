@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton, QVBoxLayout, QDialog
 
 
 class BitsInputDialog(QDialog):
-    def __init__(self):
+    def __init__(self, label_text):
         super().__init__()
 
         self.bits_label = None
@@ -10,9 +10,9 @@ class BitsInputDialog(QDialog):
         self.save_button = None
         self.cancel_button = None
 
-        self.init_ui()
+        self.init_ui(label_text)
 
-    def init_ui(self):
+    def init_ui(self, label_text):
         self.setWindowTitle("Enter Number of Bits")
         self.setGeometry(200, 200, 300, 150)
 
@@ -21,13 +21,13 @@ class BitsInputDialog(QDialog):
         y = int((screen_geometry.height() - self.height()) / 2)
         self.move(x, y)
 
-        self.create_layout()
+        self.create_layout(label_text)
 
-    def create_layout(self):
+    def create_layout(self, label_text):
         v_layout = QVBoxLayout()
         h_layout = QHBoxLayout()
 
-        self.bits_label = QLabel("Enter the number of bits:")
+        self.bits_label = QLabel(label_text)
         self.bits_input = QLineEdit()
         self.save_button = QPushButton("Save")
         self.cancel_button = QPushButton("Cancel")
