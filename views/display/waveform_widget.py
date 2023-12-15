@@ -67,16 +67,17 @@ class WaveformWidget(QWidget):
             self.table_widget.setRowHeight(i, 200 if plot_widget.isVisible() else 0)
 
     def hide_all_channels(self):
-        for plot_number, plot_widget in enumerate(self.plot_widgets):
+        for plot_number in range(0, len(self.plot_widgets)):
             if plot_number == 0:
-                plot_widget.setVisible(True)
+                self.plot_widgets[plot_number].show()
+                self.table_widget.setRowHeight(plot_number, 200)
             else:
-                plot_widget.setVisible(False)
+                self.plot_widgets[plot_number].hide()
                 self.table_widget.setRowHeight(plot_number, 0)
 
     def show_all_channels(self):
         for plot_widget in self.plot_widgets:
-            plot_widget.setVisible(True)
+            plot_widget.show()
 
         for i, plot_widget in enumerate(self.plot_widgets):
             self.table_widget.setRowHeight(i, 200)
