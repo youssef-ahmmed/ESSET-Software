@@ -6,7 +6,7 @@ entity UART_Receiver is
 
 	generic (
         --assume clock is 50 MHz and baud rate 9600, 50M/115200 = 217
-		g_CLKS_PER_BIT: integer := {{ clocks_per_bit }}
+		g_CLKS_PER_BIT: integer := {{ clocks_per_bit }};
         N: positive := {{ bits_per_frame }}
 	);
 
@@ -14,7 +14,7 @@ entity UART_Receiver is
 		i_Clk: in std_logic;
 		i_RX_Serial: in std_logic;
 		o_RX_DV : out std_logic;
-		o_RX_Byte: out std_logic_vector (N downto 0)
+		o_RX_Byte: out std_logic_vector (N-1 downto 0)
 	);
 
 end UART_Receiver;
@@ -25,7 +25,7 @@ architecture Behav of UART_Receiver is
 	signal r_SM_Main : t_SM_Main := s_Idle;
 	signal r_Clk_Count : integer range  0 to g_CLKS_PER_BIT -1 :=0;
 	signal r_Bit_Index : integer range 0 to N :=0;
-	signal r_RX_Byte : std_logic_vector (N downto 0):=(others=>'0');
+	signal r_RX_Byte : std_logic_vector (N-1 downto 0):=(others=>'0');
 	signal r_RX_DV : std_logic :='0';
 
 begin

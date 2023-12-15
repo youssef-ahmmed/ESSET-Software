@@ -13,6 +13,7 @@ class VhdlEditorButtonsController(QObject):
 
         self.editor = editor
         self.editor_buttons = editor_buttons
+        self.project_path_controller = ProjectPathController.get_instance()
 
         self.start_communication()
 
@@ -26,9 +27,9 @@ class VhdlEditorButtonsController(QObject):
         self.editor.current_file_path = current_file_path
 
     def load_file(self):
-        project_path = ProjectPathController.get_instance().get_project_path()
+        project_path = self.project_path_controller.get_project_path()
         if project_path == "":
-            self.show_error_dialog()
+            self.project_path_controller.show_error_dialog(self.editor)
             return
 
         file_path, _ = QFileDialog.getOpenFileName(
@@ -46,8 +47,8 @@ class VhdlEditorButtonsController(QObject):
                 )
 
     def save_file(self):
-        if ProjectPathController.get_instance().get_project_path() == "":
-            self.show_error_dialog()
+        if self.project_path_controller.get_project_path() == "":
+            self.project_path_controller.show_error_dialog(self.editor)
             return
 
         if self.editor.current_file_path:
@@ -62,9 +63,9 @@ class VhdlEditorButtonsController(QObject):
             self.save_as()
 
     def save_as(self):
-        project_path = ProjectPathController.get_instance().get_project_path()
+        project_path = self.project_path_controller.get_project_path()
         if project_path == "":
-            self.show_error_dialog()
+            self.project_path_controller.show_error_dialog(self.editor)
             return
 
         file_path, _ = QFileDialog.getSaveFileName(
@@ -80,22 +81,3 @@ class VhdlEditorButtonsController(QObject):
                 QMessageBox.warning(
                     self.editor_buttons, "Error", f"Error saving file: {str(e)}"
                 )
-
-    def show_error_dialog(self):
-        error_dialog = QMessageBox(self.editor_buttons)
-        error_dialog.setIcon(QMessageBox.Critical)
-        error_dialog.setWindowTitle('Error')
-        error_dialog.setText("There is No Quartus Path Specified\n\nDo You Want to specify one ?")
-
-        ok_button = QPushButton('OK')
-        cancel_button = QPushButton('Cancel')
-
-        error_dialog.addButton(ok_button, QMessageBox.AcceptRole)
-        error_dialog.addButton(cancel_button, QMessageBox.RejectRole)
-
-        result = error_dialog.exec_()
-
-        if result == QMessageBox.AcceptRole:
-            ProjectPathController.get_instance().open_directory_dialog()
-        elif result == QMessageBox.RejectRole:
-            pass

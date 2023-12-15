@@ -28,4 +28,4 @@ class LogWidget(QPlainTextEdit):
     def setup_logger(self):
         handler = self.QtHandler(self)
         logger.remove()
-        logger.add(handler.write, level="DEBUG")
+        logger.add(handler.write, level="DEBUG", format="{time:D-MM-YYYY  HH:mm:ss} | {level} | {message}")

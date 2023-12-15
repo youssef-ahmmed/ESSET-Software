@@ -1,0 +1,9 @@
+@echo off
+
+set TOP_LEVEL_NAME={{ top_level_name }}
+
+quartus_map --read_settings_files=on --write_settings_files=off %TOP_LEVEL_NAME% -c %TOP_LEVEL_NAME%
+quartus_fit --read_settings_files=off --write_settings_files=off %TOP_LEVEL_NAME% -c %TOP_LEVEL_NAME%
+quartus_asm --read_settings_files=off --write_settings_files=off %TOP_LEVEL_NAME% -c %TOP_LEVEL_NAME%
+quartus_sta %TOP_LEVEL_NAME% -c %TOP_LEVEL_NAME%
+quartus_eda --read_settings_files=off --write_settings_files=off %TOP_LEVEL_NAME% -c %TOP_LEVEL_NAME%

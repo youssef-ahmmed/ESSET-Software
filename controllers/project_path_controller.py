@@ -1,5 +1,8 @@
+import os
+import platform
+
 from PyQt5.QtCore import pyqtSignal, QObject
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QMessageBox, QPushButton
 
 
 class ProjectPathController(QObject):
@@ -29,3 +32,45 @@ class ProjectPathController(QObject):
 
     def get_project_path(self):
         return self.project_path
+
+
+    def get_top_level_name(self):
+        qsf_files = [file for file in os.listdir(self.project_path) if file.endswith('.qsf')]
+
+        if qsf_files:
+            qsf_file = qsf_files[0]
+            name_without_extension = os.path.splitext(qsf_file)[0]
+            return name_without_extension
+        else:
+            return "top_level"
+
+    def get_script_path(self):
+        script_extension = ".sh" if platform.system() == "Linux" else ".bat"
+        script_files = [
+            file for file in os.listdir(self.project_path) if file.endswith(script_extension)
+        ]
+
+        if script_files:
+            return os.path.join(self.project_path, script_files[0])
+
+        return None
+
+    @staticmethod
+    def show_error_dialog(parent):
+        error_dialog = QMessageBox(parent)
+        error_dialog.setIcon(QMessageBox.Critical)
+        error_dialog.setWindowTitle('Error')
+        error_dialog.setText("There is No Quartus Path Specified\n\nDo You Want to specify one ?")
+
+        ok_button = QPushButton('OK')
+        cancel_button = QPushButton('Cancel')
+
+        error_dialog.addButton(ok_button, QMessageBox.AcceptRole)
+        error_dialog.addButton(cancel_button, QMessageBox.RejectRole)
+
+        result = error_dialog.exec_()
+
+        if result == QMessageBox.AcceptRole:
+            ProjectPathController.get_instance().open_directory_dialog()
+        elif result == QMessageBox.RejectRole:
+            pass
