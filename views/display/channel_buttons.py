@@ -27,20 +27,11 @@ class ChannelButtons(QWidget):
         self.start_communication()
 
     def start_communication(self):
-        self.clear_button.clicked.connect(self.emit_clear_all)
-        self.all_button.clicked.connect(self.emit_show_all)
+        self.clear_button.clicked.connect(lambda: self.clear_plots.emit())
+        self.all_button.clicked.connect(lambda: self.show_plots.emit())
 
         for button_number, channel_button in enumerate(self.channel_buttons):
-            channel_button.clicked.connect(lambda _, num=button_number: self.emit_channel_button_clicked(num))
-
-    def emit_channel_button_clicked(self, button_number):
-        self.channel_visibility.emit(button_number)
-
-    def emit_show_all(self):
-        self.show_plots.emit()
-
-    def emit_clear_all(self):
-        self.clear_plots.emit()
+            channel_button.clicked.connect(lambda _, num=button_number: self.channel_visibility.emit(num))
 
     def init_ui(self):
         self.clear_button = QPushButton("Clear")

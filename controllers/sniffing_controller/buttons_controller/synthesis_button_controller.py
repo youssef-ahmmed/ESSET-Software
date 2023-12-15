@@ -57,11 +57,9 @@ class SynthesisButtonController(QObject):
         vhdl_generator.render_template(script_template, configurations=configurations, output_path=project_path)
         return os.path.join(project_path, script_file)
 
-    def initiate_synthesizing_process(self, script_path):
+    @staticmethod
+    def initiate_synthesizing_process(script_path):
         TerminalController.get_instance().write_text("Synthesizing Process Initiated. Please Await Completion...")
         executor = ScriptExecutor(script_path)
         executor.chmod_script()
         QTimer.singleShot(0, lambda: executor.execute_script_async())
-
-    def execute_script_async(self, executor):
-        executor.execute_script_async()

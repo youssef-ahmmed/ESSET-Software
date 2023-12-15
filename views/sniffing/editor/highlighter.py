@@ -17,15 +17,15 @@ class Highlighter(QSyntaxHighlighter):
         blue_reserved_keyword_format.setFontWeight(QFont.Bold)
 
         red_reserved_keyword_patterns = [
-            r'\b(?:library|use|entity|architecture|is|begin|end|process|if|endif|then|else|elsif|'
+            r'(?i)\b(?:library|use|entity|architecture|is|begin|end|process|if|endif|then|else|elsif|'
             r'for|generate|component|port|in|out|buffer|map|and|or|not|xnor|xor|variable|when|while'
-            r'with|case|end case|end process|of|all|generic|signal|downto|upto|:=|=>|<=|&|\||!)\b'
+            r'with|case|end case|end process|of|all|generic|signal|downto|upto|:=|=>|<=|&|\||!)\b',
         ]
 
         blue_reserved_keyword_patterns = [
-            r'\b(?::)?(?:positive|negative|rising_edge|falling_edge|std_logic|std_logic_vector|integer|'
+            r'(?i)\b(?::)?(?:positive|negative|rising_edge|falling_edge|std_logic|std_logic_vector|integer|'
             r'bit|but_vector|real|time|character|boolean|string|file|type|range|array|record|subtype'
-            r'others|ieee)(?::)?\b'
+            r'others|ieee)(?::)?\b',
         ]
 
         for pattern in red_reserved_keyword_patterns:

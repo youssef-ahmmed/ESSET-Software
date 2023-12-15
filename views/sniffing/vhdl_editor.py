@@ -18,7 +18,7 @@ class VhdlEditor(QWidget):
         self.editor_index = 0
         self.editor_list = [self.editor]
         self.project_path_label = QLabel("Quartus Project Path: ")
-        self.highlighter = Highlighter(self.editor.document())
+        self.highlighter = [Highlighter(self.editor.document())]
 
         self.init_ui()
         self.start_communication()
@@ -48,8 +48,9 @@ class VhdlEditor(QWidget):
 
     def add_blank_editor_tab(self):
         new_editor = Editor(self)
-        Highlighter(new_editor.document())
+        highlighter = Highlighter(new_editor.document())
         self.editor_list.append(new_editor)
+        self.highlighter.append(highlighter)
 
         tab_index = self.tab_widget.count() - 1
         self.tab_widget.insertTab(tab_index, new_editor, f'Untitled{tab_index}')
