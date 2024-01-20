@@ -1,5 +1,6 @@
-class UartProtocolDTO:
-    def __init__(self, sniffed_data_id, clk_per_bit, baud_rate, data_size, stop_bit, parity_bit):
+class UartProtocolDto:
+    def __init__(self, sniffed_data_id: int, clk_per_bit: int, baud_rate: int,
+                 data_size: int, stop_bit: int, parity_bit: str):
         self.sniffed_data_id = sniffed_data_id
         self.clk_per_bit = clk_per_bit
         self.baud_rate = baud_rate

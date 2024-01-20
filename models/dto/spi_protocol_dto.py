@@ -1,5 +1,5 @@
-class SpiProtocolDTO:
-    def __init__(self, sniffed_data_id, significant_bit, clk_state, clk_phase, data_size):
+class SpiProtocolDto:
+    def __init__(self, sniffed_data_id: int, significant_bit: str, clk_state: int, clk_phase: int, data_size: int):
         self.sniffed_data_id = sniffed_data_id
         self.significant_bit = significant_bit
         self.clk_state = clk_state
