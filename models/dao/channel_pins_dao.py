@@ -3,7 +3,7 @@ from models import storage
 from models.dto.channel_pins_dto import ChannelPinsDto
 
 
-class ChannelPinsDoa:
+class ChannelPinsDao:
     def __init__(self, channel_pins_dto: ChannelPinsDto):
         self.channel_pins_dto = channel_pins_dto
         self.channel_pins = ChannelPins()

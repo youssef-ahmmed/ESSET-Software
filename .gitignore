@@ -2,3 +2,8 @@
 __pycache__/
 venv/
 models/site.db
+BrainStorming.md
+mvc.py
+test.py
+site.db
+NextSteps.md
