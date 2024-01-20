@@ -1,6 +1,7 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTabWidget
+from PyQt5.QtWidgets import QWidget, QTabWidget, QHBoxLayout
 
 from views.sniffing.expert_mode_widget import ExpertModeWidget
+from views.sniffing.hardware_configuration_widget import HardwareConfigurations
 from views.sniffing.simple_mode_widget import SimpleModeWidget
 
 
@@ -14,8 +15,10 @@ class SniffingModesWidget(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        self.setLayout(QVBoxLayout())
+        self.setLayout(QHBoxLayout())
+
         self.layout().addWidget(self.modes_widget)
+        self.layout().addWidget(HardwareConfigurations())
 
         simple_mode = SimpleModeWidget()
         expert_mode = ExpertModeWidget()
