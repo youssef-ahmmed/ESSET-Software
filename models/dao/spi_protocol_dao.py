@@ -1,9 +1,10 @@
 from models.entities.spi_protocol import Spi
 from models import storage
+from models.dto.spi_protocol_dto import SpiProtocolDto
 
 
-class SpiProtocolDAO:
-    def __init__(self, spi_protocol_dto):
+class SpiProtocolDao:
+    def __init__(self, spi_protocol_dto: SpiProtocolDto):
         self.spi_protocol_dto = spi_protocol_dto
         self.spi = Spi()
 
@@ -16,10 +17,12 @@ class SpiProtocolDAO:
         self.spi.clk_phase = self.spi_protocol_dto.clk_phase
         self.spi.data_size = self.spi_protocol_dto.data_size
 
-    def get_by_id(self, id):
+    @staticmethod
+    def get_by_id(id):
         return storage.get_by_id(Spi, id)
 
-    def get_all(self):
+    @staticmethod
+    def get_all():
         return storage.list_all(Spi)
 
     def insert(self):
@@ -30,8 +33,8 @@ class SpiProtocolDAO:
         storage.delete(self.spi)
         storage.save()
 
-    def update(self, id, significant_bit, clk_state, clk_phase, data_size):
-        spi_protocol_record = self.get_by_id(id)
+    def update(self, id, significant_bit: str, clk_state: int, clk_phase: int, data_size: int):
+        spi_protocol_record: Spi = self.get_by_id(id)
         if spi_protocol_record:
             spi_protocol_record.significant_bit = significant_bit
             spi_protocol_record.clk_state = clk_state
