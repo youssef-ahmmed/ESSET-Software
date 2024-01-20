@@ -11,7 +11,6 @@ class VhdlEditorButtons(QWidget):
         self.load_button = QPushButton('Load')
         self.save_button = QPushButton('Save')
         self.save_as_button = QPushButton('Save As')
-        self.revert_button = QPushButton('Revert')
 
         self.init_ui()
 
@@ -20,4 +19,3 @@ class VhdlEditorButtons(QWidget):
         self.layout().addWidget(self.load_button)
         self.layout().addWidget(self.save_button)
         self.layout().addWidget(self.save_as_button)
-        self.layout().addWidget(self.revert_button)
