@@ -1,11 +1,10 @@
 from sqlalchemy import Column, Integer, CHAR, CheckConstraint, ForeignKey
 from sqlalchemy.orm import relationship
 
-from models.entities import Base
+from models.entities.base_model import Base, BaseModel
 
 
-class Spi(Base):
-
+class Spi(BaseModel, Base):
     __tablename__ = 'spi'
 
     id = Column(Integer, primary_key=True)

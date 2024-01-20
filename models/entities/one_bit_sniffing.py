@@ -1,11 +1,10 @@
 from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 
-from models.entities import Base
+from models.entities.base_model import Base, BaseModel
 
 
-class OneBit(Base):
-
+class OneBit(BaseModel, Base):
     __tablename__ = 'one_bit'
 
     id = Column(Integer, primary_key=True)
