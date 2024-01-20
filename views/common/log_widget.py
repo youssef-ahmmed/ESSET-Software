@@ -1,3 +1,6 @@
+import os
+from datetime import datetime
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QPlainTextEdit
@@ -29,3 +32,12 @@ class LogWidget(QPlainTextEdit):
         handler = self.QtHandler(self)
         logger.remove()
         logger.add(handler.write, level="DEBUG", format="{time:D-MM-YYYY  HH:mm:ss} | {level} | {message}")
+
+    @staticmethod
+    def open_new_log():
+        current_datetime = datetime.now()
+        formatted_datetime = current_datetime.strftime("%d-%m-%Y_%H-%M-%S")
+        file_path = os.path.join('../Logging/', f"ESSET-LOG_{formatted_datetime}.log")
+        if not os.path.isdir('../Logging'):
+            os.mkdir("../Logging")
+        logger.add(file_path, level="DEBUG", format="{time:D-MM-YYYY  HH:mm:ss} | {level} | {message}")

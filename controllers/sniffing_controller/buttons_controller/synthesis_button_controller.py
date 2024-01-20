@@ -7,6 +7,7 @@ from controllers.project_path_controller import ProjectPathController
 from controllers.sniffing_controller.terminal_controller import TerminalController
 from core.script_executor import ScriptExecutor
 from core.vhdl_generator import VhdlGenerator
+from models import log_messages
 
 
 class SynthesisButtonController(QObject):
@@ -59,7 +60,7 @@ class SynthesisButtonController(QObject):
 
     @staticmethod
     def initiate_synthesizing_process(script_path):
-        TerminalController.get_instance().write_text("Synthesizing Process Initiated. Please Await Completion...")
+        TerminalController.get_instance().write_text(log_messages.SYNTHESIZE_INITIATED)
         executor = ScriptExecutor(script_path)
         executor.chmod_script()
         QTimer.singleShot(0, lambda: executor.execute_script_async())

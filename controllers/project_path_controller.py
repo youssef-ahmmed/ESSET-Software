@@ -3,6 +3,9 @@ import platform
 
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QFileDialog, QMessageBox, QPushButton
+from loguru import logger
+
+from models import log_messages
 
 
 class ProjectPathController(QObject):
@@ -29,10 +32,12 @@ class ProjectPathController(QObject):
         if directory_path:
             self.project_path = directory_path
             self.directory_path_changed.emit(directory_path)
+            logger.success(log_messages.QUARTUS_PATH_SPECIFIED)
+        else:
+            logger.warning(log_messages.NO_QUARTUS_PATH)
 
     def get_project_path(self):
         return self.project_path
-
 
     def get_top_level_name(self):
         qsf_files = [file for file in os.listdir(self.project_path) if file.endswith('.qsf')]
@@ -73,4 +78,4 @@ class ProjectPathController(QObject):
         if result == QMessageBox.AcceptRole:
             ProjectPathController.get_instance().open_directory_dialog()
         elif result == QMessageBox.RejectRole:
-            pass
+            logger.warning(log_messages.NO_QUARTUS_PATH)
