@@ -1,9 +1,12 @@
+from datetime import datetime
+
 from models.entities.sniffed_data import SniffedData
 from models import storage
+from models.dto.sniffed_data_dto import SniffedDataDto
 
 
-class SniffedDataDAO:
-    def __init__(self, sniffed_data_dto):
+class SniffedDataDao:
+    def __init__(self, sniffed_data_dto: SniffedDataDto):
         self.sniffed_data_dto = sniffed_data_dto
         self.sniffed_data = SniffedData()
 
@@ -12,14 +15,15 @@ class SniffedDataDAO:
     def create_sniffed_data(self):
         self.sniffed_data.start_time = self.sniffed_data_dto.start_time
         self.sniffed_data.time_taken = self.sniffed_data_dto.time_taken
-        self.sniffed_data.data = self.sniffed_data_dto.data
         self.sniffed_data.connection_way = self.sniffed_data_dto.connection_way
         self.sniffed_data.communication_protocol_name = self.sniffed_data_dto.communication_protocol_name
 
-    def get_by_id(self, id):
+    @staticmethod
+    def get_by_id(id):
         return storage.get_by_id(SniffedData, id)
 
-    def get_all(self):
+    @staticmethod
+    def get_all():
         return storage.list_all(SniffedData)
 
     def insert(self):
@@ -30,12 +34,11 @@ class SniffedDataDAO:
         storage.delete(self.sniffed_data)
         storage.save()
 
-    def update(self, id, start_time, time_taken, data, connection_way, communication_protocol_name):
-        sniffed_data_record = self.get_by_id(id)
+    def update(self, id, start_time: datetime, time_taken: int, connection_way: str, communication_protocol_name: str):
+        sniffed_data_record: SniffedData = self.get_by_id(id)
         if sniffed_data_record:
             sniffed_data_record.start_time = start_time
             sniffed_data_record.time_taken = time_taken
-            sniffed_data_record.data = data
             sniffed_data_record.connection_way = connection_way
             sniffed_data_record.communication_protocol_name = communication_protocol_name
 

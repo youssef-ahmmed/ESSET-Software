@@ -7,7 +7,6 @@ import sqlite3
 from models.entities import Base
 from models.entities.sniffed_data import SniffedData
 from models.entities.channel_pins import ChannelPins
-from models.entities.log import Log
 from models.entities.n_bit_sniffing import NBit
 from models.entities.one_bit_sniffing import OneBit
 from models.entities.spi_protocol import Spi

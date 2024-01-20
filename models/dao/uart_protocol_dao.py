@@ -1,9 +1,10 @@
 from models.entities.uart_protocol import Uart
 from models import storage
+from models.dto.uart_protocol_dto import UartProtocolDto
 
 
-class UartProtocolDAO:
-    def __init__(self, uart_protocol_dto):
+class UartProtocolDao:
+    def __init__(self, uart_protocol_dto: UartProtocolDto):
         self.uart_protocol_dto = uart_protocol_dto
         self.uart = Uart()
 
@@ -17,12 +18,13 @@ class UartProtocolDAO:
         self.uart.stop_bit = self.uart_protocol_dto.stop_bit
         self.uart.parity_bit = self.uart_protocol_dto.parity_bit
 
-    def get_by_id(self, id):
+    @staticmethod
+    def get_by_id(id):
         return storage.get_by_id(Uart, id)
 
-    def get_all(self):
+    @staticmethod
+    def get_all():
         return storage.list_all(Uart)
-
 
     def insert(self):
         storage.insert(self.uart)
@@ -32,8 +34,8 @@ class UartProtocolDAO:
         storage.delete(self.uart)
         storage.save()
 
-    def update(self, id, clk_per_bit, baud_rate, data_size, stop_bit, parity_bit):
-        uart_protocol_record = self.get_by_id(id)
+    def update(self, id, clk_per_bit: int, baud_rate: int, data_size: int, stop_bit: int, parity_bit: str):
+        uart_protocol_record: Uart = self.get_by_id(id)
         if uart_protocol_record:
             uart_protocol_record.uart.clk_per_bit = clk_per_bit
             uart_protocol_record.uart.baud_rate = baud_rate
