@@ -1,11 +1,10 @@
 from sqlalchemy import Column, Integer, CHAR, CheckConstraint, ForeignKey
 from sqlalchemy.orm import relationship
 
-from models.entities import Base
+from models.entities.base_model import Base, BaseModel
 
 
-class Uart(Base):
-
+class Uart(BaseModel, Base):
     __tablename__ = 'uart'
 
     id = Column(Integer, primary_key=True)

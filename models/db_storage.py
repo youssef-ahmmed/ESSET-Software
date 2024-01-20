@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 import sqlite3
 
-from models.entities import Base
+from models.entities.base_model import Base
 from models.entities.sniffed_data import SniffedData
 from models.entities.channel_pins import ChannelPins
 from models.entities.n_bit_sniffing import NBit

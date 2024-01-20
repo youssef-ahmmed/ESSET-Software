@@ -1,11 +1,10 @@
 from sqlalchemy import Column, Integer, ForeignKey, BLOB
 from sqlalchemy.orm import relationship
 
-from models.entities import Base
+from models.entities.base_model import Base, BaseModel
 
 
-class ChannelsData(Base):
-
+class ChannelsData(BaseModel, Base):
     __tablename__ = 'channels_data'
 
     id = Column(Integer, primary_key=True)

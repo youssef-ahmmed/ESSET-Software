@@ -1,10 +1,9 @@
 from sqlalchemy import Column, Integer, String, DateTime, CheckConstraint
 
-from models.entities import Base
+from models.entities.base_model import Base, BaseModel
 
 
-class SniffedData(Base):
-
+class SniffedData(BaseModel, Base):
     __tablename__ = 'sniffed_data'
 
     id = Column(Integer, primary_key=True)
