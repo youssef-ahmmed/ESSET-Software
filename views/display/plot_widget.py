@@ -1,9 +1,16 @@
+from enum import Enum
+
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QLabel
 import pyqtgraph as pg
 from PyQt5.QtCore import Qt
+import numpy as np
 
 
 class PlotWidget(QTableWidget):
+    class Rectangle(Enum):
+        WIDTH = 1150
+        HEIGHT = 200
+
     def __init__(self, channel_number):
         super().__init__()
 
@@ -30,10 +37,11 @@ class PlotWidget(QTableWidget):
         self.verticalHeader().setVisible(False)
 
         self.plot_appearance()
+        self.plot_signals()
 
     def row_size(self):
-        self.setColumnWidth(1, 1150)
-        self.setRowHeight(0, 200)
+        self.setColumnWidth(1, self.Rectangle.WIDTH.value)
+        self.setRowHeight(0, self.Rectangle.HEIGHT.value)
 
     def create_widgets(self):
         self.channel_label = QLabel()
@@ -54,3 +62,9 @@ class PlotWidget(QTableWidget):
         self.plot_widget.showGrid(x=True, y=True, alpha=0.7)
         self.plot_widget.addLegend()
         self.plot_widget.setMouseEnabled(x=True, y=True)
+
+    def plot_signals(self):
+        t = np.linspace(0, 1, 1000)
+
+        square_wave = np.where(t % 0.5 < 0.25, 0.2, 0.8)
+        self.plot_widget.plot(t, square_wave, pen=pg.mkPen(color='b', width=2), name='Square Wave')

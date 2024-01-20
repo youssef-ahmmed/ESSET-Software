@@ -1,21 +1,23 @@
 import os
 
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QTabWidget, QLabel, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QLabel, QVBoxLayout, QWidget, QTabBar
 
+from views.sniffing.custom_tab_widget import QCustomTabWidget
 from views.sniffing.editor.editor import Editor
 from views.sniffing.editor.highlighter import Highlighter
 
 
 class VhdlEditor(QWidget):
-
     editor_tab_changed = pyqtSignal(int)
+    flag_close = False
 
     def __init__(self, parent=None):
         super(VhdlEditor, self).__init__(parent)
-        self.tab_widget = QTabWidget(self)
+        self.tab_widget = QCustomTabWidget(self)
         self.editor = Editor(self)
         self.editor_index = 0
+
         self.editor_list = [self.editor]
         self.project_path_label = QLabel("Quartus Project Path: ")
         self.highlighter = [Highlighter(self.editor.document())]
@@ -29,22 +31,20 @@ class VhdlEditor(QWidget):
         self.tab_widget.addTab(self.editor, 'Untitled')
         self.tab_widget.addTab(QWidget(), '+')
         self.tab_widget.setTabEnabled(-1, False)
+        self.tab_widget.tabBar().setTabButton(-1, QTabBar.RightSide, None)
 
         self.layout().addWidget(self.tab_widget)
         self.layout().addWidget(self.project_path_label)
 
     def start_communication(self):
-        self.tab_widget.currentChanged.connect(self.emit_editor_tab_changed)
         self.tab_widget.currentChanged.connect(self.tab_changed)
 
-    def emit_editor_tab_changed(self, index):
-        if index != self.tab_widget.count() - 1:
-            self.editor_index = index
-            self.editor_tab_changed.emit(index)
-
     def tab_changed(self, index):
-        if index == self.tab_widget.count() - 1:
+        if (index == self.tab_widget.count() - 1) and (VhdlEditor.flag_close == False):
             self.add_blank_editor_tab()
+        VhdlEditor.flag_close = False
+        tab_index = self.tab_widget.count() - 2
+        self.tab_widget.setCurrentIndex(tab_index)
 
     def add_blank_editor_tab(self):
         new_editor = Editor(self)
