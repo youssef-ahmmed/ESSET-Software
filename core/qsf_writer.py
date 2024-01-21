@@ -31,7 +31,7 @@ class QSFWriter:
             return
 
         qsf_file_path = os.path.join(self.project_path, f"{self.top_level_name}.qsf")
-        lines_to_write = [f"set_global_assignment -name VHDL_FILE {vhdl_file}\n" for vhdl_file in vhdl_files]
+        lines_to_write = [f"\nset_global_assignment -name VHDL_FILE {vhdl_file}\n" for vhdl_file in vhdl_files]
 
         existing_lines = []
         if os.path.exists(qsf_file_path):

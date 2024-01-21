@@ -1,8 +1,9 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, \
     QPushButton, QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication, QMessageBox
+from loguru import logger
 
-from controllers.sniffing_controller.communication_protocol_controller.uart_dialog_controller import UartDialogController
+from models import log_messages
 from views.sniffing.dialogs.channel_pins_dialog import ChannelPinsDialog
 
 
@@ -117,6 +118,7 @@ class UartConfigurations(QDialog):
         self.stop_bits_combo.setCurrentText('1')
         self.parity_combo.setCurrentText('N')
         self.significant_bit_combo.setCurrentText('L')
+        logger.info(log_messages.UART_RESET)
 
     def save_settings(self):
         input_channel = self.get_selected_input_channel()

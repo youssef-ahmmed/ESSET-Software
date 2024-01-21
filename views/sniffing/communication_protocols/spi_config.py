@@ -1,6 +1,10 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, \
     QPushButton, QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication, QMessageBox
+from loguru import logger
+
+from models import log_messages
+from views.sniffing.dialogs.channel_pins_dialog import ChannelPinsDialog
 
 
 class SpiConfigurations(QDialog):
@@ -204,6 +208,7 @@ class SpiConfigurations(QDialog):
         self.bits_per_transfer_combo.setCurrentText('8')
         self.clock_state_combo.setCurrentText('0')
         self.clock_phase_combo.setCurrentText('0')
+        logger.info(log_messages.SPI_RESET)
 
     @staticmethod
     def show_spi_channel_warning(channel_name):
