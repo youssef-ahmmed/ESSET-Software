@@ -2,10 +2,6 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, \
     QPushButton, QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication, QMessageBox
 
-from controllers.sniffing_controller.communication_protocol_controller.spi_dialog_controller import SpiDialogController
-from views.sniffing.dialogs.channel_pins_dialog import ChannelPinsDialog
-import sys
-
 
 class SpiConfigurations(QDialog):
     def __init__(self):
@@ -14,6 +10,12 @@ class SpiConfigurations(QDialog):
         self.reset_button = None
         self.cancel_button = None
         self.save_button = None
+        self.counter = 0
+
+        self.initial_mosi_values = ["Select Channel", "ch1", "ch2", "ch3", "ch4", "ch5", "ch6", "ch7", "ch8"]
+        self.initial_miso_values = self.initial_mosi_values.copy()
+        self.initial_clock_values = self.initial_mosi_values.copy()
+        self.initial_enable_values = self.initial_mosi_values.copy()
 
         self.init_ui()
 
@@ -28,6 +30,7 @@ class SpiConfigurations(QDialog):
 
         self.spi_settings()
         self.create_layout()
+        self.connect_signals()
 
     def spi_settings(self):
         self.settings_widget = QWidget()
@@ -40,7 +43,7 @@ class SpiConfigurations(QDialog):
         self.mosi_combo = QComboBox()
 
         self.mosi_combo.addItem("Select Channel")
-        self.mosi_combo.addItems(["ch1", "ch2", "ch3", "ch4"])
+        self.mosi_combo.addItems(["ch1", "ch2", "ch3", "ch4", "ch5", "ch6", "ch7", "ch8"])
         self.mosi_combo.setItemData(0, 0, role=Qt.UserRole - 1)
         self.mosi_combo.setCurrentIndex(0)
 
@@ -48,7 +51,7 @@ class SpiConfigurations(QDialog):
         self.miso_combo = QComboBox()
 
         self.miso_combo.addItem("Select Channel")
-        self.miso_combo.addItems(["ch1", "ch2", "ch3", "ch4"])
+        self.miso_combo.addItems(["ch1", "ch2", "ch3", "ch4", "ch5", "ch6", "ch7", "ch8"])
         self.miso_combo.setItemData(0, 0, role=Qt.UserRole - 1)
         self.miso_combo.setCurrentIndex(0)
 
@@ -56,7 +59,7 @@ class SpiConfigurations(QDialog):
         self.clock_combo = QComboBox()
 
         self.clock_combo.addItem("Select Channel")
-        self.clock_combo.addItems(["ch1", "ch2", "ch3", "ch4"])
+        self.clock_combo.addItems(["ch1", "ch2", "ch3", "ch4", "ch5", "ch6", "ch7", "ch8"])
         self.clock_combo.setItemData(0, 0, role=Qt.UserRole - 1)
         self.clock_combo.setCurrentIndex(0)
 
@@ -64,7 +67,7 @@ class SpiConfigurations(QDialog):
         self.enable_combo = QComboBox()
 
         self.enable_combo.addItem("Select Channel")
-        self.enable_combo.addItems(["ch1", "ch2", "ch3", "ch4"])
+        self.enable_combo.addItems(["ch1", "ch2", "ch3", "ch4", "ch5", "ch6", "ch7", "ch8"])
         self.enable_combo.setItemData(0, 0, role=Qt.UserRole - 1)
         self.enable_combo.setCurrentIndex(0)
 
@@ -124,6 +127,44 @@ class SpiConfigurations(QDialog):
 
         self.setLayout(layout)
 
+    def connect_signals(self):
+        self.mosi_combo.currentIndexChanged.connect(self.update_comboboxes)
+        self.miso_combo.currentIndexChanged.connect(self.update_comboboxes)
+        self.clock_combo.currentIndexChanged.connect(self.update_comboboxes)
+        self.enable_combo.currentIndexChanged.connect(self.update_comboboxes)
+
+    def update_comboboxes(self):
+        sender_combo_box = self.sender()
+        selected_channel = sender_combo_box.currentText()
+        print(selected_channel)
+
+        current_texts = {combo_box: combo_box.currentText() for combo_box in
+                         [self.mosi_combo, self.miso_combo, self.clock_combo, self.enable_combo]}
+
+        pins_values = [self.mosi_combo, self.miso_combo, self.clock_combo, self.enable_combo]
+
+        for combo_box in pins_values:
+            combo_box.currentIndexChanged.disconnect(self.update_comboboxes)
+            current_items = [combo_box.itemText(index) for index in range(combo_box.count())]
+            print("current:", current_items)
+
+            combo_box.clear()
+
+            items_without_selected = [item for item in current_items if item != selected_channel]
+            print(items_without_selected)
+            combo_box.addItems(items_without_selected)
+
+            if combo_box is sender_combo_box:
+                if selected_channel != "Select Channel":
+                    combo_box.addItem(selected_channel)
+                combo_box.setCurrentText(selected_channel)
+            else:
+                if current_texts[combo_box] != "Select Channel":
+                    combo_box.addItem(current_texts[combo_box])
+                combo_box.setCurrentText(current_texts[combo_box])
+
+            combo_box.currentIndexChanged.connect(self.update_comboboxes)
+
     def get_selected_channels(self):
         mosi = self.mosi_combo.currentText()
         miso = self.miso_combo.currentText()
@@ -133,19 +174,36 @@ class SpiConfigurations(QDialog):
         return mosi, miso, clock, enable
 
     def reset_settings(self):
+        self.mosi_combo.currentIndexChanged.disconnect(self.update_comboboxes)
+        self.miso_combo.currentIndexChanged.disconnect(self.update_comboboxes)
+        self.clock_combo.currentIndexChanged.disconnect(self.update_comboboxes)
+        self.enable_combo.currentIndexChanged.disconnect(self.update_comboboxes)
+
+        self.mosi_combo.clear()
+        self.mosi_combo.addItems(self.initial_mosi_values)
         self.mosi_combo.setCurrentIndex(0)
+
+        self.miso_combo.clear()
+        self.miso_combo.addItems(self.initial_miso_values)
         self.miso_combo.setCurrentIndex(0)
+
+        self.clock_combo.clear()
+        self.clock_combo.addItems(self.initial_clock_values)
         self.clock_combo.setCurrentIndex(0)
+
+        self.enable_combo.clear()
+        self.enable_combo.addItems(self.initial_enable_values)
         self.enable_combo.setCurrentIndex(0)
+
+        self.mosi_combo.currentIndexChanged.connect(self.update_comboboxes)
+        self.miso_combo.currentIndexChanged.connect(self.update_comboboxes)
+        self.clock_combo.currentIndexChanged.connect(self.update_comboboxes)
+        self.enable_combo.currentIndexChanged.connect(self.update_comboboxes)
+
         self.significant_bit_combo.setCurrentText('L')
         self.bits_per_transfer_combo.setCurrentText('8')
         self.clock_state_combo.setCurrentText('0')
         self.clock_phase_combo.setCurrentText('0')
-
-    def save_settings(self):
-        mosi, miso, clock, enable = self.get_selected_channels()
-        ChannelPinsDialog.selected_spi_channels(mosi, miso, clock, enable, "SPI")
-        self.close()
 
     @staticmethod
     def show_spi_channel_warning(channel_name):
