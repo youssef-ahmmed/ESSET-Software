@@ -25,7 +25,6 @@ class HardwareConfigurations(QWidget):
         self.bits_select_controller = NumberBitsSelectController(self.no_bits, self.dialog)
 
         self.channel_button = SelectChannelPinsButton()
-        self.channel_button.setEnabled(False)
         self.terminal = OutputTerminal()
         self.configuration_buttons = ConfigurationButtons()
 
@@ -54,11 +53,9 @@ class HardwareConfigurations(QWidget):
 
         elif selected_protocol == "None":
             self.no_bits.setEnabled(True)
-            self.channel_button.setEnabled(False)
 
         else:
             self.no_bits.setEnabled(False)
-            self.channel_button.setEnabled(True)
 
     def handle_bits_number_change(self):
         selected_bits_number = self.no_bits.get_selected_pin_number()
@@ -67,8 +64,6 @@ class HardwareConfigurations(QWidget):
 
         elif selected_bits_number == "None":
             self.comm_protocol.setEnabled(True)
-            self.channel_button.setEnabled(False)
 
         else:
             self.comm_protocol.setEnabled(False)
-            self.channel_button.setEnabled(True)
