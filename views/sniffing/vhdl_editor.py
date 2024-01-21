@@ -1,9 +1,8 @@
 import os
-
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QLabel, QVBoxLayout, QWidget, QTabBar
 
-from views.sniffing.custom_tab_widget import QCustomTabWidget
+from views.sniffing.custom_tab_widget import CustomTabWidget
 from views.sniffing.editor.editor import Editor
 from views.sniffing.editor.highlighter import Highlighter
 
@@ -14,7 +13,7 @@ class VhdlEditor(QWidget):
 
     def __init__(self, parent=None):
         super(VhdlEditor, self).__init__(parent)
-        self.tab_widget = QCustomTabWidget(self)
+        self.tab_widget = CustomTabWidget(self)
         self.editor = Editor(self)
         self.editor_index = 0
 
