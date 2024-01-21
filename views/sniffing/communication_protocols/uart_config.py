@@ -17,8 +17,6 @@ class UartConfigurations(QDialog):
 
         self.init_ui()
 
-        # self.controllers = UartDialogController(self)
-
     def init_ui(self):
         self.setWindowTitle("Uart Settings")
         self.setGeometry(100, 100, 400, 300)
@@ -42,7 +40,7 @@ class UartConfigurations(QDialog):
         self.input_channel_combo = QComboBox()
 
         self.input_channel_combo.addItem("Select Channel")
-        self.input_channel_combo.addItems(["ch1", "ch2", "ch3", "ch4"])
+        self.input_channel_combo.addItems(["ch1", "ch2", "ch3", "ch4", "ch5", "ch6", "ch7", "ch8"])
         self.input_channel_combo.setItemData(0, 0, role=Qt.UserRole - 1)
         self.input_channel_combo.setCurrentIndex(0)
 
