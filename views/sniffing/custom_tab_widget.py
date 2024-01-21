@@ -1,26 +1,26 @@
 from PyQt5.QtWidgets import QTabWidget, QTabBar
 
 
-class QCustomTabWidget(QTabWidget):
+class CustomTabWidget(QTabWidget):
     def __init__(self, parent=None):
-        super(QCustomTabWidget, self).__init__(parent)
+        super(CustomTabWidget, self).__init__(parent)
         self.setTabsClosable(True)
-        self.tabCloseRequested.connect(self.closeTab)
-        self.hideCloseButtonForLastTab()
+        self.tabCloseRequested.connect(self.close_tab)
+        self.hide_close_button_for_last_tab()
 
-    def hideCloseButtonForLastTab(self):
-        lastTabIndex = self.count() - 1
-        if lastTabIndex >= 0:
-            self.tabBar().setTabButton(lastTabIndex, QTabBar.RightSide, None)
+    def hide_close_button_for_last_tab(self):
+        last_tab_index = self.count() - 1
+        if last_tab_index >= 0:
+            self.tabBar().setTabButton(last_tab_index, QTabBar.RightSide, None)
 
     def addTab(self, widget, label):
-        super(QCustomTabWidget, self).addTab(widget, label)
-        self.hideCloseButtonForLastTab()
+        super(CustomTabWidget, self).addTab(widget, label)
+        self.hide_close_button_for_last_tab()
 
-    def closeTab(self, index):
+    def close_tab(self, index):
         from views.sniffing.vhdl_editor import VhdlEditor
         VhdlEditor.flag_close = True
-        currentQWidget = self.widget(index)
-        currentQWidget.deleteLater()
+        current_widget = self.widget(index)
+        current_widget.deleteLater()
         self.removeTab(index)
-        self.hideCloseButtonForLastTab()
+        self.hide_close_button_for_last_tab()
