@@ -132,6 +132,12 @@ class SpiConfigurations(QDialog):
         self.setLayout(layout)
 
     def connect_signals(self):
+
+        self.prev_b1 = self.mosi_combo.currentText()
+        self.prev_b2 = self.miso_combo.currentText()
+        self.prev_b3 = self.clock_combo.currentText()
+        self.prev_b4 = self.enable_combo.currentText()
+
         self.mosi_combo.currentIndexChanged.connect(self.update_comboboxes)
         self.miso_combo.currentIndexChanged.connect(self.update_comboboxes)
         self.clock_combo.currentIndexChanged.connect(self.update_comboboxes)
@@ -139,8 +145,7 @@ class SpiConfigurations(QDialog):
 
     def update_comboboxes(self):
         sender_combo_box = self.sender()
-        selected_channel = sender_combo_box.currentText()
-        print(selected_channel)
+        self.selected_channel = sender_combo_box.currentText()
 
         current_texts = {combo_box: combo_box.currentText() for combo_box in
                          [self.mosi_combo, self.miso_combo, self.clock_combo, self.enable_combo]}
@@ -150,24 +155,55 @@ class SpiConfigurations(QDialog):
         for combo_box in pins_values:
             combo_box.currentIndexChanged.disconnect(self.update_comboboxes)
             current_items = [combo_box.itemText(index) for index in range(combo_box.count())]
-            print("current:", current_items)
 
             combo_box.clear()
 
-            items_without_selected = [item for item in current_items if item != selected_channel]
-            print(items_without_selected)
+            items_without_selected = [item for item in current_items if item != self.selected_channel]
             combo_box.addItems(items_without_selected)
 
             if combo_box is sender_combo_box:
-                if selected_channel != "Select Channel":
-                    combo_box.addItem(selected_channel)
-                combo_box.setCurrentText(selected_channel)
+                self.update_sender_combobox(combo_box, current_texts, items_without_selected, pins_values, sender_combo_box)
             else:
-                if current_texts[combo_box] != "Select Channel":
-                    combo_box.addItem(current_texts[combo_box])
-                combo_box.setCurrentText(current_texts[combo_box])
+                self.update_other_combobox(combo_box, current_texts, items_without_selected)
 
+            combo_box.model().sort(0)
             combo_box.currentIndexChanged.connect(self.update_comboboxes)
+
+    def update_sender_combobox(self, combo_box, current_texts, items_without_selected, pins_values, sender_combo_box):
+        if self.selected_channel != "Select Channel":
+            if self.selected_channel not in items_without_selected:
+                combo_box.addItem(self.selected_channel)
+        combo_box.setCurrentText(self.selected_channel)
+
+        combo_box_index = pins_values.index(combo_box) + 1
+        self.prev_value = getattr(self, f"prev_b{combo_box_index}")
+
+        self.update_prev_value(combo_box, items_without_selected, pins_values, sender_combo_box, current_texts, combo_box_index)
+
+    def update_prev_value(self, combo_box, items_without_selected, pins_values, sender_combo_box, current_texts, combo_box_index):
+        if self.prev_value != "Select Channel" and self.prev_value != self.selected_channel:
+            if self.prev_value not in items_without_selected:
+                combo_box.addItem(self.prev_value)
+        combo_box.setCurrentText(self.selected_channel)
+
+        for other_combo_box in pins_values:
+            if other_combo_box is not sender_combo_box and self.selected_channel != "Select Channel":
+                if self.prev_value not in [other_combo_box.itemText(index) for index in
+                                           range(other_combo_box.count())]:
+                    other_combo_box.addItem(self.prev_value)
+                other_combo_box.setCurrentText(current_texts[other_combo_box])
+
+        setattr(self, f"prev_b{combo_box_index}", self.selected_channel)
+
+    def update_other_combobox(self, combo_box, current_texts, items_without_selected):
+        if self.prev_value != self.selected_channel and self.prev_value != "Select Channel":
+            if self.prev_value not in items_without_selected:
+                combo_box.addItem(self.prev_value)
+        if (current_texts[combo_box] != "Select Channel" and current_texts[combo_box] not in
+                items_without_selected):
+            if current_texts[combo_box] not in items_without_selected:
+                combo_box.addItem(current_texts[combo_box])
+        combo_box.setCurrentText(current_texts[combo_box])
 
     def get_selected_channels(self):
         mosi = self.mosi_combo.currentText()
