@@ -3,7 +3,7 @@ import platform
 from PyQt5.QtCore import QObject
 
 from controllers.project_path_controller import ProjectPathController
-from core.qsf_writer import QSFWriter
+from core.qsf_writer import QsfWriter
 from core.vhdl_generator import VhdlGenerator
 
 CLOCK_FREQUENCY = 50000000
@@ -79,7 +79,7 @@ class UartDialogController(QObject):
 
     def render_uart_templates(self):
         vhdl_generator = VhdlGenerator()
-        qsf_writer = QSFWriter()
+        qsf_writer = QsfWriter()
 
         template_names = [
             'top_level.vhd.jinja',
