@@ -1,10 +1,12 @@
 import platform
 
 from PyQt5.QtCore import QObject
+from loguru import logger
 
 from controllers.project_path_controller import ProjectPathController
 from core.qsf_writer import QsfWriter
 from core.vhdl_generator import VhdlGenerator
+from models import log_messages
 
 CLOCK_FREQUENCY = 50000000
 
@@ -44,6 +46,7 @@ class UartDialogController(QObject):
         self.uart_configurations = self.collect_uart_settings()
         if self.uart_configurations is not None:
             self.uart_setting_dialog.accept()
+            logger.success(log_messages.UART_CONFIG_SET)
             self.render_uart_templates()
 
     def show_uart_dialog(self):

@@ -6,6 +6,7 @@ from PyQt5.QtCore import QTimer
 from loguru import logger
 
 from controllers.sniffing_controller.terminal_controller import TerminalController
+from models import log_messages
 
 
 class ScriptExecutor:
@@ -16,11 +17,12 @@ class ScriptExecutor:
 
     def execute_script_async(self):
         try:
-            logger.info("Synthesizing Process Initiated. Please Await Completion...")
+            logger.info(log_messages.SYNTHESIZE_INITIATED)
             script_directory = os.path.dirname(self.script_path)
             os.chdir(script_directory)
 
             start_time = time.time()
+            # TODO: handle bat script for windows users
             process = subprocess.Popen(['bash', os.path.basename(self.script_path)], stdout=subprocess.PIPE,
                                        stderr=subprocess.STDOUT)
 
@@ -38,9 +40,9 @@ class ScriptExecutor:
         TerminalController.get_instance().write_text(output)
 
         if process.returncode == 0:
-            logger.success(f"Synthesizing Process Completed Successfully in: {execution_time} seconds.")
+            logger.success(f"{log_messages.SYNTHESIZE_SUCCESS} {execution_time} seconds.")
         else:
-            logger.error(f"Synthesizing process failed with exit code: {process.returncode}. Please review and try again.")
+            logger.error(log_messages.SYNTHESIZE_FAILED)
 
     def chmod_script(self):
         try:

@@ -1,4 +1,8 @@
 from PyQt5.QtCore import QObject
+from loguru import logger
+
+from controllers.project_path_controller import ProjectPathController
+from models import log_messages
 
 
 class SpiDialogController(QObject):
@@ -17,6 +21,7 @@ class SpiDialogController(QObject):
             raise Exception("An instance of SpiDialogController already exists. Use get_instance() to access it.")
 
         self.spi_setting_dialog = spi_setting_dialog
+        self.project_path_controller = ProjectPathController.get_instance()
         self.spi_configurations = []
 
         self.handle_spi_settings_buttons()
@@ -27,9 +32,16 @@ class SpiDialogController(QObject):
         self.spi_setting_dialog.save_button.clicked.connect(self.save_spi_settings)
 
     def save_spi_settings(self):
+        self.project_path = self.project_path_controller.get_project_path()
+
+        if not self.project_path:
+            self.project_path_controller.show_error_dialog(self.spi_setting_dialog.save_button)
+            return
+
         self.spi_configurations = self.collect_spi_settings()
         if self.spi_configurations is not None:
             self.spi_setting_dialog.accept()
+            logger.success(log_messages.SPI_CONFIG_SET)
 
     def show_spi_dialog(self):
         try:

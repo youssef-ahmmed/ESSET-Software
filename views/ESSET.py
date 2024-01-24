@@ -6,7 +6,6 @@ from PyQt5.QtWidgets import QTabWidget, QVBoxLayout
 from PyQt5.QtWidgets import QWidget, QApplication
 
 from views.common.log_widget import LogWidget
-from controllers.sniffing_controller.communication_protocol_controller.spi_dialog_controller import SpiDialogController
 from views.common.menubar import MenuBar
 from views.display.display_widget import DisplayWidget
 from views.sniffing.sniffing_widget import SniffingWidget
@@ -21,6 +20,7 @@ class ESSET(QMainWindow):
         self.log = LogWidget()
 
         self.init_ui()
+        self.log.open_new_log()
 
     def init_ui(self):
         self.setMenuBar(self.menu_bar)
