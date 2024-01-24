@@ -1,14 +1,16 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 
-from controllers.sniffing_controller.terminal_controller import TerminalController
 from controllers.sniffing_controller.bits_input_dialog_controller import BitsInputDialogController
+from controllers.sniffing_controller.buttons_controller.channel_pins_button_controller import \
+    ChannelPinsButtonController
 from controllers.sniffing_controller.number_bits_select_controller import NumberBitsSelectController
-from views.sniffing.bits_input_dialog import BitsInputDialog
-from views.sniffing.comm_protocol_select import CommunicationProtocolSelect
-from views.sniffing.buttons.configuration_buttons import ConfigurationButtons
-from views.sniffing.number_bits_select import NumberBitsSelect
+from controllers.sniffing_controller.terminal_controller import TerminalController
 from views.custom_component.output_terminal import OutputTerminal
+from views.sniffing.bits_input_dialog import BitsInputDialog
+from views.sniffing.buttons.configuration_buttons import ConfigurationButtons
 from views.sniffing.buttons.select_channel_pins_button import SelectChannelPinsButton
+from views.sniffing.comm_protocol_select import CommunicationProtocolSelect
+from views.sniffing.number_bits_select import NumberBitsSelect
 
 
 class HardwareConfigurations(QWidget):
@@ -17,15 +19,16 @@ class HardwareConfigurations(QWidget):
         super().__init__()
 
         self.dialog = BitsInputDialog("test")
-        self.input_dialog_controller = BitsInputDialogController(self.dialog)
+        BitsInputDialogController(self.dialog)
 
         self.comm_protocol = CommunicationProtocolSelect()
 
         self.no_bits = NumberBitsSelect()
-        self.bits_select_controller = NumberBitsSelectController(self.no_bits, self.dialog)
+        NumberBitsSelectController(self.no_bits, self.dialog)
 
         self.channel_button = SelectChannelPinsButton()
-        self.channel_button.setEnabled(False)
+        ChannelPinsButtonController.get_instance(self.channel_button)
+
         self.terminal = OutputTerminal()
         self.configuration_buttons = ConfigurationButtons()
 
@@ -54,11 +57,9 @@ class HardwareConfigurations(QWidget):
 
         elif selected_protocol == "None":
             self.no_bits.setEnabled(True)
-            self.channel_button.setEnabled(False)
 
         else:
             self.no_bits.setEnabled(False)
-            self.channel_button.setEnabled(True)
 
     def handle_bits_number_change(self):
         selected_bits_number = self.no_bits.get_selected_pin_number()
@@ -67,8 +68,6 @@ class HardwareConfigurations(QWidget):
 
         elif selected_bits_number == "None":
             self.comm_protocol.setEnabled(True)
-            self.channel_button.setEnabled(False)
 
         else:
             self.comm_protocol.setEnabled(False)
-            self.channel_button.setEnabled(True)
