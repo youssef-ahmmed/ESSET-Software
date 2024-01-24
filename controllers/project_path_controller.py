@@ -33,16 +33,19 @@ class ProjectPathController(QObject):
     def get_project_path(self):
         return self.project_path
 
-
     def get_top_level_name(self):
         qsf_files = [file for file in os.listdir(self.project_path) if file.endswith('.qsf')]
 
         if qsf_files:
             qsf_file = qsf_files[0]
-            name_without_extension = os.path.splitext(qsf_file)[0]
-            return name_without_extension
-        else:
-            return "top_level"
+            return os.path.splitext(qsf_file)[0]
+        return "not exist"
+
+    def get_qsf_file_path(self):
+        qsf_file_path = [file for file in os.listdir(self.project_path) if file.endswith('.qsf')]
+        if not qsf_file_path:
+            return "not exist"
+        return os.path.join(self.get_project_path(), ''.join(qsf_file_path))
 
     def get_script_path(self):
         script_extension = ".sh" if platform.system() == "Linux" else ".bat"
