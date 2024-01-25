@@ -4,7 +4,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QMessageBox
 
 from controllers.project_path_controller import ProjectPathController
-from core.qsf_writer import QSFWriter
+from core.qsf_writer import QsfWriter
 from core.vhdl_generator import VhdlGenerator
 
 
@@ -63,7 +63,7 @@ class BitsInputDialogController(QObject):
 
     def render_NBit_templates(self):
         vhdl_generator = VhdlGenerator()
-        qsf_writer = QSFWriter()
+        qsf_writer = QsfWriter()
 
         templates = [
             'top_level.vhd.jinja',

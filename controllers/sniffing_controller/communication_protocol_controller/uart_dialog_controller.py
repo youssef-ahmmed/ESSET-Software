@@ -4,7 +4,7 @@ from PyQt5.QtCore import QObject
 from loguru import logger
 
 from controllers.project_path_controller import ProjectPathController
-from core.qsf_writer import QSFWriter
+from core.qsf_writer import QsfWriter
 from core.vhdl_generator import VhdlGenerator
 from models import log_messages
 
@@ -82,7 +82,7 @@ class UartDialogController(QObject):
 
     def render_uart_templates(self):
         vhdl_generator = VhdlGenerator()
-        qsf_writer = QSFWriter()
+        qsf_writer = QsfWriter()
 
         template_names = [
             'top_level.vhd.jinja',

@@ -23,7 +23,7 @@ class SynthesisButtonController(QObject):
         super(SynthesisButtonController, self).__init__()
 
         if SynthesisButtonController._instance is not None:
-            raise Exception("An instance of BitsInputDialogController already exists. Use get_instance() to access it.")
+            raise Exception("An instance of SynthesisButtonController already exists. Use get_instance() to access it.")
 
         self.synthesis_button = synthesis_button
         self.project_path_controller = ProjectPathController.get_instance()
@@ -35,9 +35,8 @@ class SynthesisButtonController(QObject):
 
     def run_script(self):
         project_path = self.project_path_controller.get_project_path()
-
         if not project_path:
-            self.handle_no_project_path()
+            self.project_path_controller.show_error_dialog(self.synthesis_button)
             return
 
         script_path = self.project_path_controller.get_script_path()
@@ -45,9 +44,6 @@ class SynthesisButtonController(QObject):
             script_path = self.generate_script(project_path)
 
         self.initiate_synthesizing_process(script_path)
-
-    def handle_no_project_path(self):
-        self.project_path_controller.show_error_dialog(self.synthesis_button)
 
     def generate_script(self, project_path):
         vhdl_generator = VhdlGenerator()

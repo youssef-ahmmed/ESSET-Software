@@ -7,19 +7,15 @@ class SelectChannelPinsButton(QWidget):
     def __init__(self):
         super().__init__()
 
+        self.channel_pins_button = QPushButton("Select Channel Pins")
+        self.pin_planner_table = HardwarePinPlanner()
+
         self.init_ui()
 
     def init_ui(self):
-        self.setWindowTitle("Uart Settings")
-        self.setGeometry(100, 100, 400, 300)
+        self.setLayout(QVBoxLayout())
 
-        layout = QVBoxLayout()
-
-        self.channel_pins_button = QPushButton("Select Channel Pins")
-        self.channel_pins_button.clicked.connect(self.show_pin_planner_dialog)
-        layout.addWidget(self.channel_pins_button)
-        self.setLayout(layout)
+        self.layout().addWidget(self.channel_pins_button)
 
     def show_pin_planner_dialog(self):
-        pin_planner_table = HardwarePinPlanner()
-        pin_planner_table.exec_()
+        self.pin_planner_table.exec_()

@@ -9,13 +9,7 @@ class NumberBitsSelect(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        self.setWindowTitle("Communication Settings")
-        self.setGeometry(100, 100, 400, 300)
-
-        self.create_layout()
-
-    def create_layout(self):
-        layout = QHBoxLayout()
+        self.setLayout(QHBoxLayout())
 
         self.bits_label = QLabel("Sniffing Bit Numbers")
         self.bits_combo = QComboBox()
@@ -24,10 +18,8 @@ class NumberBitsSelect(QWidget):
         self.bits_combo.setItemData(0, 0, role=Qt.UserRole - 1)
         self.bits_combo.setCurrentIndex(0)
 
-        layout.addWidget(self.bits_label)
-        layout.addWidget(self.bits_combo)
-
-        self.setLayout(layout)
+        self.layout().addWidget(self.bits_label)
+        self.layout().addWidget(self.bits_combo)
 
     def get_selected_pin_number(self):
         return self.bits_combo.currentText()
