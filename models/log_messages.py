@@ -1,4 +1,5 @@
 # Path Messages
+NO_TOP_LEVEL_FILE = "There is no top level file"
 QUARTUS_PATH_SPECIFIED = "Quartus Path Specified Successfully."
 NO_QUARTUS_PATH = "No Quartus Path Specified."
 
