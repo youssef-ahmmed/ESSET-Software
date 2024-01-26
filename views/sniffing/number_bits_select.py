@@ -9,12 +9,6 @@ class NumberBitsSelect(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        self.setWindowTitle("Communication Settings")
-        self.setGeometry(100, 100, 400, 300)
-
-        self.create_layout()
-
-    def create_layout(self):
         layout = QHBoxLayout()
 
         self.bits_label = QLabel("Sniffing Bit Numbers")
