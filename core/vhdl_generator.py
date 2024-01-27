@@ -1,4 +1,5 @@
 import os
+import platform
 
 from jinja2 import Environment, select_autoescape, PackageLoader
 
@@ -26,3 +27,12 @@ class VhdlGenerator:
 
         with open(template_path, 'w') as file:
             file.write(rendered_content)
+
+    def generate_script(self, project_path):
+        vhdl_generator = VhdlGenerator()
+        configurations = {'top_level_name': self.project_path_controller.get_top_level_name()}
+        script_template = 'synthesis_linux.sh.jinja' if platform.system() == 'Linux' else 'synthesis_windows.sh.jinja'
+        script_file = 'synthesis_linux.sh' if platform.system() == 'Linux' else 'synthesis_windows.sh'
+
+        vhdl_generator.render_template(script_template, configurations=configurations, output_path=project_path)
+        return os.path.join(project_path, script_file)
