@@ -23,10 +23,8 @@ class ScriptExecutor:
                 if output == '' and process.poll() is not None:
                     break
                 if output:
-                    # print(output.strip())
                     yield output.strip()
             return_code = process.poll()
-            # print(f"return code: {return_code}")
             yield f"return code: {return_code}"
         except Exception as e:
             logger.error(f"Synthesizing process failed with error: {str(e)}. Please review and try again.")
