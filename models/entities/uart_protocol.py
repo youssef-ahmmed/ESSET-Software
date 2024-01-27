@@ -14,6 +14,7 @@ class Uart(BaseModel, Base):
     data_size = Column(Integer, nullable=False, default=8)
     stop_bit = Column(Integer, default=1)
     parity_bit = Column(CHAR(1), default='N')
+    significant_bit = Column(CHAR(1), nullable=False, default='L')
 
     sniffed_data = relationship('SniffedData', backref='uart', cascade='all, delete')
 
