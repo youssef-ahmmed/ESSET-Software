@@ -76,7 +76,8 @@ class UartDialogController(QObject):
             'channels_number': 8,
             'stop_bits': stop_bits,
             'parity_bit': parity_bit,
-            'significant_bit': significant_bit
+            'significant_bit': significant_bit,
+            'channel_name': input_channel
         }
         return uart_configurations
 

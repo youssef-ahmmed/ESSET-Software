@@ -13,10 +13,10 @@ class CommunicationProtocolSelect(QWidget):
         super().__init__()
 
         self.spi_page = SpiConfigurations()
-        self.spi_controller = SpiDialogController(self.spi_page)
+        self.spi_controller = SpiDialogController.get_instance(self.spi_page)
 
         self.uart_page = UartConfigurations()
-        self.uart_controller = UartDialogController(self.uart_page)
+        self.uart_controller = UartDialogController.get_instance(self.uart_page)
 
         self.init_ui()
 

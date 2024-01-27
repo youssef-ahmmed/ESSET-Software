@@ -16,6 +16,7 @@ class ChannelsDataDao:
         self.channels_data.sniffed_data_id = self.channels_data_dto.sniffed_data_id
         self.channels_data.channel_number = self.channels_data_dto.channel_number
         self.channels_data.channel_data = self.channels_data_dto.channel_data
+        self.channels_data.channel_name = self.channels_data.channel_name
         
     @staticmethod
     def get_by_id(id):
@@ -33,10 +34,11 @@ class ChannelsDataDao:
         storage.delete(self.channels_data)
         storage.save()
         
-    def update(self, id, channel_number: int, channel_data: Any):
+    def update(self, id, channel_number: int, channel_data: Any, channel_name: str):
         channel_data_record: ChannelsData = self.get_by_id(id)
         if channel_data_record:
             channel_data_record.channel_number = channel_number
             channel_data_record.channel_data = channel_data
+            channel_data_record.channel_name = channel_name
 
         storage.save()

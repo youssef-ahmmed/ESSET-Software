@@ -27,15 +27,18 @@ class NumberBitsSelectController(QObject):
         self.number_bit_select.bits_combo.activated.connect(self.check_bits_selection)
 
     def check_bits_selection(self):
-        selected_option = self.number_bit_select.get_selected_pin_number()
+        self.selected_option = self.number_bit_select.get_selected_pin_number()
 
-        if selected_option == "NBits":
+        if self.selected_option == "NBits":
             label_text = "Enter number of bits (PIPO): "
             self.open_bits_dialog(label_text)
-        elif selected_option == "1Bit":
+        elif self.selected_option == "1Bit":
             label_text = "Enter number of output bits (SIPO): "
             self.open_bits_dialog(label_text)
 
     def open_bits_dialog(self, label_text):
         self.bits_input_dialog.bits_label.setText(label_text)
         self.bits_input_dialog.exec_()
+
+    def get_selected_option(self):
+        return self.selected_option

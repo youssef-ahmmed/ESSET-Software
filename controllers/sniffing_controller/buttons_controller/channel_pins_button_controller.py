@@ -74,3 +74,7 @@ class ChannelPinsButtonController(QObject):
         self.channel_pins.show_pin_planner_dialog()
 
         self.pin_planner_table.get_table_data()
+
+    def get_pin_planner_data(self):
+        self.pin_planner_table.get_table_data()
+
