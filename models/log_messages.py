@@ -15,3 +15,10 @@ SPI_CONFIG_SET = "SPI Configurations Set Successfully."
 SYNTHESIZE_INITIATED = "Synthesizing Process Initiated. Please Await Completion..."
 SYNTHESIZE_SUCCESS = "Synthesizing Process Completed Successfully in:"
 SYNTHESIZE_FAILED = "Synthesizing Process Failed. Please review and try again."
+
+# Serial Communication
+SENDING_SUCCESS = "Data Send Successfully"
+RECEIVE_SUCCESS = "Data Received Successfully"
+PORT_NOT_OPEN_ERROR = "Port is not open"
+TIMEOUT_ERROR = "Timeout in Sending Data"
+CONFIGURATION_ERROR = "Device Can Not Be Found or Can Not Be Configured"
