@@ -15,3 +15,7 @@ SPI_CONFIG_SET = "SPI Configurations Set Successfully."
 SYNTHESIZE_INITIATED = "Synthesizing Process Initiated. Please Await Completion..."
 SYNTHESIZE_SUCCESS = "Synthesizing Process Completed Successfully in:"
 SYNTHESIZE_FAILED = "Synthesizing Process Failed. Please review and try again."
+
+# Bit Sniffing Messages
+ONE_BIT_CONFIG_SET = "One Bit Sniffing Configurations Set Successfully."
+N_BITS_CONFIG_SET = "N Bits Sniffing Configurations Set Successfully."
