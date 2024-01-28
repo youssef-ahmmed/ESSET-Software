@@ -9,10 +9,10 @@ class SniffedData(BaseModel, Base):
     id = Column(Integer, primary_key=True)
     start_time = Column(DateTime, nullable=False)
     time_taken = Column(Integer, nullable=False)
-    connection_way = Column(String(10), nullable=False)
+    connection_way = Column(String(10))
     communication_protocol_name = Column(String(10))
 
     __table_args__ = (
-        CheckConstraint("connection_way LIKE '_Bit'"),
-        CheckConstraint("communication_protocol_name IN ('uart', 'spi', 'i2c')")
+        CheckConstraint("connection_way IN ('1Bit', 'NBits')"),
+        CheckConstraint("communication_protocol_name IN ('UART', 'SPI', 'I2C')")
     )
