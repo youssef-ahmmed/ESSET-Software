@@ -6,8 +6,8 @@ entity UART_Receiver is
 
 	generic (
         --assume clock is 50 MHz and baud rate 9600, 50M/115200 = 217
-		g_CLKS_PER_BIT: integer := {{ clocks_per_bit }};
-        N: positive := {{ bits_per_frame }}
+		g_CLKS_PER_BIT: integer := {{ clk_per_bit }};
+        N: positive := {{ data_size }}
 	);
 
 	port(
