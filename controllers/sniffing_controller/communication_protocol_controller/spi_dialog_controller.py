@@ -69,14 +69,14 @@ class SpiDialogController(QObject):
         spi_configurations = {
             'option': 'SPI',
             'top_level_name': self.project_path_controller.get_top_level_name(),
-            "MOSI": mosi,
-            "MISO": miso,
-            "Clock": clock,
-            "Enable": enable,
+            'MOSI': mosi,
+            'MISO': miso,
+            'Clock': clock,
+            'Enable': enable,
             'significant_bit': significant_bit,
-            'bits_per_transfer': bits_per_transfer,
-            'clock_state': clock_state,
-            'clock_phase': clock_phase
+            'clk_state': clock_state,
+            'clk_phase': clock_phase,
+            'data_size': bits_per_transfer,
         }
 
         for channel_name, channel_value in settings.items():
