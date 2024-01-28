@@ -1,6 +1,6 @@
 from os import getenv
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker, scoped_session
 import sqlite3
 
@@ -11,11 +11,12 @@ from models.entities.n_bit_sniffing import NBit
 from models.entities.one_bit_sniffing import OneBit
 from models.entities.spi_protocol import Spi
 from models.entities.uart_protocol import Uart
+from models.entities.channels_data import ChannelsData
 
 
 class DBStorage:
     __url_mysqldb = "mysql+mysqldb://esset_dev:esset_dev_pwd@localhost/esset_dev_db"
-    __url_sqlitedb = "sqlite:///site.db"
+    __url_sqlitedb = "sqlite:///esset.db"
     __session = None
     __engine = None
 
@@ -30,6 +31,10 @@ class DBStorage:
 
     def get_by_id(self, cls, id):
         return self.__session.query(cls).get(id)
+
+    def get_last_id(self, cls):
+        max_id = self.__session.query(func.max(cls.id)).scalar()
+        return max_id
 
     def list_all(self, cls):
         return self.__session.query(cls).all()

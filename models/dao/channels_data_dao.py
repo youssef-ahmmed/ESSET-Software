@@ -16,7 +16,7 @@ class ChannelsDataDao:
         self.channels_data.sniffed_data_id = self.channels_data_dto.sniffed_data_id
         self.channels_data.channel_number = self.channels_data_dto.channel_number
         self.channels_data.channel_data = self.channels_data_dto.channel_data
-        self.channels_data.channel_name = self.channels_data.channel_name
+        self.channels_data.channel_name = self.channels_data_dto.channel_name
         
     @staticmethod
     def get_by_id(id):
