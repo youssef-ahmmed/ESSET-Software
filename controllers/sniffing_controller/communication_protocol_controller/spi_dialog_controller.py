@@ -66,10 +66,22 @@ class SpiDialogController(QObject):
             "Clock": clock,
             "Enable": enable
         }
+        spi_configurations = {
+            'option': 'SPI',
+            'top_level_name': self.project_path_controller.get_top_level_name(),
+            'MOSI': mosi,
+            'MISO': miso,
+            'Clock': clock,
+            'Enable': enable,
+            'significant_bit': significant_bit,
+            'clk_state': clock_state,
+            'clk_phase': clock_phase,
+            'data_size': bits_per_transfer,
+        }
 
         for channel_name, channel_value in settings.items():
             if channel_value == "Select Channel":
                 self.spi_setting_dialog.show_spi_channel_warning(channel_name)
                 return None
 
-        return [mosi, miso, clock, enable, significant_bit, bits_per_transfer, clock_state, clock_phase]
+        return spi_configurations

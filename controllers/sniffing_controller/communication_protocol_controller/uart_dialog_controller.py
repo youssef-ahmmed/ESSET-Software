@@ -71,12 +71,14 @@ class UartDialogController(QObject):
         uart_configurations = {
             'option': 'UART',
             'top_level_name': self.project_path_controller.get_top_level_name(),
-            'clocks_per_bit':  int(CLOCK_FREQUENCY / bit_rate),
-            'bits_per_frame': bits_per_frame,
-            'channels_number': 8,
-            'stop_bits': stop_bits,
+            'clk_per_bit':  int(CLOCK_FREQUENCY / bit_rate),
+            'baud_rate': bit_rate,
+            'data_size': bits_per_frame,
+            'stop_bit': stop_bits,
             'parity_bit': parity_bit,
-            'significant_bit': significant_bit
+            'significant_bit': significant_bit,
+            'channel_number': 8,
+            'channel_name': input_channel
         }
         return uart_configurations
 

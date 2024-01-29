@@ -4,7 +4,7 @@ use work.Common_Ports.all;
 
 entity {{ top_level_name }} is
     generic (
-        N: positive := {{ channels_number }}  -- Number of output channels
+        N: positive := {{ channel_number }}  -- Number of output channels
     );
 
     port (
@@ -29,7 +29,7 @@ end {{ top_level_name }};
 architecture behav of {{ top_level_name }} is
 begin
 
-    {%- if option == "1Bit_Sniffing" %}
+    {%- if option == "1Bit" %}
     -- 1Bit_Sniffing instance
     1Bit_Sniffing_instance : entity work.1Bit_Sniffing
     port map (
@@ -40,7 +40,7 @@ begin
     );
     {%- endif %}
 
-    {%- if option == "NBit_Sniffing" %}
+    {%- if option == "NBit" %}
     -- NBit_Sniffing instance
     NBit_Sniffing_instance : entity work.NBit_Sniffing
     port map (

@@ -3,10 +3,11 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from controllers.sniffing_controller.bits_input_dialog_controller import BitsInputDialogController
 from controllers.sniffing_controller.buttons_controller.channel_pins_button_controller import \
     ChannelPinsButtonController
+from controllers.sniffing_controller.comm_protocol_select_controller import CommProtocolSelectController
 from controllers.sniffing_controller.number_bits_select_controller import NumberBitsSelectController
 from controllers.sniffing_controller.terminal_controller import TerminalController
 from views.custom_component.output_terminal import OutputTerminal
-from views.sniffing.bits_input_dialog import BitsInputDialog
+from views.sniffing.dialogs.bits_input_dialog import BitsInputDialog
 from views.sniffing.buttons.configuration_buttons import ConfigurationButtons
 from views.sniffing.buttons.select_channel_pins_button import SelectChannelPinsButton
 from views.sniffing.comm_protocol_select import CommunicationProtocolSelect
@@ -18,13 +19,14 @@ class HardwareConfigurations(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.dialog = BitsInputDialog("test")
-        BitsInputDialogController(self.dialog)
+        self.bits_input_dialog = BitsInputDialog("test")
+        BitsInputDialogController.get_instance(self.bits_input_dialog)
 
         self.comm_protocol = CommunicationProtocolSelect()
+        CommProtocolSelectController.get_instance(self.comm_protocol)
 
         self.no_bits = NumberBitsSelect()
-        NumberBitsSelectController(self.no_bits, self.dialog)
+        NumberBitsSelectController.get_instance(self.no_bits, self.bits_input_dialog)
 
         self.channel_button = SelectChannelPinsButton()
         ChannelPinsButtonController.get_instance(self.channel_button)

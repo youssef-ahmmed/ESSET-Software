@@ -26,6 +26,10 @@ class SniffedDataDao:
     def get_all():
         return storage.list_all(SniffedData)
 
+    @staticmethod
+    def get_last_sniffed_data_id():
+        return storage.get_last_id(SniffedData)
+
     def insert(self):
         storage.insert(self.sniffed_data)
         storage.save()

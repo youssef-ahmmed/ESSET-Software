@@ -22,3 +22,7 @@ RECEIVE_SUCCESS = "Data Received Successfully"
 PORT_NOT_OPEN_ERROR = "Port is not open"
 TIMEOUT_ERROR = "Timeout in Sending Data"
 CONFIGURATION_ERROR = "Device Can Not Be Found or Can Not Be Configured"
+
+# Bit Sniffing Messages
+ONE_BIT_CONFIG_SET = "One Bit Sniffing Configurations Set Successfully."
+N_BITS_CONFIG_SET = "N Bits Sniffing Configurations Set Successfully."
