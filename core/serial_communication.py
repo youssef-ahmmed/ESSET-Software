@@ -1,6 +1,8 @@
 import time
 import serial.tools.list_ports
 from serial.serialutil import SerialException, SerialTimeoutException
+from loguru import logger
+from models import log_messages
 
 
 class SerialCommunication:
@@ -18,17 +20,17 @@ class SerialCommunication:
     def execute_serial_transaction(self, data):
         try:
             self.send_data(data)
-            print("Transaction successful.")
+            logger.success(log_messages.SENDING_SUCCESS)
         except Exception as e:
-            print("Error: Port not open.")
+            logger.error(log_messages.PORT_NOT_OPEN_ERROR)
 
     def execute_serial_receiving(self):
         try:
             data = self.read_data()
-            print("Receive successful.")
+            logger.success(log_messages.RECEIVE_SUCCESS)
             print(f"Data Received: {data}")
         except Exception as e:
-            print("Error: Port not open.")
+            logger.error(log_messages.PORT_NOT_OPEN_ERROR)
 
     @staticmethod
     def get_default_data():
@@ -42,26 +44,22 @@ class SerialCommunication:
     def send_data(self, data):
         try:
             if not SerialCommunication.serial_port.is_open:
-                print("Error: Port not open.")
+                logger.error(log_messages.PORT_NOT_OPEN_ERROR)
                 return False
             else:
                 for char in data:
                     SerialCommunication.serial_port.write(char.encode())
                     time.sleep(0.01)
         except SerialTimeoutException as e:
-            print("Error: Timeout.")
-            raise e
+            logger.error(log_messages.TIMEOUT_ERROR)
         except SerialException as e:
-            print("Error: Configuration error.")
-            raise e
+            logger.error(log_messages.CONFIGURATION_ERROR)
 
     def read_data(self):
         try:
             received_data = SerialCommunication.serial_port.readline().decode()
             return received_data
         except SerialTimeoutException as e:
-            print("Error: Timeout.")
-            raise e
+            logger.error(log_messages.TIMEOUT_ERROR)
         except SerialException as e:
-            print("Error: Configuration error.")
-            raise e
+            logger.error(log_messages.CONFIGURATION_ERROR)
