@@ -13,9 +13,9 @@ class SerialCommunication:
 
     @staticmethod
     def start_communication():
+        SerialCommunication.get_default_data()
         if not SerialCommunication.serial_port.is_open:
             SerialCommunication.serial_port.open()
-        SerialCommunication.get_default_data()
 
     def execute_serial_transaction(self, data):
         try:

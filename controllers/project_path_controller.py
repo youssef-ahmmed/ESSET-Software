@@ -64,13 +64,14 @@ class ProjectPathController(QObject):
 
         return None
 
-    def get_sof_file(self) -> bool | None:
+    def get_sof_file(self) -> str | None:
         sof_dir_path = os.path.join(self.project_path, 'output_files')
         if not os.path.exists(sof_dir_path):
-            return
-        sof_file = [file for file in os.listdir(sof_dir_path) if file.endswith('.sof')]
-
-        return len(sof_file) > 0
+            return None
+        sof_files = [file for file in os.listdir(sof_dir_path) if file.endswith('.sof')]
+        if not sof_files:
+            return None
+        return os.path.join(sof_dir_path, sof_files[0])
 
     @staticmethod
     def show_error_dialog(parent):

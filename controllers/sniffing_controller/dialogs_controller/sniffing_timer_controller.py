@@ -10,6 +10,8 @@ from controllers.data_store_controller.one_bit_store_controller import OneBitSto
 from controllers.data_store_controller.sniffed_data_store_controller import SniffedDataStoreController
 from controllers.data_store_controller.spi_store_controller import SpiStoreController
 from controllers.data_store_controller.uart_store_controller import UartStoreController
+from controllers.project_path_controller import ProjectPathController
+from core.serial_communication import SerialCommunication
 from views.sniffing.dialogs.sniffing_timer import SniffingTimer
 
 
@@ -48,9 +50,8 @@ class SniffingTimerDialogController(QObject):
         self.cancel_button.clicked.connect(self.sniffing_timer_dialog.reject)
 
     def start_sniffing(self):
-
+        self.send_sof_file()
         self.store_sniffing_configurations()
-
         self.sniffing_timer_dialog.accept()
 
     def store_sniffing_configurations(self):
@@ -61,13 +62,21 @@ class SniffingTimerDialogController(QObject):
         channel_pins_store.store_channel_pins()
 
         data_collector = DataCollectorController()
-        comm_protocol, connection_way = data_collector.collect_sniffed_data().values()
+        connection_way, comm_protocol = data_collector.collect_sniffed_data().values()
 
         self.store_comm_protocol(comm_protocol)
         self.store_connection_way(connection_way)
 
         channels_data_store = ChannelsDataStoreController()
         channels_data_store.store_channels_data()
+
+    @staticmethod
+    def send_sof_file():
+        sof_file_path = ProjectPathController.get_instance().get_sof_file()
+        serial_comm = SerialCommunication()
+        with open(sof_file_path, 'rb') as file:
+            file_content = file.read()
+        serial_comm.execute_serial_transaction(file_content)
 
     def get_sniffing_time(self):
         sniffing_time = int(self.sniffing_timer_dialog.time_edit.text())
@@ -101,12 +110,3 @@ class SniffingTimerDialogController(QObject):
         }
         if connection_way in connection_way_handlers:
             connection_way_handlers[connection_way]()
-
-
-"""
-1- Get time [x]
-2- Convert it to seconds [x]
-3- Read sof file 
-4- Open serial communication and send sof file
-5- Call storing controllers [x]
-"""

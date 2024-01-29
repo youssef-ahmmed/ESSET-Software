@@ -13,8 +13,7 @@ class SniffedDataStoreController:
         self.sniffed_data_dao = None
 
     def store_sniffed_data(self, time_taken):
-        self.sniffed_data_dto = SniffedDataDto(datetime.now(),
-                                               time_taken,
+        self.sniffed_data_dto = SniffedDataDto(datetime.now(), time_taken,
                                                **self.data_collector_controller.collect_sniffed_data())
         self.sniffed_data_dao = SniffedDataDao(self.sniffed_data_dto)
         self.sniffed_data_dao.insert()
