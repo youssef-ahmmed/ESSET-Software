@@ -2,11 +2,13 @@ import platform
 
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QMessageBox
+from loguru import logger
 
 from controllers.project_path_controller import ProjectPathController
 from controllers.sniffing_controller.number_bits_select_controller import NumberBitsSelectController
 from core.qsf_writer import QsfWriter
 from core.vhdl_generator import VhdlGenerator
+from models import log_messages
 
 
 class BitsInputDialogController(QObject):
@@ -45,15 +47,19 @@ class BitsInputDialogController(QObject):
         if bits_number is not None:
             self.bits_input_dialog.accept()
             self.render_bit_templates()
+            if self.sniffing_type == "1Bit":
+                logger.success(log_messages.ONE_BIT_CONFIG_SET)
+            elif self.sniffing_type == "NBits":
+                logger.success(log_messages.N_BITS_CONFIG_SET)
 
     def get_bits_number(self):
         no_of_bits = self.bits_input_dialog.bits_input.text()
         if not no_of_bits:
             QMessageBox.warning(self.bits_input_dialog, "Warning", "Please enter the number of bits.")
             return None
-        self.bits_number = NumberBitsSelectController.get_instance().get_selected_option()
+        self.sniffing_type = NumberBitsSelectController.get_instance().get_selected_option()
         self.bit_configurations = {
-            'option': self.bits_number,
+            'option': self.sniffing_type,
             'top_level_name': ProjectPathController.get_instance().get_top_level_name(),
             'channel_number': no_of_bits
         }
@@ -63,16 +69,10 @@ class BitsInputDialogController(QObject):
     def render_bit_templates(self):
         vhdl_generator = VhdlGenerator()
         qsf_writer = QsfWriter()
-        bit_template = ''
-
-        if self.bits_number == "NBits":
-            bit_template = 'NBit_Sniffing.vhd.jinja'
-        elif self.bits_number == "1Bit":
-            bit_template = '1Bit_Sniffing.vhd.jinja'
 
         templates = [
             'top_level.vhd.jinja',
-            bit_template,
+            str(self.sniffing_type) + '_Sniffing.vhd.jinja',
             'Common_Ports.vhd.jinja',
             'Communication_Module.vhd.jinja'
         ]

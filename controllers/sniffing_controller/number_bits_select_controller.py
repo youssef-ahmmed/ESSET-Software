@@ -41,4 +41,4 @@ class NumberBitsSelectController(QObject):
         self.bits_input_dialog.exec_()
 
     def get_selected_option(self):
-        return self.selected_option
+        return self.number_bit_select.get_selected_pin_number()
