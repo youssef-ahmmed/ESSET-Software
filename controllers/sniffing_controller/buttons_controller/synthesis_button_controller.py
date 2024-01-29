@@ -24,7 +24,6 @@ class ScriptThread(QObject):
         start_time = time.time()
         for line in self.executor.execute_script():
             if line.startswith("return code"):
-                print("line return code:", line[-1])
                 return_code = int(line[-1])
             self.progress.emit(line)
         end_time = time.time()
