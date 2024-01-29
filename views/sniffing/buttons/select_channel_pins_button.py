@@ -8,7 +8,7 @@ class SelectChannelPinsButton(QWidget):
         super().__init__()
 
         self.channel_pins_button = QPushButton("Select Channel Pins")
-        self.pin_planner_table = HardwarePinPlanner()
+        self.pin_planner_table = HardwarePinPlanner(self.channel_pins_button)
 
         self.init_ui()
 

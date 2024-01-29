@@ -4,8 +4,8 @@ from core.qsf_writer import QsfWriter
 
 
 class HardwarePinPlanner(QDialog):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
 
         self.pin_planner = QTableWidget()
         self.save_button = QPushButton("Save")

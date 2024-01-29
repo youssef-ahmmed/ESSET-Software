@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 
-from controllers.sniffing_controller.bits_input_dialog_controller import BitsInputDialogController
+from controllers.sniffing_controller.dialogs_controller.bits_input_dialog_controller import BitsInputDialogController
 from controllers.sniffing_controller.buttons_controller.channel_pins_button_controller import \
     ChannelPinsButtonController
 from controllers.sniffing_controller.comm_protocol_select_controller import CommProtocolSelectController
