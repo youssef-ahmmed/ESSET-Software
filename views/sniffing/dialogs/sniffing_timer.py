@@ -10,6 +10,8 @@ class SniffingTimer(QDialog):
         self.label = QLabel('Stop recording after')
         self.time_edit = QLineEdit()
         self.unit_combo = QComboBox()
+        self.ok_button = QPushButton('OK')
+        self.cancel_button = QPushButton('Cancel')
 
         self.init_ui()
 
@@ -17,23 +19,20 @@ class SniffingTimer(QDialog):
         self.time_edit.setValidator(QtGui.QIntValidator())
         self.unit_combo.addItems(['s', 'm', 'h'])
 
-        layout = QFormLayout()
-        layout.addRow(self.label, self.create_time_unit_layout())
+        input_time_layout = QHBoxLayout()
+        input_time_layout.addWidget(self.label)
+        input_time_layout.addWidget(self.time_edit)
+        input_time_layout.addWidget(self.unit_combo)
 
         buttons_layout = QHBoxLayout()
-        ok_button = QPushButton('OK')
-        cancel_button = QPushButton('Cancel')
-        buttons_layout.addWidget(ok_button)
-        buttons_layout.addWidget(cancel_button)
+        buttons_layout.addWidget(self.ok_button)
+        buttons_layout.addWidget(self.cancel_button)
 
-        ok_button.clicked.connect(self.accept)
-        cancel_button.clicked.connect(self.reject)
+        timer_layout = QVBoxLayout()
+        timer_layout.addLayout(input_time_layout)
+        timer_layout.addLayout(buttons_layout)
 
-        final_layout = QVBoxLayout()
-        final_layout.addLayout(layout)
-        final_layout.addLayout(buttons_layout)
-
-        self.setLayout(final_layout)
+        self.setLayout(timer_layout)
 
     def create_time_unit_layout(self):
         time_unit_layout = QHBoxLayout()
