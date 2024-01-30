@@ -13,6 +13,7 @@ from controllers.sniffing_controller.number_bits_select_controller import Number
 class DataCollectorController(QObject):
     COMM_PROTOCOL = ['UART', 'SPI', 'I2C']
     CONNECTION_WAY = ['1Bit', 'NBits']
+    DEFAULT_CHANNEL_NUMBER = 1
 
     def __init__(self):
         super().__init__()
@@ -113,10 +114,10 @@ class DataCollectorController(QObject):
         elif selected_connection_way == '1Bit':
             one_bit_data = self.collect_one_bit_data()
             return {
-                one_bit_data['channel_number']: 1
+                one_bit_data['channel_number']: self.DEFAULT_CHANNEL_NUMBER
             }
         elif selected_connection_way == 'NBits':
             n_bit_data = self.collect_n_bit_data()
             return {
-                n_bit_data['channel_number']: 1
+                n_bit_data['channel_number']: self.DEFAULT_CHANNEL_NUMBER
             }
