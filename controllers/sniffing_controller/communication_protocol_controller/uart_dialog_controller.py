@@ -7,6 +7,8 @@ from controllers.project_path_controller import ProjectPathController
 from core.qsf_writer import QsfWriter
 from core.vhdl_generator import VhdlGenerator
 from models import log_messages
+from views.common.info_bar import create_success_bar
+from views.common.message_box import MessageBox
 
 CLOCK_FREQUENCY = 50000000
 
@@ -15,17 +17,18 @@ class UartDialogController(QObject):
     _instance = None
 
     @staticmethod
-    def get_instance(uart_setting_dialog=None):
+    def get_instance(parent=None, uart_setting_dialog=None):
         if UartDialogController._instance is None:
-            UartDialogController._instance = UartDialogController(uart_setting_dialog)
+            UartDialogController._instance = UartDialogController(parent, uart_setting_dialog)
         return UartDialogController._instance
 
-    def __init__(self, uart_setting_dialog):
+    def __init__(self, parent, uart_setting_dialog):
         super(UartDialogController, self).__init__()
 
         if UartDialogController._instance is not None:
             raise Exception("An instance of SpiDialogController already exists. Use get_instance() to access it.")
 
+        self.parent = parent
         self.uart_setting_dialog = uart_setting_dialog
         self.project_path_controller = ProjectPathController.get_instance()
 
@@ -40,14 +43,15 @@ class UartDialogController(QObject):
         self.project_path = self.project_path_controller.get_project_path()
 
         if not self.project_path:
-            self.project_path_controller.show_error_dialog(self.uart_setting_dialog.save_button)
+            MessageBox.show_project_path_error_dialog(self.uart_setting_dialog.save_button)
             return
 
         self.uart_configurations = self.collect_uart_settings()
         if self.uart_configurations is not None:
             self.uart_setting_dialog.accept()
-            logger.success(log_messages.UART_CONFIG_SET)
             self.render_uart_templates()
+            create_success_bar(self.parent, 'SUCCESS', log_messages.UART_CONFIG_SET)
+            logger.success(log_messages.UART_CONFIG_SET)
 
     def show_uart_dialog(self):
         try:
@@ -71,7 +75,7 @@ class UartDialogController(QObject):
         uart_configurations = {
             'option': 'UART',
             'top_level_name': self.project_path_controller.get_top_level_name(),
-            'clk_per_bit':  int(CLOCK_FREQUENCY / bit_rate),
+            'clk_per_bit': int(CLOCK_FREQUENCY / bit_rate),
             'baud_rate': bit_rate,
             'data_size': bits_per_frame,
             'stop_bit': stop_bits,
@@ -93,6 +97,7 @@ class UartDialogController(QObject):
             'Common_Ports.vhd.jinja',
             'Communication_Module.vhd.jinja'
         ]
+        qsf_writer.delete_vhdl_files()
 
         for template in template_names:
             vhdl_generator.render_template(template_name=template,
