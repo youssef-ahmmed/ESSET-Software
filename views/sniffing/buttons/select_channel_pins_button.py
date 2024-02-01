@@ -1,14 +1,16 @@
-from PyQt5.QtWidgets import QVBoxLayout, QWidget, QPushButton
+from PyQt5.QtWidgets import QVBoxLayout, QWidget
+from qfluentwidgets import FluentIcon as FIF
+from qfluentwidgets import PrimaryPushButton
 
 from views.sniffing.dialogs.hardware_pin_planner import HardwarePinPlanner
 
 
 class SelectChannelPinsButton(QWidget):
-    def __init__(self):
+    def __init__(self, parent=None):
         super().__init__()
 
-        self.channel_pins_button = QPushButton("Select Channel Pins")
-        self.pin_planner_table = HardwarePinPlanner(self.channel_pins_button)
+        self.channel_pins_button = PrimaryPushButton(FIF.PIN, "Select Channel Pins")
+        self.pin_planner_table = HardwarePinPlanner(self.channel_pins_button, parent)
 
         self.init_ui()
 
