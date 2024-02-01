@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout
-from controllers.sniffing_controller.buttons_controller.vhdl_editor_buttons_controller import \
-    VhdlEditorButtonsController
+from PyQt5.QtWidgets import QWidget, QHBoxLayout
+from qfluentwidgets import FluentIcon as FIF
+from qfluentwidgets import PushButton
 
 
 class VhdlEditorButtons(QWidget):
@@ -8,9 +8,9 @@ class VhdlEditorButtons(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.load_button = QPushButton('Load')
-        self.save_button = QPushButton('Save')
-        self.save_as_button = QPushButton('Save As')
+        self.load_button = PushButton(FIF.DOWNLOAD, 'Load')
+        self.save_button = PushButton(FIF.SAVE, 'Save')
+        self.save_as_button = PushButton(FIF.SAVE_AS, 'Save As')
 
         self.init_ui()
 

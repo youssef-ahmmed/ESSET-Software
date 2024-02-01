@@ -1,10 +1,11 @@
 from PyQt5.QtCore import QSize, Qt, QRect, QPoint, QRegExp
 from PyQt5.QtGui import QTextCharFormat, QBrush, QColor, QFont, QTextFormat, QPainter, QWheelEvent, \
     QKeyEvent, QTextCursor
-from PyQt5.QtWidgets import QPlainTextEdit, QWidget, QTextEdit, QLineEdit
+from PyQt5.QtWidgets import QWidget, QTextEdit, QLineEdit
+from qfluentwidgets import PlainTextEdit
 
 
-class Editor(QPlainTextEdit):
+class Editor(PlainTextEdit):
 
     class NumberArea(QWidget):
         def __init__(self, editor):
