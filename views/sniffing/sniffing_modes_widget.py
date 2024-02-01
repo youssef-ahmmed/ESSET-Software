@@ -8,11 +8,11 @@ from views.sniffing.simple_mode_widget import SimpleModeWidget
 
 class SniffingModesWidget(QWidget):
 
-    def __init__(self):
+    def __init__(self, parent):
         super().__init__()
 
         self.modes_widget = QTabWidget(self)
-        self.hardware_config = HardwareConfigurations()
+        self.hardware_config = HardwareConfigurations(parent)
 
         self.init_ui()
 
@@ -25,8 +25,8 @@ class SniffingModesWidget(QWidget):
         simple_mode = SimpleModeWidget()
         expert_mode = ExpertModeWidget()
 
-        self.modes_widget.addTab(simple_mode, "Simple Mode")
         self.modes_widget.addTab(expert_mode, "Expert Mode")
+        self.modes_widget.addTab(simple_mode, "Simple Mode")
 
         splitter = QSplitter(Qt.Horizontal)
         splitter.addWidget(self.modes_widget)
