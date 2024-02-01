@@ -29,9 +29,9 @@ end {{ top_level_name }};
 architecture behav of {{ top_level_name }} is
 begin
 
-    {%- if option == "1Bit" %}
-    -- 1Bit_Sniffing instance
-    1Bit_Sniffing_instance : entity work.1Bit_Sniffing
+    {%- if option == "One_Bit" %}
+    -- One_Bit_Sniffing instance
+    One_Bit_Sniffing_instance : entity work.One_Bit_Sniffing
     port map (
         i_1bit => i_1bit,
         o_Nbit => data_signal_buffer,
