@@ -1,6 +1,6 @@
 from PyQt5 import QtGui
-from PyQt5.QtWidgets import QDialog, QLabel, QLineEdit, QComboBox, QVBoxLayout, QHBoxLayout, \
-    QPushButton, QFormLayout
+from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout, QHBoxLayout
+from qfluentwidgets import ComboBox, PrimaryPushButton, SearchLineEdit
 
 
 class SniffingTimer(QDialog):
@@ -8,10 +8,10 @@ class SniffingTimer(QDialog):
         super(SniffingTimer, self).__init__(parent)
 
         self.label = QLabel('Stop recording after')
-        self.time_edit = QLineEdit()
-        self.unit_combo = QComboBox()
-        self.ok_button = QPushButton('OK')
-        self.cancel_button = QPushButton('Cancel')
+        self.time_edit = SearchLineEdit()
+        self.unit_combo = ComboBox()
+        self.ok_button = PrimaryPushButton('OK')
+        self.cancel_button = PrimaryPushButton('Cancel')
 
         self.init_ui()
 

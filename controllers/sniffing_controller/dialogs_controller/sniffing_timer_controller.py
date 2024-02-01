@@ -12,6 +12,7 @@ from controllers.data_store_controller.spi_store_controller import SpiStoreContr
 from controllers.data_store_controller.uart_store_controller import UartStoreController
 from controllers.project_path_controller import ProjectPathController
 from core.serial_communication import SerialCommunication
+from views.common.info_bar import create_success_bar
 from views.sniffing.dialogs.sniffing_timer import SniffingTimer
 
 
@@ -24,12 +25,12 @@ class SniffingTimerDialogController(QObject):
     _instance = None
 
     @staticmethod
-    def get_instance(sniffing_timer_dialog: SniffingTimer = None):
+    def get_instance(parent=None, sniffing_timer_dialog: SniffingTimer = None):
         if SniffingTimerDialogController._instance is None:
-            SniffingTimerDialogController._instance = SniffingTimerDialogController(sniffing_timer_dialog)
+            SniffingTimerDialogController._instance = SniffingTimerDialogController(parent, sniffing_timer_dialog)
         return SniffingTimerDialogController._instance
 
-    def __init__(self, sniffing_timer_dialog: SniffingTimer):
+    def __init__(self, parent, sniffing_timer_dialog: SniffingTimer):
         super(SniffingTimerDialogController, self).__init__()
 
         if SniffingTimerDialogController._instance is not None:
@@ -39,6 +40,7 @@ class SniffingTimerDialogController(QObject):
         self.sniffing_timer_dialog = sniffing_timer_dialog
         self.ok_button = self.sniffing_timer_dialog.ok_button
         self.cancel_button = self.sniffing_timer_dialog.cancel_button
+        self.parent = parent
 
         self.start_communication()
 
@@ -50,8 +52,8 @@ class SniffingTimerDialogController(QObject):
         self.cancel_button.clicked.connect(self.sniffing_timer_dialog.reject)
 
     def start_sniffing(self):
-        self.send_sof_file()
         self.store_sniffing_configurations()
+        create_success_bar(self.parent, 'SUCCESS', 'Sniffing Started Successfully ...')
         self.sniffing_timer_dialog.accept()
 
     def store_sniffing_configurations(self):
