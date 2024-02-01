@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QPlainTextEdit, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QVBoxLayout, QWidget
+from qfluentwidgets import PlainTextEdit
 
 
 class OutputTerminal(QWidget):
@@ -10,6 +11,6 @@ class OutputTerminal(QWidget):
     def init_ui(self):
         layout = QVBoxLayout(self)
 
-        self.terminal = QPlainTextEdit(self)
+        self.terminal = PlainTextEdit(self)
         self.terminal.setReadOnly(True)
         layout.addWidget(self.terminal)
