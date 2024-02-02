@@ -24,7 +24,7 @@ class NumberBitsSelectController(QObject):
         self.handle_selection()
 
     def handle_selection(self):
-        self.number_bit_select.bits_combo.activated.connect(self.check_bits_selection)
+        self.number_bit_select.bits_combo.currentTextChanged.connect(self.check_bits_selection)
 
     def check_bits_selection(self):
         self.selected_option = self.number_bit_select.get_selected_pin_number()

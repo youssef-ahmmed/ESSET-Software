@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QFileDialog, QMessageBox
 from controllers.project_path_controller import ProjectPathController
 from reusable_functions.file_operations import read_text_file, write_to_text_file
 from reusable_functions.dialog_message_box import show_error_message
+from views.common.message_box import MessageBox
 
 
 class VhdlEditorButtonsController(QObject):
@@ -31,7 +32,7 @@ class VhdlEditorButtonsController(QObject):
     def load_file(self):
         project_path = self.project_path_controller.get_project_path()
         if project_path == "":
-            self.project_path_controller.show_error_dialog(self.editor)
+            MessageBox.show_project_path_error_dialog(self.editor)
             return
 
         file_path, _ = QFileDialog.getOpenFileName(
@@ -48,7 +49,7 @@ class VhdlEditorButtonsController(QObject):
 
     def save_file(self):
         if self.project_path_controller.get_project_path() == "":
-            self.project_path_controller.show_error_dialog(self.editor)
+            MessageBox.show_project_path_error_dialog(self.editor)
             return
 
         if self.editor.current_file_path:
@@ -62,7 +63,7 @@ class VhdlEditorButtonsController(QObject):
     def save_as(self):
         project_path = self.project_path_controller.get_project_path()
         if project_path == "":
-            self.project_path_controller.show_error_dialog(self.editor)
+            MessageBox.show_project_path_error_dialog(self.editor)
             return
 
         file_path, _ = QFileDialog.getSaveFileName(

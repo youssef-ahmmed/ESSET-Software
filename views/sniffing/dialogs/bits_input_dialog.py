@@ -1,7 +1,10 @@
-from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton, QVBoxLayout, QDialog, QApplication, QHBoxLayout
+from PyQt5.QtWidgets import QVBoxLayout, QApplication, QHBoxLayout
+from qfluentwidgets import FluentIcon as FIF
+from qfluentwidgets import PrimaryPushButton, StrongBodyLabel, LineEdit
+from qframelesswindow import FramelessDialog
 
 
-class BitsInputDialog(QDialog):
+class BitsInputDialog(FramelessDialog):
     def __init__(self, label_text):
         super().__init__()
 
@@ -15,6 +18,7 @@ class BitsInputDialog(QDialog):
     def init_ui(self, label_text):
         self.setWindowTitle("Enter Number of Bits")
         self.setGeometry(200, 200, 300, 150)
+        self.setContentsMargins(0, 20, 0, 0)
 
         screen_geometry = QApplication.desktop().availableGeometry()
         x = int((screen_geometry.width() - self.width()) / 2)
@@ -27,10 +31,10 @@ class BitsInputDialog(QDialog):
         v_layout = QVBoxLayout()
         h_layout = QHBoxLayout()
 
-        self.bits_label = QLabel(label_text)
-        self.bits_input = QLineEdit()
-        self.save_button = QPushButton("Save")
-        self.cancel_button = QPushButton("Cancel")
+        self.bits_label = StrongBodyLabel(label_text)
+        self.bits_input = LineEdit()
+        self.save_button = PrimaryPushButton(FIF.SAVE, "Save")
+        self.cancel_button = PrimaryPushButton(FIF.CANCEL, "Cancel")
 
         v_layout.addWidget(self.bits_label)
         v_layout.addWidget(self.bits_input)

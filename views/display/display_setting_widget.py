@@ -1,8 +1,11 @@
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QWidget, QPushButton, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout
+from qfluentwidgets import FluentIcon as FIF
+from qfluentwidgets import PrimaryPushButton
+
+from views.custom_component.output_terminal import OutputTerminal
 from views.display.channel_buttons import ChannelButtons
 from views.display.search_timestamp import SearchTimestamp
-from views.custom_component.output_terminal import OutputTerminal
 
 
 class DisplaySettingsWidget(QWidget):
@@ -17,7 +20,7 @@ class DisplaySettingsWidget(QWidget):
         self.channel_button = ChannelButtons()
         self.search_timestamp = SearchTimestamp()
         self.display_terminal = OutputTerminal()
-        self.display_button = QPushButton("Display")
+        self.display_button = PrimaryPushButton(FIF.TRAIN, "Display")
 
         self.init_ui()
         self.start_communication()

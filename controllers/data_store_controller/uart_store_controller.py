@@ -12,10 +12,9 @@ class UartStoreController:
         self.uart_protocol_dao = None
 
     def store_uart_protocol(self):
-        if self.data_collector_controller.get_communication_protocol().get('option') == 'UART':
-            uart_data = self.data_collector_controller.collect_uart_data()
-            last_sniffed_data_id = SniffedDataDao.get_last_sniffed_data_id()
+        uart_data = self.data_collector_controller.collect_uart_data()
+        last_sniffed_data_id = SniffedDataDao.get_last_sniffed_data_id()
 
-            self.uart_protocol_dto = UartProtocolDto(last_sniffed_data_id, **uart_data)
-            self.uart_protocol_dao = UartProtocolDao(self.uart_protocol_dto)
-            self.uart_protocol_dao.insert()
+        self.uart_protocol_dto = UartProtocolDto(last_sniffed_data_id, **uart_data)
+        self.uart_protocol_dao = UartProtocolDao(self.uart_protocol_dto)
+        self.uart_protocol_dao.insert()

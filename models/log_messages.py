@@ -2,6 +2,9 @@
 NO_TOP_LEVEL_FILE = "There is no top level file"
 QUARTUS_PATH_SPECIFIED = "Quartus Path Specified Successfully."
 NO_QUARTUS_PATH = "No Quartus Path Specified."
+NO_SOF_FILE = "There is no sof file after Synthesis"
+ENV_PATH_SET = "Quartus Environment Path Set Successfully."
+NO_ENV_PATH = "NO Quartus Environment Path Specified"
 
 # UART Messages
 UART_RESET = "UART Configurations is Reset."
@@ -26,3 +29,6 @@ CONFIGURATION_ERROR = "Device Can Not Be Found or Can Not Be Configured"
 # Bit Sniffing Messages
 ONE_BIT_CONFIG_SET = "One Bit Sniffing Configurations Set Successfully."
 N_BITS_CONFIG_SET = "N Bits Sniffing Configurations Set Successfully."
+
+# Hardware Pin Planner
+PINS_SET = "Hardware Pins Set Successfully."

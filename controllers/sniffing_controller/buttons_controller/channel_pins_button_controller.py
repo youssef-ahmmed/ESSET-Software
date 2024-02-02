@@ -1,5 +1,7 @@
 from PyQt5.QtCore import QObject
 from loguru import logger
+from views.common.info_bar import create_error_bar
+from views.common.message_box import MessageBox
 
 from controllers.project_path_controller import ProjectPathController
 from core.vhdl_parser import VhdlParser
@@ -12,18 +14,19 @@ class ChannelPinsButtonController(QObject):
     _instance = None
 
     @staticmethod
-    def get_instance(channel_pins=None):
+    def get_instance(channel_pins=None, parent=None):
         if ChannelPinsButtonController._instance is None:
-            ChannelPinsButtonController._instance = ChannelPinsButtonController(channel_pins)
+            ChannelPinsButtonController._instance = ChannelPinsButtonController(channel_pins, parent)
         return ChannelPinsButtonController._instance
 
-    def __init__(self, channel_pins: SelectChannelPinsButton) -> None:
+    def __init__(self, channel_pins: SelectChannelPinsButton, parent) -> None:
         super(ChannelPinsButtonController, self).__init__()
 
         if ChannelPinsButtonController._instance is not None:
             raise Exception("An instance of ChannelPinsButtonController already exists. "
                             "Use get_instance() to access it.")
 
+        self.parent = parent
         self.channel_pins = channel_pins
         self.channel_pins_button = channel_pins.channel_pins_button
         self.pin_planner_table = channel_pins.pin_planner_table
@@ -41,12 +44,13 @@ class ChannelPinsButtonController(QObject):
     def get_top_level_file_path(self):
         project_path: str = self.project_path_controller.get_project_path()
         if not project_path:
-            self.project_path_controller.show_error_dialog(self.channel_pins_button)
+            MessageBox.show_project_path_error_dialog(self.channel_pins_button)
             return
 
         top_level_name: str = self.project_path_controller.get_top_level_name()
         if top_level_name == "not exist":
             logger.error(log_messages.NO_TOP_LEVEL_FILE)
+            create_error_bar(self.parent, 'ERROR', log_messages.NO_TOP_LEVEL_FILE)
             return
 
         return join_paths(project_path, top_level_name + '.vhd')

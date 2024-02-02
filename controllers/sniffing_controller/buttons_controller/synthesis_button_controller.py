@@ -8,6 +8,8 @@ from controllers.sniffing_controller.terminal_controller import TerminalControll
 from core.script_executor import ScriptExecutor
 from core.vhdl_generator import VhdlGenerator
 from models import log_messages
+from views.common.info_bar import create_success_bar, create_error_bar, create_info_bar
+from views.common.message_box import MessageBox
 
 
 class ScriptThread(QObject):
@@ -24,7 +26,6 @@ class ScriptThread(QObject):
         start_time = time.time()
         for line in self.executor.execute_script():
             if line.startswith("return code"):
-                print("line return code:", line[-1])
                 return_code = int(line[-1])
             self.progress.emit(line)
         end_time = time.time()
@@ -36,19 +37,19 @@ class SynthesisButtonController(QObject):
     _instance = None
 
     @staticmethod
-    def get_instance(synthesis_button=None):
+    def get_instance(parent=None, synthesis_button=None):
         if SynthesisButtonController._instance is None:
-            SynthesisButtonController._instance = SynthesisButtonController(synthesis_button)
+            SynthesisButtonController._instance = SynthesisButtonController(parent, synthesis_button)
         return SynthesisButtonController._instance
 
-    def __init__(self, synthesis_button):
+    def __init__(self, parent, synthesis_button):
         super(SynthesisButtonController, self).__init__()
 
         if SynthesisButtonController._instance is not None:
             raise Exception("An instance of SynthesisButtonController already exists. Use get_instance() to access it.")
 
         self.synthesis_button = synthesis_button
-
+        self.parent = parent
         self.start_communication()
 
     def start_communication(self):
@@ -59,6 +60,7 @@ class SynthesisButtonController(QObject):
         if script_path is None:
             return
         logger.info(log_messages.SYNTHESIZE_INITIATED)
+        create_info_bar(self.parent, 'INFO', log_messages.SYNTHESIZE_INITIATED)
         self.thread = QThread()
         self.worker = ScriptThread(script_path)
         self.worker.moveToThread(self.thread)
@@ -78,7 +80,7 @@ class SynthesisButtonController(QObject):
         project_path = project_path_controller.get_project_path()
 
         if not project_path:
-            project_path_controller.show_error_dialog(self.synthesis_button)
+            MessageBox.show_project_path_error_dialog(self.synthesis_button)
             return
 
         script_path = project_path_controller.get_script_path()
@@ -89,11 +91,20 @@ class SynthesisButtonController(QObject):
 
     @staticmethod
     def append_output(line):
-        TerminalController.get_instance().append_line(line)
+        if line.startswith('Info'):
+            TerminalController.get_instance().append_success(line)
+        elif line.startswith('Warning'):
+            TerminalController.get_instance().append_warning(line)
+        elif line.startswith('Error'):
+            TerminalController.get_instance().append_error(line)
+        else:
+            TerminalController.get_instance().append_info(line)
 
-    @staticmethod
-    def display_log_message(return_code, execution_time):
+    def display_log_message(self, return_code, execution_time):
         if return_code == 0:
+            create_success_bar(self.parent, 'SUCCESS',
+                               f"{log_messages.SYNTHESIZE_SUCCESS} {execution_time} seconds.")
             logger.success(f"{log_messages.SYNTHESIZE_SUCCESS} {execution_time} seconds.")
         else:
+            create_error_bar(self.parent, 'ERROR', log_messages.SYNTHESIZE_FAILED)
             logger.error(log_messages.SYNTHESIZE_FAILED)

@@ -1,7 +1,7 @@
 import platform
 
 from PyQt5.QtCore import pyqtSignal, QObject
-from PyQt5.QtWidgets import QFileDialog, QMessageBox, QPushButton
+from PyQt5.QtWidgets import QFileDialog
 from loguru import logger
 
 from models import log_messages
@@ -15,17 +15,19 @@ class ProjectPathController(QObject):
     _instance = None
 
     @staticmethod
-    def get_instance():
+    def get_instance(parent=None):
         if ProjectPathController._instance is None:
-            ProjectPathController._instance = ProjectPathController()
+            ProjectPathController._instance = ProjectPathController(parent)
         return ProjectPathController._instance
 
-    def __init__(self):
+    def __init__(self, parent=None):
         super(ProjectPathController, self).__init__()
         if ProjectPathController._instance is not None:
             raise Exception("Controllers are singleton classes, please use the instance function")
 
+        self.parent = parent
         self.project_path = ""
+        self.env_path = ""
 
     def open_directory_dialog(self):
         directory_path = QFileDialog.getExistingDirectory(None, 'Select Project Directory')
@@ -63,22 +65,22 @@ class ProjectPathController(QObject):
 
         return None
 
-    @staticmethod
-    def show_error_dialog(parent):
-        error_dialog = QMessageBox(parent)
-        error_dialog.setIcon(QMessageBox.Critical)
-        error_dialog.setWindowTitle('Error')
-        error_dialog.setText("There is No Quartus Path Specified\n\nDo You Want to specify one ?")
+    def get_sof_file(self) -> str | None:
+        sof_dir_path = os.path.join(self.project_path, 'output_files')
+        if not os.path.exists(sof_dir_path):
+            return None
+        sof_files = [file for file in os.listdir(sof_dir_path) if file.endswith('.sof')]
+        if not sof_files:
+            return None
+        return os.path.join(sof_dir_path, sof_files[0])
 
-        ok_button = QPushButton('OK')
-        cancel_button = QPushButton('Cancel')
+    def open_env_path_dialog(self):
+        env_path = QFileDialog.getExistingDirectory(None, 'Select Environment Path')
+        if env_path:
+            logger.success(log_messages.ENV_PATH_SET)
+            self.env_path = env_path
+        else:
+            logger.warning(log_messages.NO_ENV_PATH)
 
-        error_dialog.addButton(ok_button, QMessageBox.AcceptRole)
-        error_dialog.addButton(cancel_button, QMessageBox.RejectRole)
-
-        result = error_dialog.exec_()
-
-        if result == QMessageBox.AcceptRole:
-            ProjectPathController.get_instance().open_directory_dialog()
-        elif result == QMessageBox.RejectRole:
-            logger.warning(log_messages.NO_QUARTUS_PATH)
+    def get_env_path(self):
+        return self.env_path

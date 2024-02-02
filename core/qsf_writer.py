@@ -22,7 +22,7 @@ class QsfWriter:
         write_to_text_file(qsf_file_path, ''.join([qsf_file_content] + new_assignments))
 
     def write_hardware_pins(self, hardware_pins: dict[str, str]):
-        new_location_assignment = [f"set_location_assignment {pin} -to {node}\n" for node, pin in hardware_pins.items()]
+        new_location_assignment = [f"\nset_location_assignment {pin} -to {node}\n" for node, pin in hardware_pins.items()]
         self.write_qsf_content(r'set_location_assignment .*', new_location_assignment)
 
     def write_vhdl_files_to_qsf(self):
@@ -43,3 +43,14 @@ class QsfWriter:
             if check_is_file(file_path) and file_name.endswith('.vhd'):
                 vhdl_files.append(file_name)
         return vhdl_files
+
+    def delete_vhdl_files(self):
+        project_path = self.project_path_controller.get_project_path()
+
+        for file_name in os.listdir(project_path):
+            file_path = os.path.join(project_path, file_name)
+            if os.path.isfile(file_path) and file_name.endswith('.vhd'):
+                try:
+                    os.remove(file_path)
+                except Exception as e:
+                    print(f"Error deleting file {file_path}: {str(e)}")
