@@ -1,7 +1,9 @@
 from PyQt5.QtCore import pyqtSignal, QObject
-from PyQt5.QtWidgets import QFileDialog, QMessageBox, QPushButton
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
 
 from controllers.project_path_controller import ProjectPathController
+from reusable_functions.file_operations import read_text_file, write_to_text_file
+from reusable_functions.dialog_message_box import show_error_message
 
 
 class VhdlEditorButtonsController(QObject):
@@ -37,14 +39,12 @@ class VhdlEditorButtonsController(QObject):
         )
         if file_path:
             try:
-                with open(file_path, 'r') as file:
-                    self.editor.setPlainText(file.read())
-                    self.editor.current_file_path = file_path
+                file_content = read_text_file(file_path)
+                self.editor.setPlainText(file_content)
+                self.editor.current_file_path = file_path
                 self.file_path_changed.emit(file_path)
             except Exception as e:
-                QMessageBox.warning(
-                    self.editor_buttons, "Error", f"Error loading file: {str(e)}"
-                )
+                show_error_message(self.editor_buttons, f"Error loading file: {str(e)}")
 
     def save_file(self):
         if self.project_path_controller.get_project_path() == "":
@@ -53,12 +53,9 @@ class VhdlEditorButtonsController(QObject):
 
         if self.editor.current_file_path:
             try:
-                with open(self.editor.current_file_path, 'w') as file:
-                    file.write(self.editor.toPlainText())
+                write_to_text_file(self.editor.current_file_path, self.editor.toPlainText())
             except Exception as e:
-                QMessageBox.warning(
-                    self.editor_buttons, "Error", f"Error saving file: {str(e)}"
-                )
+                show_error_message(self.editor_buttons, f"Error saving file: {str(e)}")
         else:
             self.save_as()
 
@@ -73,11 +70,8 @@ class VhdlEditorButtonsController(QObject):
         )
         if file_path:
             try:
-                with open(file_path, 'w') as file:
-                    file.write(self.editor.toPlainText())
+                write_to_text_file(file_path, self.editor.toPlainText())
                 self.editor.current_file_path = file_path
                 self.file_path_changed.emit(file_path)
             except Exception as e:
-                QMessageBox.warning(
-                    self.editor_buttons, "Error", f"Error saving file: {str(e)}"
-                )
+                show_error_message(self.editor_buttons, f"Error saving file: {str(e)}")

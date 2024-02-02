@@ -26,8 +26,7 @@ class VhdlGenerator:
         else:
             template_path = join_paths(output_path, template_name.replace('.jinja', ''))
 
-        with open(template_path, 'w') as file:
-            file.write(rendered_content)
+        write_to_text_file(template_path, rendered_content)
 
     def generate_script(self, project_path):
         vhdl_generator = VhdlGenerator()

@@ -14,12 +14,12 @@ class QsfWriter:
         if qsf_file_path == 'not exist':
             return
 
-        qsf_file_content = self.read_qsf_file_content(qsf_file_path)
+        qsf_file_content = read_text_file(qsf_file_path)
 
         assignment_pattern = re.compile(pattern)
         qsf_file_content = re.sub(assignment_pattern, '', qsf_file_content)
 
-        self.append_to_qsf_file(qsf_file_path, ''.join([qsf_file_content] + new_assignments))
+        write_to_text_file(qsf_file_path, ''.join([qsf_file_content] + new_assignments))
 
     def write_hardware_pins(self, hardware_pins: dict[str, str]):
         new_location_assignment = [f"set_location_assignment {pin} -to {node}\n" for node, pin in hardware_pins.items()]
@@ -43,19 +43,3 @@ class QsfWriter:
             if check_is_file(file_path) and file_name.endswith('.vhd'):
                 vhdl_files.append(file_name)
         return vhdl_files
-
-    @staticmethod
-    def read_qsf_file_content(qsf_file_path: str) -> str:
-        try:
-            with open(qsf_file_path, 'r') as qsf_file:
-                return qsf_file.read()
-        except FileNotFoundError:
-            raise FileNotFoundError(f"File not found: {qsf_file}")
-
-    @staticmethod
-    def append_to_qsf_file(qsf_file_path: str, qsf_file_content: str) -> None:
-        try:
-            with open(qsf_file_path, 'w') as file:
-                file.write(qsf_file_content)
-        except Exception as e:
-            print(f"Error appending content to {qsf_file_path}: {str(e)}")
