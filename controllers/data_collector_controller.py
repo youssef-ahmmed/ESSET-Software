@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QObject
 
-from controllers.sniffing_controller.bits_input_dialog_controller import BitsInputDialogController
+from controllers.sniffing_controller.dialogs_controller.bits_input_dialog_controller import BitsInputDialogController
 from controllers.sniffing_controller.buttons_controller.channel_pins_button_controller import \
     ChannelPinsButtonController
 from controllers.sniffing_controller.comm_protocol_select_controller import CommProtocolSelectController
@@ -73,7 +73,7 @@ class DataCollectorController(QObject):
         if connection_way:
             return connection_way
 
-    def get_sniffed_data(self):
+    def collect_sniffed_data(self):
         comm_protocol = CommProtocolSelectController.get_instance().get_selected_option()
         connection_way = NumberBitsSelectController.get_instance().get_selected_option()
         if comm_protocol not in self.COMM_PROTOCOL:
@@ -87,7 +87,7 @@ class DataCollectorController(QObject):
         return sniffed_data
 
     def get_communication_protocol(self):
-        sniffed_data = self.get_sniffed_data()
+        sniffed_data = self.collect_sniffed_data()
         selected_protocol = sniffed_data['communication_protocol_name']
         if selected_protocol == 'Select Comm Protocol' or selected_protocol == 'None':
             return
@@ -106,7 +106,7 @@ class DataCollectorController(QObject):
             }
 
     def get_connection_way(self):
-        sniffed_data = self.get_sniffed_data()
+        sniffed_data = self.collect_sniffed_data()
         selected_connection_way = sniffed_data['connection_way']
         if selected_connection_way == 'None' or selected_connection_way == 'Select bits number':
             return

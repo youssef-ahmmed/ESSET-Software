@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QScrollArea, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QScrollArea, QVBoxLayout
+from qfluentwidgets import TableWidget
 
 from views.display.plot_widget import PlotWidget
 
@@ -14,7 +15,7 @@ class WaveformWidget(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        self.table_widget = QTableWidget(self)
+        self.table_widget = TableWidget(self)
         self.table_widget.setColumnCount(1)
         self.table_widget.setRowCount(self.channel_numbers)
 

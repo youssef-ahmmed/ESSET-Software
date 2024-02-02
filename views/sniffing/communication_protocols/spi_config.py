@@ -1,15 +1,20 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, \
-    QPushButton, QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication, QMessageBox
+from PyQt5.QtWidgets import QLabel, \
+    QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication, QMessageBox
 from loguru import logger
+from qfluentwidgets import FluentIcon as FIF, ComboBox
+from qfluentwidgets import PrimaryPushButton, StrongBodyLabel
+from qframelesswindow import FramelessDialog
 
 from models import log_messages
+from views.common.info_bar import create_info_bar
 
 
-class SpiConfigurations(QDialog):
-    def __init__(self):
+class SpiConfigurations(FramelessDialog):
+    def __init__(self, parent=None):
         super().__init__()
 
+        self.parent = parent
         self.reset_button = None
         self.cancel_button = None
         self.save_button = None
@@ -37,14 +42,16 @@ class SpiConfigurations(QDialog):
     def spi_settings(self):
         self.settings_widget = QWidget()
         self.base_layout = QFormLayout(self.settings_widget)
+        title = StrongBodyLabel("SPI Configurations")
+        title.setAlignment(Qt.AlignCenter)
 
         row_spacing = 15
         self.base_layout.setVerticalSpacing(row_spacing)
 
-        mosi_label, self.mosi_combo = self.create_channels_combo_box("MOSI", QComboBox())
-        miso_label, self.miso_combo = self.create_channels_combo_box("MISO", QComboBox())
-        clock_label, self.clock_combo = self.create_channels_combo_box("Clock", QComboBox())
-        enable_label, self.enable_combo = self.create_channels_combo_box("Enable", QComboBox())
+        mosi_label, self.mosi_combo = self.create_channels_combo_box("MOSI", ComboBox())
+        miso_label, self.miso_combo = self.create_channels_combo_box("MISO", ComboBox())
+        clock_label, self.clock_combo = self.create_channels_combo_box("Clock", ComboBox())
+        enable_label, self.enable_combo = self.create_channels_combo_box("Enable", ComboBox())
 
         significant_bit_label, self.significant_bit_combo = self.create_setup_combo_box("Significant Bit",
                                                                                         ["L", "M"],
@@ -58,7 +65,7 @@ class SpiConfigurations(QDialog):
         clock_phase_label, self.clock_phase_combo = self.create_setup_combo_box("Clock Phase",
                                                                                 ["0", "1"],
                                                                                 "0")
-
+        self.base_layout.addRow(title)
         self.base_layout.addRow(mosi_label, self.mosi_combo)
         self.base_layout.addRow(miso_label, self.miso_combo)
         self.base_layout.addRow(clock_label, self.clock_combo)
@@ -71,13 +78,13 @@ class SpiConfigurations(QDialog):
     def create_channels_combo_box(self, label_text, combo_box):
         label = QLabel(label_text)
         combo_box.addItems(self.initial_values)
-        combo_box.setItemData(0, 0, role=Qt.UserRole - 1)
+        # combo_box.setItemData(0, 0, role=Qt.UserRole - 1)
         combo_box.setCurrentIndex(0)
         return label, combo_box
 
     def create_setup_combo_box(self, label_text, items, default_value):
         label = QLabel(label_text)
-        combo_box = QComboBox()
+        combo_box = ComboBox()
         combo_box.addItems(items)
         combo_box.setCurrentText(default_value)
         return label, combo_box
@@ -85,9 +92,9 @@ class SpiConfigurations(QDialog):
     def create_layout(self):
         layout = QVBoxLayout()
 
-        self.reset_button = QPushButton("Reset")
-        self.cancel_button = QPushButton("Cancel")
-        self.save_button = QPushButton("Save")
+        self.reset_button = PrimaryPushButton(FIF.REMOVE, "Reset")
+        self.cancel_button = PrimaryPushButton(FIF.CANCEL_MEDIUM, "Cancel")
+        self.save_button = PrimaryPushButton(FIF.SAVE, "Save")
 
         layout.addWidget(self.settings_widget)
 
@@ -151,7 +158,7 @@ class SpiConfigurations(QDialog):
         self.prev_value = getattr(self, f"prev_b{self.combo_box_index}")
 
         self.update_prev_value(combo_box, items_without_selected)
-        combo_box.model().sort(0)
+        # combo_box.model().sort(0)
 
     def update_prev_value(self, combo_box, items_without_selected):
         if self.prev_value != "Select Channel" and self.prev_value != self.selected_channel:
@@ -177,7 +184,7 @@ class SpiConfigurations(QDialog):
             if self.current_texts[combo_box] not in items_without_selected:
                 combo_box.addItem(self.current_texts[combo_box])
         combo_box.setCurrentText(self.current_texts[combo_box])
-        combo_box.model().sort(0)
+        # combo_box.model().sort(0)
 
     def get_selected_channels(self):
         mosi = self.mosi_combo.currentText()
@@ -202,6 +209,7 @@ class SpiConfigurations(QDialog):
         self.clock_state_combo.setCurrentText('0')
         self.clock_phase_combo.setCurrentText('0')
         logger.info(log_messages.SPI_RESET)
+        create_info_bar(self.parent, 'INFO', log_messages.SPI_RESET)
 
     @staticmethod
     def show_spi_channel_warning(channel_name):

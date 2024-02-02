@@ -1,3 +1,6 @@
+from PyQt5.QtGui import QTextCursor
+
+
 class TerminalController:
     _instance = None
 
@@ -24,3 +27,22 @@ class TerminalController:
 
     def clear_terminal(self):
         self.terminal.clear()
+
+    def append_success(self, text):
+        self._append_colored_text(text, 'green')
+
+    def append_error(self, text):
+        self._append_colored_text(text, 'red')
+
+    def append_warning(self, text):
+        self._append_colored_text(text, 'yellow')
+
+    def append_info(self, text):
+        self._append_colored_text(text, 'darkblue')
+
+    def _append_colored_text(self, text, color):
+        cursor = self.terminal.textCursor()
+        cursor.movePosition(QTextCursor.End)
+        cursor.insertHtml(f'<font color="{color}">{text}</font><br>')
+        self.terminal.setTextCursor(cursor)
+        self.terminal.ensureCursorVisible()

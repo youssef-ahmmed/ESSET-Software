@@ -1,17 +1,24 @@
-from PyQt5.QtWidgets import QDialog, QTableWidget, QTableWidgetItem, QVBoxLayout, QComboBox, QPushButton, QHBoxLayout
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QTableWidgetItem, QVBoxLayout, QHBoxLayout
+from loguru import logger
+from qfluentwidgets import FluentIcon as FIF, StrongBodyLabel
+from qfluentwidgets import TableWidget, PrimaryPushButton, ComboBox
+from qframelesswindow import FramelessDialog
 
 from core.qsf_writer import QsfWriter
+from models import log_messages
+from views.common.info_bar import create_success_bar
 
 
-class HardwarePinPlanner(QDialog):
-    def __init__(self):
-        super().__init__()
+class HardwarePinPlanner(FramelessDialog):
+    def __init__(self, parent=None, info_bar=None):
+        super().__init__(parent)
 
-        self.pin_planner = QTableWidget()
-        self.save_button = QPushButton("Save")
-        self.cancel_button = QPushButton("Cancel")
+        self.info_bar = info_bar
+        self.pin_planner = TableWidget()
+        self.save_button = PrimaryPushButton(FIF.SAVE, "Save")
+        self.cancel_button = PrimaryPushButton(FIF.CANCEL_MEDIUM, "Cancel")
 
-        self.setWindowTitle("Hardware Pin Planner")
         self.init_ui()
 
         self.start_communication()
@@ -23,11 +30,16 @@ class HardwarePinPlanner(QDialog):
     def init_ui(self):
         layout = QVBoxLayout()
         self.setLayout(layout)
+        self.setContentsMargins(0, 20, 0, 0)
 
-        self.pin_planner.setMinimumSize(1000, 1000)
+        title = StrongBodyLabel("Hardware Pin Planner")
+        title.setAlignment(Qt.AlignCenter)
+
+        self.pin_planner.setMinimumSize(500, 400)
         self.pin_planner.setColumnCount(2)
         self.pin_planner.setHorizontalHeaderLabels(["Node Name", "Hardware Pin"])
 
+        layout.addWidget(title)
         layout.addWidget(self.pin_planner)
 
         button_layout = QHBoxLayout()
@@ -47,7 +59,7 @@ class HardwarePinPlanner(QDialog):
         for row, (node_name, pin_list) in enumerate(data):
             self.pin_planner.setItem(row, 0, QTableWidgetItem(node_name))
 
-            combobox = QComboBox()
+            combobox = ComboBox()
             combobox.addItems(pin_list)
             self.pin_planner.setCellWidget(row, 1, combobox)
 
@@ -71,4 +83,6 @@ class HardwarePinPlanner(QDialog):
         qsf_writer = QsfWriter()
         qsf_writer.write_hardware_pins(hardware_pins)
 
+        create_success_bar(self.info_bar, 'SUCCESS', log_messages.PINS_SET)
+        logger.success(log_messages.PINS_SET)
         self.accept()

@@ -1,9 +1,9 @@
 from enum import Enum
 
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPushButton, QLabel, QVBoxLayout
-
-from views.display.waveform_widget import WaveformWidget
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QVBoxLayout
+from qfluentwidgets import FluentIcon as FIF
+from qfluentwidgets import PushButton, PrimaryPushButton
 
 
 class ChannelButtons(QWidget):
@@ -34,12 +34,11 @@ class ChannelButtons(QWidget):
             channel_button.clicked.connect(lambda _, num=button_number: self.channel_visibility.emit(num))
 
     def init_ui(self):
-        self.clear_button = QPushButton("Clear")
-        self.all_button = QPushButton("All")
+        self.clear_button = PushButton(FIF.REMOVE_FROM, "Clear")
+        self.all_button = PushButton(FIF.VIEW, "Show All")
 
         for button in range(self.button_numbers):
-            channel_button = QPushButton(f'{button}')
-            channel_button.setStyleSheet(f"background-color: {self.Color.LIGHT_BLUE.value}")
+            channel_button = PrimaryPushButton(f'{button}')
             channel_button.setFixedSize(50, 30)
             self.channel_buttons.append(channel_button)
 

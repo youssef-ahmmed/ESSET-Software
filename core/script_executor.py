@@ -1,18 +1,21 @@
 import os
+import platform
 import subprocess
 
 from loguru import logger
+
+from controllers.project_path_controller import ProjectPathController
 
 
 class ScriptExecutor:
     def __init__(self, script_path):
         self.script_path = script_path
-        # TODO: Set the environment path dynamically
-        os.environ["PATH"] += os.pathsep + "/home/ahmedhamdi/Programs/FPGA/Quartus/quartus/bin"
+        os.environ["PATH"] += os.pathsep + ProjectPathController.get_instance().get_env_path()
 
     def execute_script(self):
         try:
-            self.chmod_script()
+            if platform.system() == 'Linux':
+                self.chmod_script()
             script_directory = os.path.dirname(self.script_path)
             os.chdir(script_directory)
 
