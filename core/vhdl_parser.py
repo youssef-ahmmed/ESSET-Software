@@ -1,6 +1,8 @@
 import re
 from re import Match
 
+from reusable_functions.file_operations import read_text_file
+
 
 class VhdlParser:
 
@@ -70,16 +72,6 @@ class VhdlParser:
         return channel_numbers
 
     def _get_entity_content(self) -> str | None:
-        vhdl_code: str = self._read_vhdl_file(self.file_path)
+        vhdl_code: str = read_text_file(self.file_path)
         entity_match: Match[str] = self.ENTITY_PATTERN.search(vhdl_code)
         return entity_match.group(0) if entity_match else None
-
-    @staticmethod
-    def _read_vhdl_file(file_path: str) -> str:
-        try:
-            with open(file_path, 'r') as file:
-                return file.read()
-        except FileNotFoundError:
-            raise FileNotFoundError(f"File not found: {file_path}")
-        except Exception as e:
-            raise Exception(f"Error reading file: {e}")

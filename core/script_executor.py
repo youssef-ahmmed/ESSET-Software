@@ -1,23 +1,25 @@
-import os
 import platform
 import subprocess
 
 from loguru import logger
 
+from reusable_functions.os_operations import change_dir, get_environ_path, change_file_mode, \
+    get_path_separation, get_directory_name
 from controllers.project_path_controller import ProjectPathController
 
 
 class ScriptExecutor:
     def __init__(self, script_path):
         self.script_path = script_path
-        os.environ["PATH"] += os.pathsep + ProjectPathController.get_instance().get_env_path()
+        path_env = get_environ_path()
+        path_env += get_path_separation() + ProjectPathController.get_instance().get_env_path()
 
     def execute_script(self):
         try:
             if platform.system() == 'Linux':
                 self.chmod_script()
-            script_directory = os.path.dirname(self.script_path)
-            os.chdir(script_directory)
+            script_directory = get_directory_name(self.script_path)
+            change_dir(script_directory)
 
             process = subprocess.Popen(self.script_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                        universal_newlines=True)
@@ -35,7 +37,7 @@ class ScriptExecutor:
 
     def chmod_script(self):
         try:
-            os.chmod(self.script_path, 0o755)
+            change_file_mode(self.script_path, 0o755)
         except Exception as e:
             logger.error(f"An error occurred while executing the script with permission: {str(e)}")
             return None

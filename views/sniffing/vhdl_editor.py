@@ -1,7 +1,7 @@
-import os
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QLabel, QVBoxLayout, QWidget, QTabBar
 
+from reusable_functions.os_operations import get_basename
 from views.sniffing.custom_tab_widget import CustomTabWidget
 from views.sniffing.editor.editor import Editor
 from views.sniffing.editor.highlighter import Highlighter
@@ -59,5 +59,5 @@ class VhdlEditor(QWidget):
         self.project_path_label.setText(f"Quartus Project Path: {project_path}")
 
     def change_editor_label(self, index, file_name):
-        file_name = os.path.basename(file_name)
+        file_name = get_basename(file_name)
         self.tab_widget.setTabText(index, file_name)
