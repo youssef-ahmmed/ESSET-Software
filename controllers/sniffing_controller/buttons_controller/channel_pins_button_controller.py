@@ -1,12 +1,10 @@
-import os
-
 from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QPushButton
 from loguru import logger
 
 from controllers.project_path_controller import ProjectPathController
 from core.vhdl_parser import VhdlParser
 from models import log_messages
+from reusable_functions.os_operations import join_paths, get_last_modification_time
 from views.sniffing.buttons.select_channel_pins_button import SelectChannelPinsButton
 
 
@@ -51,7 +49,7 @@ class ChannelPinsButtonController(QObject):
             logger.error(log_messages.NO_TOP_LEVEL_FILE)
             return
 
-        return os.path.join(project_path, top_level_name + '.vhd')
+        return join_paths(project_path, top_level_name + '.vhd')
 
     def get_vhdl_nodes_name(self) -> list[str]:
         vhdl_parser = VhdlParser(self.top_level_file_path)
@@ -62,13 +60,13 @@ class ChannelPinsButtonController(QObject):
         if not self.top_level_file_path:
             return
 
-        current_timestamp: float = os.path.getmtime(self.top_level_file_path)
+        current_timestamp: float = get_last_modification_time(self.top_level_file_path)
         if current_timestamp == self.previous_opened_timestamp:
             self.channel_pins.show_pin_planner_dialog()
             return
 
         nodes_name: list[str] = self.get_vhdl_nodes_name()
-        self.previous_opened_timestamp = os.path.getmtime(self.top_level_file_path)
+        self.previous_opened_timestamp = get_last_modification_time(self.top_level_file_path)
 
         self.pin_planner_table.populate_pin_planner(nodes_name)
         self.channel_pins.show_pin_planner_dialog()

@@ -1,9 +1,10 @@
-import os
 import platform
 
 from jinja2 import Environment, select_autoescape, PackageLoader
 
 from controllers.project_path_controller import ProjectPathController
+from reusable_functions.file_operations import write_to_text_file
+from reusable_functions.os_operations import join_paths
 
 
 class VhdlGenerator:
@@ -21,9 +22,9 @@ class VhdlGenerator:
         rendered_content = template.render(configurations)
 
         if template_name == 'top_level.vhd.jinja':
-            template_path = os.path.join(output_path, f"{top_level_name}.vhd")
+            template_path = join_paths(output_path, f"{top_level_name}.vhd")
         else:
-            template_path = os.path.join(output_path, template_name.replace('.jinja', ''))
+            template_path = join_paths(output_path, template_name.replace('.jinja', ''))
 
         with open(template_path, 'w') as file:
             file.write(rendered_content)
@@ -35,4 +36,4 @@ class VhdlGenerator:
         script_file = 'synthesis_linux.sh' if platform.system() == 'Linux' else 'synthesis_windows.sh'
 
         vhdl_generator.render_template(script_template, configurations=configurations, output_path=project_path)
-        return os.path.join(project_path, script_file)
+        return join_paths(project_path, script_file)

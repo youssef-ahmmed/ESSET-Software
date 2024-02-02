@@ -1,7 +1,8 @@
-import os
 import re
 
 from controllers.project_path_controller import ProjectPathController
+from reusable_functions.file_operations import read_text_file, write_to_text_file
+from reusable_functions.os_operations import dir_list, join_paths, check_is_file
 
 
 class QsfWriter:
@@ -36,10 +37,10 @@ class QsfWriter:
         vhdl_files = []
         project_path = self.project_path_controller.get_project_path()
 
-        files_in_directory = os.listdir(project_path)
+        files_in_directory = dir_list(project_path)
         for file_name in files_in_directory:
-            file_path = os.path.join(project_path, file_name)
-            if os.path.isfile(file_path) and file_name.endswith('.vhd'):
+            file_path = join_paths(project_path, file_name)
+            if check_is_file(file_path) and file_name.endswith('.vhd'):
                 vhdl_files.append(file_name)
         return vhdl_files
 
