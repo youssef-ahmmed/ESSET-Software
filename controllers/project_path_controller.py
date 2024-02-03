@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QFileDialog
 from loguru import logger
 
 from models import log_messages
-from reusable_functions.os_operations import split_pathname, join_paths, dir_list
+from reusable_functions.os_operations import split_pathname, join_paths, dir_list, check_path_exists
 
 
 class ProjectPathController(QObject):
@@ -67,13 +67,13 @@ class ProjectPathController(QObject):
         return None
 
     def get_sof_file(self) -> str | None:
-        sof_dir_path = os.path.join(self.project_path, 'output_files')
-        if not os.path.exists(sof_dir_path):
+        sof_dir_path = join_paths(self.project_path, 'output_files')
+        if not check_path_exists(sof_dir_path):
             return None
-        sof_files = [file for file in os.listdir(sof_dir_path) if file.endswith('.sof')]
+        sof_files = [file for file in dir_list(sof_dir_path) if file.endswith('.sof')]
         if not sof_files:
             return None
-        return os.path.join(sof_dir_path, sof_files[0])
+        return join_paths(sof_dir_path, sof_files[0])
 
     def open_env_path_dialog(self):
         env_path = QFileDialog.getExistingDirectory(None, 'Select Environment Path')

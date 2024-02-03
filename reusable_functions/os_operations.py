@@ -43,3 +43,11 @@ def get_last_modification_time(path) -> float:
 
 def get_basename(path) -> str:
     return os.path.basename(path)
+
+
+def check_path_exists(path) -> bool:
+    return os.path.exists(path)
+
+
+def remove_file(path) -> None:
+    os.remove(path)

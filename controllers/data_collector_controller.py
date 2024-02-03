@@ -90,7 +90,7 @@ class DataCollectorController(QObject):
     def get_communication_protocol(self):
         sniffed_data = self.collect_sniffed_data()
         selected_protocol = sniffed_data['communication_protocol_name']
-        if selected_protocol == 'Select Comm Protocol' or selected_protocol == 'None':
+        if selected_protocol == 'Choose':
             return
         elif selected_protocol == "UART":
             uart_data = UartDialogController.get_instance().collect_uart_settings()
@@ -109,15 +109,14 @@ class DataCollectorController(QObject):
     def get_connection_way(self):
         sniffed_data = self.collect_sniffed_data()
         selected_connection_way = sniffed_data['connection_way']
-        if selected_connection_way == 'None' or selected_connection_way == 'Select bits number':
+        if selected_connection_way == 'Choose':
             return
         elif selected_connection_way == '1Bit':
-            one_bit_data = self.collect_one_bit_data()
             return {
-                one_bit_data['output_channel_number']: self.DEFAULT_CHANNEL_NUMBER
+                'Channel 1': self.DEFAULT_CHANNEL_NUMBER
             }
         elif selected_connection_way == 'NBits':
-            n_bit_data = self.collect_n_bit_data()
+            channel_number = self.collect_n_bit_data().get('channel_number') + 1
             return {
-                n_bit_data['channel_number']: self.DEFAULT_CHANNEL_NUMBER
+                f'Channel {num}': num for num in range(1, channel_number)
             }

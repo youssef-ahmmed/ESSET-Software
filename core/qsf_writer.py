@@ -44,14 +44,3 @@ class QsfWriter:
             if check_is_file(file_path) and file_name.endswith('.vhd'):
                 vhdl_files.append(file_name)
         return vhdl_files
-
-    def delete_vhdl_files(self):
-        project_path = self.project_path_controller.get_project_path()
-
-        for file_name in os.listdir(project_path):
-            file_path = os.path.join(project_path, file_name)
-            if os.path.isfile(file_path) and file_name.endswith('.vhd'):
-                try:
-                    os.remove(file_path)
-                except Exception as e:
-                    print(f"Error deleting file {file_path}: {str(e)}")

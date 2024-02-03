@@ -9,6 +9,7 @@ from controllers.sniffing_controller.number_bits_select_controller import Number
 from core.qsf_writer import QsfWriter
 from core.vhdl_generator import VhdlGenerator
 from models import log_messages
+from reusable_functions.file_operations import delete_files
 from views.common.info_bar import create_success_bar
 from views.common.message_box import MessageBox
 
@@ -81,13 +82,15 @@ class BitsInputDialogController(QObject):
             'Common_Ports.vhd.jinja',
             'Communication_Module.vhd.jinja'
         ]
-        qsf_writer.delete_vhdl_files()
+        delete_files(self.project_path, '.vhd')
 
         for template in templates:
             vhdl_generator.render_template(template_name=template,
-                                           configurations=self.get_bits_number(), output_path=self.project_path)
+                                           configurations=self.get_bits_number(),
+                                           output_path=self.project_path)
 
         synthesis_template = 'synthesis_linux.sh.jinja' if platform.system() == 'Linux' else 'synthesis_windows.bat.jinja'
         vhdl_generator.render_template(template_name=synthesis_template,
-                                       configurations=self.get_bits_number(), output_path=self.project_path)
+                                       configurations=self.get_bits_number(),
+                                       output_path=self.project_path)
         qsf_writer.write_vhdl_files_to_qsf()
