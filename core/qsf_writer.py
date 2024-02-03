@@ -1,3 +1,4 @@
+import os
 import re
 
 from controllers.project_path_controller import ProjectPathController
@@ -30,7 +31,7 @@ class QsfWriter:
         if not vhdl_files:
             return
 
-        new_global_assignment = [f"set_global_assignment -name VHDL_FILE {vhdl_file}\n" for vhdl_file in vhdl_files]
+        new_global_assignment = [f"\nset_global_assignment -name VHDL_FILE {vhdl_file}\n" for vhdl_file in vhdl_files]
         self.write_qsf_content(r'set_global_assignment -name VHDL_FILE .*', new_global_assignment)
 
     def find_vhdl_files(self):

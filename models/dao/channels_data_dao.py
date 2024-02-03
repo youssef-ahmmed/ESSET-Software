@@ -26,6 +26,10 @@ class ChannelsDataDao:
     def get_all():
         return storage.list_all(ChannelsData)
 
+    @staticmethod
+    def get_data_by_start_time(start_time):
+        return storage.get_data_by_start_time(start_time)
+
     def insert(self):
         storage.insert(self.channels_data)
         storage.save()

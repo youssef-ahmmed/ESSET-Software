@@ -1,7 +1,7 @@
 from os import getenv
 
 from sqlalchemy import create_engine, func
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import sessionmaker, scoped_session, aliased
 import sqlite3
 
 from models.entities.base_model import Base
@@ -35,6 +35,12 @@ class DBStorage:
     def get_last_id(self, cls):
         max_id = self.__session.query(func.max(cls.id)).scalar()
         return max_id
+
+    def get_data_by_start_time(self, start_time):
+        cd = aliased(ChannelsData)
+        sd = aliased(SniffedData)
+
+        return self.__session.query(cd.channel_data).join(sd, cd.sniffed_data_id == sd.id).filter(sd.start_time == start_time).all()
 
     def list_all(self, cls):
         return self.__session.query(cls).all()

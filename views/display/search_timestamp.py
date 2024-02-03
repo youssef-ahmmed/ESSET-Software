@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QCompleter
 from qfluentwidgets import EditableComboBox
 
 
@@ -12,14 +12,18 @@ class SearchTimestamp(QWidget):
 
     def init_ui(self):
         search_label = QLabel("Search for data:")
-
-        time_stamp_options = ["Choose Time Stamp", "Option 1", "Option 2", "Option 3"]
-        time_stamp_combobox = EditableComboBox()
-        time_stamp_combobox.addItems(time_stamp_options)
-        time_stamp_combobox.setCurrentIndex(0)
-
+        self.time_stamp_combobox = EditableComboBox()
         layout = QVBoxLayout()
         layout.addWidget(search_label)
-        layout.addWidget(time_stamp_combobox)
+        layout.addWidget(self.time_stamp_combobox)
 
         self.setLayout(layout)
+        
+    def update_timestamp_items(self, items):
+        self.time_stamp_combobox.clear()
+        self.time_stamp_combobox.addItems(["Choose Time Stamp"])
+        self.time_stamp_combobox.addItems(items)
+        self.time_stamp_combobox.setCurrentIndex(0)
+
+        completer = QCompleter(items, self)
+        self.time_stamp_combobox.setCompleter(completer)

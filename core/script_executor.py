@@ -1,3 +1,4 @@
+import os
 import platform
 import subprocess
 
@@ -11,8 +12,7 @@ from controllers.project_path_controller import ProjectPathController
 class ScriptExecutor:
     def __init__(self, script_path):
         self.script_path = script_path
-        path_env = get_environ_path()
-        path_env += get_path_separation() + ProjectPathController.get_instance().get_env_path()
+        os.environ['PATH'] += get_path_separation() + ProjectPathController.get_instance().get_env_path()
 
     def execute_script(self):
         try:
