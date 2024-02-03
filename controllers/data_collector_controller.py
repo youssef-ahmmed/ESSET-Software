@@ -47,7 +47,7 @@ class DataCollectorController(QObject):
             return
         bits_data.pop('top_level_name', None)
 
-        if option == "1Bit":
+        if option == "One_Bit":
             bits_data["output_channel_number"] = bits_data.pop("channel_number")
 
         return bits_data
@@ -56,7 +56,7 @@ class DataCollectorController(QObject):
     def collect_n_bit_data():
         bits_data = BitsInputDialogController.get_instance().get_bits_number()
         option = bits_data.pop('option', None)
-        if option == "1Bit":
+        if option == "One_Bit":
             return
         bits_data.pop('top_level_name', None)
         if option == "NBits":
@@ -114,7 +114,7 @@ class DataCollectorController(QObject):
         elif selected_connection_way == '1Bit':
             one_bit_data = self.collect_one_bit_data()
             return {
-                one_bit_data['channel_number']: self.DEFAULT_CHANNEL_NUMBER
+                one_bit_data['output_channel_number']: self.DEFAULT_CHANNEL_NUMBER
             }
         elif selected_connection_way == 'NBits':
             n_bit_data = self.collect_n_bit_data()
