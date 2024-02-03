@@ -10,6 +10,7 @@ from controllers.data_store_controller.one_bit_store_controller import OneBitSto
 from controllers.data_store_controller.sniffed_data_store_controller import SniffedDataStoreController
 from controllers.data_store_controller.spi_store_controller import SpiStoreController
 from controllers.data_store_controller.uart_store_controller import UartStoreController
+from controllers.display_controller.search_timestamp_controller import SearchTimestampController
 from controllers.project_path_controller import ProjectPathController
 from core.serial_communication import SerialCommunication
 from views.common.info_bar import create_success_bar
@@ -54,6 +55,7 @@ class SniffingTimerDialogController(QObject):
     def start_sniffing(self):
         self.store_sniffing_configurations()
         create_success_bar(self.parent, 'SUCCESS', 'Sniffing Started Successfully ...')
+        SearchTimestampController.get_instance().update_timestamp_combobox()
         self.sniffing_timer_dialog.accept()
 
     def store_sniffing_configurations(self):
