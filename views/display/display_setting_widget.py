@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets import PrimaryPushButton
 
+from controllers.display_controller.search_timestamp_controller import SearchTimestampController
 from views.custom_component.output_terminal import OutputTerminal
 from views.display.channel_buttons import ChannelButtons
 from views.display.search_timestamp import SearchTimestamp
@@ -19,6 +20,7 @@ class DisplaySettingsWidget(QWidget):
 
         self.channel_button = ChannelButtons()
         self.search_timestamp = SearchTimestamp()
+        SearchTimestampController.get_instance(self.search_timestamp)
         self.display_terminal = OutputTerminal()
         self.display_button = PrimaryPushButton(FIF.TRAIN, "Display")
 
