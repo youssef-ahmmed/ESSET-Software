@@ -6,7 +6,7 @@ entity UART_Transmitter is
 
     generic (
         g_CLKS_PER_BIT : integer := {{ clk_per_bit }};     -- Needs to be set correctly
-        N: positive := {{ data_size }}
+        N: positive := 8
     );
 
     port (
