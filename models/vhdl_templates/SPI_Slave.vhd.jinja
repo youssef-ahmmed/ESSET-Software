@@ -1,0 +1,36 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity SPI_Slave is
+    port(
+        i_MOSI: in std_logic; --Master Output Slave Input
+        o_DV: out std_logic;  --Data Valid
+        o_Rec_Data: out std_logic_vector(7 downto 0); --Received Data as 8 bits
+        --o_MISO, out std_logic,
+        i_SCK: in std_logic
+    );
+end SPI_Slave;
+
+architecture behav of SPI_Slave is
+
+	signal s_MOSI :std_logic_vector(7 downto 0):=(others=>'0');
+	signal s_DV : std_logic:='0';
+begin
+	process(i_SCK)
+	variable counter: natural := 0;
+	begin
+		if rising_edge(i_SCK) then
+			s_MOSI <= s_MOSI(6 downto 0) & i_MOSI;
+			counter := counter+1;
+			if(counter = 8) then
+				counter := 0;
+				s_DV <= '1';
+			else
+				s_DV <= '0';
+			end if;
+		end if;
+	end process;
+	o_DV<=s_DV;
+	o_Rec_Data<=s_MOSI;
+
+end behav;
