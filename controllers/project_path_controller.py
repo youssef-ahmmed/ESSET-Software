@@ -66,7 +66,7 @@ class ProjectPathController(QObject):
 
         return None
 
-    def get_sof_file(self) -> str | None:
+    def get_sof_file_path(self) -> str | None:
         sof_dir_path = join_paths(self.project_path, 'output_files')
         if not check_path_exists(sof_dir_path):
             return None
@@ -74,6 +74,15 @@ class ProjectPathController(QObject):
         if not sof_files:
             return None
         return join_paths(sof_dir_path, sof_files[0])
+
+    def get_svf_file_path(self) -> str | None:
+        svf_dir_path = join_paths(self.project_path, 'output_files')
+        if not check_path_exists(svf_dir_path):
+            return None
+        sof_files = [file for file in dir_list(svf_dir_path) if file.endswith('.svf')]
+        if not sof_files:
+            return None
+        return join_paths(svf_dir_path, sof_files[0])
 
     def open_env_path_dialog(self):
         env_path = QFileDialog.getExistingDirectory(None, 'Select Environment Path')
