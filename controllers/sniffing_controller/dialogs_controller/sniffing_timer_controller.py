@@ -74,14 +74,6 @@ class SniffingTimerDialogController(QObject):
         channels_data_store = ChannelsDataStoreController()
         channels_data_store.store_channels_data()
 
-    @staticmethod
-    def send_sof_file():
-        sof_file_path = ProjectPathController.get_instance().get_sof_file()
-        serial_comm = SerialCommunication()
-        with open(sof_file_path, 'rb') as file:
-            file_content = file.read()
-        serial_comm.execute_serial_transaction(file_content)
-
     def get_sniffing_time(self):
         sniffing_time = int(self.sniffing_timer_dialog.time_edit.text())
         time_unit = self.sniffing_timer_dialog.unit_combo.currentText()

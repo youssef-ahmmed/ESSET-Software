@@ -24,7 +24,7 @@ class ScriptThread(QObject):
     def run(self):
         return_code = 0
         start_time = time.time()
-        for line in self.executor.execute_script():
+        for line in self.executor.execute_synthesis_script():
             if line.startswith("return code"):
                 return_code = int(line[-1])
             self.progress.emit(line)
