@@ -14,7 +14,7 @@ class ScriptExecutor:
         self.script_path = script_path
         os.environ['PATH'] += get_path_separation() + ProjectPathController.get_instance().get_env_path()
 
-    def execute_script(self):
+    def execute_synthesis_script(self):
         try:
             if platform.system() == 'Linux':
                 self.chmod_script()
@@ -41,3 +41,16 @@ class ScriptExecutor:
         except Exception as e:
             logger.error(f"An error occurred while executing the script with permission: {str(e)}")
             return None
+
+    def execute_script(self):
+        try:
+            if platform.system() == 'Linux':
+                self.chmod_script()
+            subprocess.run(['bash', self.script_path], check=True)
+            logger.success("Script execution completed successfully.")
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Script execution failed with error: {e}")
+        except FileNotFoundError:
+            logger.error("The specified script file was not found.")
+        except Exception as e:
+            logger.error(f"An error occurred: {e}")
