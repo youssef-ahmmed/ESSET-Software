@@ -1,8 +1,13 @@
+import platform
+
 from PyQt5.QtCore import QObject
 from loguru import logger
 
 from controllers.project_path_controller import ProjectPathController
+from core.qsf_writer import QsfWriter
+from core.vhdl_generator import VhdlGenerator
 from models import log_messages
+from reusable_functions.file_operations import delete_files
 from views.common.info_bar import create_success_bar
 from views.common.message_box import MessageBox
 
@@ -43,6 +48,7 @@ class SpiDialogController(QObject):
 
         self.spi_configurations = self.collect_spi_settings()
         if self.spi_configurations is not None:
+            self.render_spi_slave_templates()
             self.spi_setting_dialog.accept()
             create_success_bar(self.parent, 'SUCCESS', log_messages.SPI_CONFIG_SET)
             logger.success(log_messages.SPI_CONFIG_SET)
@@ -71,7 +77,7 @@ class SpiDialogController(QObject):
             "Enable": enable
         }
         spi_configurations = {
-            'option': 'SPI',
+            'option': 'SPI Slave',
             'top_level_name': self.project_path_controller.get_top_level_name(),
             'MOSI': mosi,
             'MISO': miso,
@@ -89,3 +95,27 @@ class SpiDialogController(QObject):
                 return None
 
         return spi_configurations
+
+    def render_spi_slave_templates(self):
+        vhdl_generator = VhdlGenerator()
+        qsf_writer = QsfWriter()
+
+        template_names = [
+            'top_level.vhd.jinja',
+            'SPI_Slave.vhd.jinja',
+            'Common_Ports.vhd.jinja',
+            'Communication_Module.vhd.jinja'
+        ]
+
+        delete_files(self.project_path, '.vhd')
+
+        for template in template_names:
+            vhdl_generator.render_template(template_name=template,
+                                           configurations=self.collect_spi_settings(),
+                                           output_path=self.project_path)
+
+        synthesis_template = 'synthesis_linux.sh.jinja' if platform.system() == 'Linux'else 'synthesis_windows.bat.jinja'
+        vhdl_generator.render_template(template_name=synthesis_template,
+                                       configurations=self.collect_spi_settings(),
+                                       output_path=self.project_path)
+        qsf_writer.write_vhdl_files_to_qsf()
