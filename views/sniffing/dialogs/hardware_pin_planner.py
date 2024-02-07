@@ -1,8 +1,8 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QTableWidgetItem, QVBoxLayout, QHBoxLayout
+from PyQt5.QtWidgets import QTableWidgetItem, QVBoxLayout, QHBoxLayout, QCompleter
 from loguru import logger
-from qfluentwidgets import FluentIcon as FIF, StrongBodyLabel
-from qfluentwidgets import TableWidget, PrimaryPushButton, ComboBox
+from qfluentwidgets import FluentIcon as FIF, StrongBodyLabel, EditableComboBox
+from qfluentwidgets import TableWidget, PrimaryPushButton
 from qframelesswindow import FramelessDialog
 
 from core.qsf_writer import QsfWriter
@@ -50,17 +50,17 @@ class HardwarePinPlanner(FramelessDialog):
         layout.addLayout(button_layout)
 
     def populate_pin_planner(self, nodes_name):
-        data = [
-            (node, ["Pin 1", "Pin 2", "Pin 3"]) for node in nodes_name
-        ]
+        data = [(node, log_messages.PINS_NUMBERS) for node in nodes_name]
 
         self.pin_planner.setRowCount(len(data))
 
         for row, (node_name, pin_list) in enumerate(data):
             self.pin_planner.setItem(row, 0, QTableWidgetItem(node_name))
 
-            combobox = ComboBox()
+            combobox = EditableComboBox()
             combobox.addItems(pin_list)
+            completer = QCompleter(pin_list, self)
+            combobox.setCompleter(completer)
             self.pin_planner.setCellWidget(row, 1, combobox)
 
     def get_table_data(self) -> dict:
