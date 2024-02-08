@@ -38,11 +38,14 @@ class ReceiveButtonController(QObject):
         self.receive_data_button.triggered.connect(self.receive_sniffed_data)
 
     def receive_sniffed_data(self):
-        if not self.check_time_taken_passed():
-            return
-        self.initiate_ftp_connection()
-        self.store_sniffed_data()
-        create_success_bar(self.parent, 'SUCCESS', log_messages.RECEIVED_SUCCESS)
+        try:
+            if not self.check_time_taken_passed():
+                return
+            self.initiate_ftp_connection()
+            self.store_sniffed_data()
+            create_success_bar(self.parent, 'SUCCESS', log_messages.RECEIVED_SUCCESS)
+        except Exception:
+            create_error_bar(self.parent, 'ERROR', log_messages.FTP_NOT_OPENED)
 
     def check_time_taken_passed(self) -> bool:
         last_sniffed_data_id = SniffedDataDao.get_last_sniffed_data_id()
@@ -58,11 +61,8 @@ class ReceiveButtonController(QObject):
     def initiate_ftp_connection(self):
         self.local_file_path = join_paths(ProjectPathController.get_instance().get_project_path(), 'data')
         remote_file_path = 'Sniffing/data'
-        try:
-            ftp_receiver = FtpReceiver()
-            ftp_receiver.receive_file_via_ftp(self.local_file_path, remote_file_path)
-        except Exception:
-            create_error_bar(self.parent, 'ERROR', log_messages.FTP_NOT_OPENED)
+        ftp_receiver = FtpReceiver()
+        ftp_receiver.receive_file_via_ftp(self.local_file_path, remote_file_path)
 
     def store_sniffed_data(self):
         self.local_file_path = join_paths(ProjectPathController.get_instance().get_project_path(), 'data')
