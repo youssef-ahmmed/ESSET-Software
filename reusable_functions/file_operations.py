@@ -1,3 +1,5 @@
+from loguru import logger
+
 from .os_operations import dir_list, join_paths, check_is_file, remove_file
 
 
@@ -16,7 +18,7 @@ def write_to_text_file(file_path: str, file_content: str) -> None:
         with open(file_path, 'w') as file:
             file.write(file_content)
     except Exception as e:
-        print(f"Error writing content to {file_path}: {str(e)}")
+        logger.error(f"Error writing content to {file_path}: {str(e)}")
 
 
 def read_binary_file(file_path: str) -> bytes:
@@ -37,4 +39,13 @@ def delete_files(project_path, extension):
             try:
                 remove_file(file_path)
             except Exception as e:
-                print(f"Error deleting file {file_path}: {str(e)}")
+                logger.error(f"Error deleting file {file_path}: {str(e)}")
+
+
+def delete_file(file_path):
+    try:
+        remove_file(file_path)
+    except FileNotFoundError:
+        logger.error(f"File '{file_path}' not found.")
+    except Exception as e:
+        logger.error(f"Error deleting file '{file_path}': {e}")
