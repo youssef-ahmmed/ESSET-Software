@@ -12,6 +12,7 @@ from models.entities.one_bit_sniffing import OneBit
 from models.entities.spi_protocol import Spi
 from models.entities.uart_protocol import Uart
 from models.entities.channels_data import ChannelsData
+from models.entities.sniffed_data import SniffedData
 
 
 class DBStorage:
@@ -31,6 +32,10 @@ class DBStorage:
 
     def get_by_id(self, cls, id):
         return self.__session.query(cls).get(id)
+
+    def get_by_sniffed_data(self, cls):
+        sniffed_id = self.get_last_id(SniffedData)
+        return self.__session.query(cls).where(sniffed_id == cls.sniffed_data_id).first()
 
     def get_last_id(self, cls):
         max_id = self.__session.query(func.max(cls.id)).scalar()
