@@ -13,7 +13,8 @@ from controllers.data_store_controller.uart_store_controller import UartStoreCon
 from controllers.display_controller.search_timestamp_controller import SearchTimestampController
 from controllers.project_path_controller import ProjectPathController
 from core.ftp_sender import FtpSender
-from views.common.info_bar import create_success_bar
+from models import log_messages
+from views.common.info_bar import create_success_bar, create_warning_bar, create_error_bar
 from views.sniffing.dialogs.sniffing_timer import SniffingTimer
 
 
@@ -22,6 +23,7 @@ class SniffingTimerDialogController(QObject):
     class TimeUnit(IntEnum):
         MINUTES = 60
         HOURS = 3600
+        TWO_HOURS = 7200
 
     _instance = None
 
@@ -41,6 +43,7 @@ class SniffingTimerDialogController(QObject):
         self.sniffing_timer_dialog = sniffing_timer_dialog
         self.ok_button = self.sniffing_timer_dialog.ok_button
         self.cancel_button = self.sniffing_timer_dialog.cancel_button
+        self.data_collector = DataCollectorController()
         self.parent = parent
 
         self.start_communication()
@@ -49,8 +52,16 @@ class SniffingTimerDialogController(QObject):
         self.sniffing_timer_dialog.exec_()
 
     def start_communication(self):
-        self.ok_button.clicked.connect(self.start_sniffing)
+        self.ok_button.clicked.connect(self.check_sniffing_config)
         self.cancel_button.clicked.connect(self.sniffing_timer_dialog.reject)
+
+    def check_sniffing_config(self):
+        connection_way, comm_protocol = self.data_collector.collect_sniffed_data().values()
+        if not connection_way and not comm_protocol:
+            create_error_bar(self.parent, "ERROR", log_messages.NO_CONFIGURATIONS_FOUND)
+            return
+
+        self.start_sniffing()
 
     def start_sniffing(self):
         self.store_sniffing_configurations()
@@ -76,8 +87,7 @@ class SniffingTimerDialogController(QObject):
         channel_pins_store = ChannelPinsStoreController()
         channel_pins_store.store_channel_pins()
 
-        data_collector = DataCollectorController()
-        connection_way, comm_protocol = data_collector.collect_sniffed_data().values()
+        connection_way, comm_protocol = self.data_collector.collect_sniffed_data().values()
 
         self.store_comm_protocol(comm_protocol)
         self.store_connection_way(connection_way)
@@ -93,6 +103,10 @@ class SniffingTimerDialogController(QObject):
             sniffing_time = sniffing_time * self.TimeUnit.MINUTES.value
         elif time_unit == 'h':
             sniffing_time = sniffing_time * self.TimeUnit.HOURS.value
+
+        if sniffing_time >= self.TimeUnit.TWO_HOURS.value:
+            create_warning_bar(self.parent, 'WARNING', log_messages.SNIFFING_TIME_WARNING)
+            sniffing_time = self.TimeUnit.TWO_HOURS.value
 
         return sniffing_time
 

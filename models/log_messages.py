@@ -19,6 +19,10 @@ SYNTHESIZE_INITIATED = "Synthesizing Process Initiated. Please Await Completion.
 SYNTHESIZE_SUCCESS = "Synthesizing Process Completed Successfully in:"
 SYNTHESIZE_FAILED = "Synthesizing Process Failed. Please review and try again."
 
+# Sniffing Messages
+SNIFFING_TIME_WARNING = "Sniffing Data Time Exceeds 2 Hours, Data Will Be Sniffed Until 2 Hours Only."
+NO_CONFIGURATIONS_FOUND = "There is No Configurations Found."
+
 # Receiving Data Messages
 RECEIVED_SUCCESS = "Data Received Successfully."
 TIME_SNIFFING_FINISHED = "Sniffing Finished Successfully."
