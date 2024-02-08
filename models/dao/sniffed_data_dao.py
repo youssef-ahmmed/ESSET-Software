@@ -23,6 +23,11 @@ class SniffedDataDao:
         return storage.get_by_id(SniffedData, id)
 
     @staticmethod
+    def get_start_time_and_time_taken(id):
+        sniffed_data_record: SniffedData = storage.get_by_id(SniffedData, id)
+        return sniffed_data_record.start_time, sniffed_data_record.time_taken
+
+    @staticmethod
     def get_all():
         return storage.list_all(SniffedData)
 

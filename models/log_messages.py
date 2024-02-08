@@ -19,6 +19,11 @@ SYNTHESIZE_INITIATED = "Synthesizing Process Initiated. Please Await Completion.
 SYNTHESIZE_SUCCESS = "Synthesizing Process Completed Successfully in:"
 SYNTHESIZE_FAILED = "Synthesizing Process Failed. Please review and try again."
 
+# Receiving Data Messages
+RECEIVED_SUCCESS = "Data Received Successfully."
+TIME_SNIFFING_FINISHED = "Sniffing Finished Successfully."
+SNIFFING_NOT_FINISHED = "Sniffing Still Running..."
+
 # Serial Communication
 SENDING_SUCCESS = "Data Send Successfully"
 RECEIVE_SUCCESS = "Data Received Successfully"
