@@ -6,7 +6,9 @@ from qfluentwidgets import Action
 from controllers.project_path_controller import ProjectPathController
 from core.ftp_receiver import FtpReceiver
 from models import log_messages
+from models.dao.channels_data_dao import ChannelsDataDao
 from models.dao.sniffed_data_dao import SniffedDataDao
+from reusable_functions.file_operations import delete_file, read_binary_file
 from reusable_functions.os_operations import join_paths
 from views.common.info_bar import create_error_bar, create_success_bar
 
@@ -39,6 +41,7 @@ class ReceiveButtonController(QObject):
         if not self.check_time_taken_passed():
             return
         self.initiate_ftp_connection()
+        self.store_sniffed_data()
         create_success_bar(self.parent, 'SUCCESS', log_messages.RECEIVED_SUCCESS)
 
     def check_time_taken_passed(self) -> bool:
@@ -52,10 +55,17 @@ class ReceiveButtonController(QObject):
 
         return True
 
-    @staticmethod
-    def initiate_ftp_connection():
-        local_file_path = join_paths(ProjectPathController.get_instance().get_project_path(),
-                                     'data.txt')
-        remote_file_path = 'Sniffing/data.txt'
-        ftp_receiver = FtpReceiver()
-        ftp_receiver.receive_file_via_ftp(local_file_path, remote_file_path)
+    def initiate_ftp_connection(self):
+        self.local_file_path = join_paths(ProjectPathController.get_instance().get_project_path(), 'data')
+        remote_file_path = 'Sniffing/data'
+        try:
+            ftp_receiver = FtpReceiver()
+            ftp_receiver.receive_file_via_ftp(self.local_file_path, remote_file_path)
+        except Exception:
+            create_error_bar(self.parent, 'ERROR', log_messages.FTP_NOT_OPENED)
+
+    def store_sniffed_data(self):
+        self.local_file_path = join_paths(ProjectPathController.get_instance().get_project_path(), 'data')
+        file_content = read_binary_file(self.local_file_path)
+        ChannelsDataDao.update_channel_data(file_content)
+        delete_file(self.local_file_path)
