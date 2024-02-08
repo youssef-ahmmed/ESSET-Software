@@ -49,9 +49,6 @@ class ProjectPathController(QObject):
             return split_pathname(qsf_files[0])
         return "not exist"
 
-    def get_svf_file_name(self):
-        return self.get_top_level_name() + '.svf'
-
     def get_qsf_file_path(self):
         qsf_file_path = [file for file in dir_list(self.project_path) if file.endswith('.qsf')]
         if not qsf_file_path:
