@@ -2,6 +2,7 @@ import platform
 
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QPushButton
+from qfluentwidgets import PrimarySplitPushButton
 
 from controllers.project_path_controller import ProjectPathController
 from controllers.sniffing_controller.dialogs_controller.sniffing_timer_controller import SniffingTimerDialogController
@@ -16,12 +17,12 @@ class StartSniffingButtonController(QObject):
     _instance = None
 
     @staticmethod
-    def get_instance(parent=None, start_sniffing_button: QPushButton = None) -> None:
+    def get_instance(parent=None, start_sniffing_button: PrimarySplitPushButton = None) -> None:
         if StartSniffingButtonController._instance is None:
             StartSniffingButtonController._instance = StartSniffingButtonController(parent, start_sniffing_button)
         return StartSniffingButtonController._instance
 
-    def __init__(self, parent, start_sniffing_button: QPushButton) -> None:
+    def __init__(self, parent, start_sniffing_button: PrimarySplitPushButton) -> None:
         super(StartSniffingButtonController, self).__init__()
 
         if StartSniffingButtonController._instance is not None:
