@@ -12,7 +12,7 @@ from controllers.data_store_controller.spi_store_controller import SpiStoreContr
 from controllers.data_store_controller.uart_store_controller import UartStoreController
 from controllers.display_controller.search_timestamp_controller import SearchTimestampController
 from controllers.project_path_controller import ProjectPathController
-from core.serial_communication import SerialCommunication
+from core.ftp_sender import FtpSender
 from views.common.info_bar import create_success_bar
 from views.sniffing.dialogs.sniffing_timer import SniffingTimer
 
@@ -54,9 +54,20 @@ class SniffingTimerDialogController(QObject):
 
     def start_sniffing(self):
         self.store_sniffing_configurations()
+        self.send_svf_file()
+
         create_success_bar(self.parent, 'SUCCESS', 'Sniffing Started Successfully ...')
         SearchTimestampController.get_instance().update_timestamp_combobox()
         self.sniffing_timer_dialog.accept()
+
+    @staticmethod
+    def send_svf_file():
+        project_path_controller = ProjectPathController.get_instance()
+        svf_file_path = project_path_controller.get_svf_file_path()
+        remote_file_path = f'Svf/top_level.svf'
+
+        ftp_sender = FtpSender()
+        ftp_sender.send_file_via_ftp(svf_file_path, remote_file_path)
 
     def store_sniffing_configurations(self):
         sniffed_data_store = SniffedDataStoreController()
