@@ -71,14 +71,15 @@ class SniffingTimerDialogController(QObject):
         SearchTimestampController.get_instance().update_timestamp_combobox()
         self.sniffing_timer_dialog.accept()
 
-    @staticmethod
-    def send_svf_file():
+    def send_svf_file(self):
         project_path_controller = ProjectPathController.get_instance()
         svf_file_path = project_path_controller.get_svf_file_path()
         remote_file_path = f'Svf/top_level.svf'
-
-        ftp_sender = FtpSender()
-        ftp_sender.send_file_via_ftp(svf_file_path, remote_file_path)
+        try:
+            ftp_sender = FtpSender()
+            ftp_sender.send_file_via_ftp(svf_file_path, remote_file_path)
+        except Exception:
+            create_error_bar(self.parent, 'ERROR', log_messages.FTP_NOT_OPENED)
 
     def store_sniffing_configurations(self):
         sniffed_data_store = SniffedDataStoreController()
