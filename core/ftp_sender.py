@@ -3,7 +3,7 @@ from ftplib import FTP
 from loguru import logger
 
 
-class WifiSender:
+class FtpSender:
     server_ip = '192.168.1.2'
     username = 'esset'
     password = '0000'
