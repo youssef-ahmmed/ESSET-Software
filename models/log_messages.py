@@ -54,3 +54,6 @@ PINS_NUMBERS = [
     'PIN_135', 'PIN_136', 'PIN_137', 'PIN_138', 'PIN_141', 'PIN_142', 'PIN_143', 'PIN_144'
 ]
 
+# Display Button Messages
+TIMESTAMP_SET = "Selected Data Displayed Successfully"
+NO_TIMESTAMP_SET = "No Selected Data to Display"
