@@ -27,6 +27,7 @@ NO_CONFIGURATIONS_FOUND = "There is No Configurations Found."
 RECEIVED_SUCCESS = "Data Received Successfully."
 TIME_SNIFFING_FINISHED = "Sniffing Finished Successfully."
 SNIFFING_NOT_FINISHED = "Sniffing Still Running..."
+FTP_NOT_OPENED = "FTP Not Opened."
 
 # Serial Communication
 SENDING_SUCCESS = "Data Send Successfully"

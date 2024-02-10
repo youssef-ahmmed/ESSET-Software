@@ -56,12 +56,15 @@ class SniffingTimerDialogController(QObject):
         self.cancel_button.clicked.connect(self.sniffing_timer_dialog.reject)
 
     def check_sniffing_config(self):
-        connection_way, comm_protocol = self.data_collector.collect_sniffed_data().values()
-        if not connection_way and not comm_protocol:
-            create_error_bar(self.parent, "ERROR", log_messages.NO_CONFIGURATIONS_FOUND)
-            return
+        try:
+            connection_way, comm_protocol = self.data_collector.collect_sniffed_data().values()
+            if not connection_way and not comm_protocol:
+                create_error_bar(self.parent, "ERROR", log_messages.NO_CONFIGURATIONS_FOUND)
+                return
 
-        self.start_sniffing()
+            self.start_sniffing()
+        except Exception:
+            create_error_bar(self.parent, 'ERROR', log_messages.FTP_NOT_OPENED)
 
     def start_sniffing(self):
         self.store_sniffing_configurations()
@@ -71,12 +74,10 @@ class SniffingTimerDialogController(QObject):
         SearchTimestampController.get_instance().update_timestamp_combobox()
         self.sniffing_timer_dialog.accept()
 
-    @staticmethod
-    def send_svf_file():
+    def send_svf_file(self):
         project_path_controller = ProjectPathController.get_instance()
         svf_file_path = project_path_controller.get_svf_file_path()
         remote_file_path = f'Svf/top_level.svf'
-
         ftp_sender = FtpSender()
         ftp_sender.send_file_via_ftp(svf_file_path, remote_file_path)
 

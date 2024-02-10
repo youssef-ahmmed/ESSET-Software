@@ -46,3 +46,11 @@ class ChannelsDataDao:
             channel_data_record.channel_name = channel_name
 
         storage.save()
+
+    @staticmethod
+    def update_channel_data(channel_data: Any):
+        channel_data_record: ChannelsData = storage.get_by_sniffed_data(ChannelsData)
+        if channel_data_record:
+            channel_data_record.channel_data = channel_data
+
+        storage.save()
