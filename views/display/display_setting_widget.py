@@ -3,9 +3,13 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets import PrimaryPushButton
 
+from controllers.display_controller.display_button_controller import DisplayButtonController
+from controllers.display_controller.display_terminal_controller import DisplayTerminalController
+from controllers.display_controller.last_data_checkbox_controller import LastDataCheckboxController
 from controllers.display_controller.search_timestamp_controller import SearchTimestampController
 from views.custom_component.output_terminal import OutputTerminal
 from views.display.channel_buttons import ChannelButtons
+from views.display.last_data_checkbox import LastDataCheckbox
 from views.display.search_timestamp import SearchTimestamp
 
 
@@ -15,14 +19,19 @@ class DisplaySettingsWidget(QWidget):
     show_plots = pyqtSignal()
     clear_plots = pyqtSignal()
 
-    def __init__(self):
+    def __init__(self, parent=None):
         super().__init__()
 
         self.channel_button = ChannelButtons()
         self.search_timestamp = SearchTimestamp()
-        SearchTimestampController.get_instance(self.search_timestamp)
         self.display_terminal = OutputTerminal()
+        self.last_data_checkbox = LastDataCheckbox()
         self.display_button = PrimaryPushButton(FIF.TRAIN, "Display")
+
+        SearchTimestampController.get_instance(self.search_timestamp, parent)
+        DisplayTerminalController.get_instance(self.display_terminal.terminal)
+        DisplayButtonController.get_instance(self.display_button, parent)
+        LastDataCheckboxController.get_instance(self.last_data_checkbox.last_data_checkbox, parent)
 
         self.init_ui()
         self.start_communication()
@@ -31,6 +40,7 @@ class DisplaySettingsWidget(QWidget):
         self.setLayout(QVBoxLayout())
         self.layout().addWidget(self.channel_button)
         self.layout().addWidget(self.search_timestamp)
+        self.layout().addWidget(self.last_data_checkbox)
         self.layout().addWidget(self.display_terminal)
         self.layout().addWidget(self.display_button)
 
