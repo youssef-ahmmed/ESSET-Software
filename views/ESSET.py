@@ -27,7 +27,7 @@ class Window(FramelessWindow):
 
         self.sniffing_widget = SniffingWidget(self)
         self.sniffing_widget.setObjectName("Sniffing Widget")
-        self.display_widget = DisplayWidget()
+        self.display_widget = DisplayWidget(self)
         self.display_widget.setObjectName("Display Widget")
         self.settings_menu = SettingsMenu(self)
 

@@ -3,6 +3,7 @@ from typing import Any
 from models import storage
 from models.dto.channels_data_dto import ChannelsDataDto
 from models.entities.channels_data import ChannelsData
+from models.entities.sniffed_data import SniffedData
 
 
 class ChannelsDataDao:
@@ -28,7 +29,11 @@ class ChannelsDataDao:
 
     @staticmethod
     def get_data_by_start_time(start_time):
-        return storage.get_data_by_start_time(start_time)
+        return storage.get_all_by_join(SniffedData, ChannelsData, start_time)
+
+    @staticmethod
+    def get_all_by_last_id():
+        return storage.get_by_sniffed_data(ChannelsData)
 
     def insert(self):
         storage.insert(self.channels_data)

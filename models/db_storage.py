@@ -35,17 +35,19 @@ class DBStorage:
 
     def get_by_sniffed_data(self, cls):
         sniffed_id = self.get_last_id(SniffedData)
-        return self.__session.query(cls).where(sniffed_id == cls.sniffed_data_id).first()
+        return self.__session.query(cls).where(sniffed_id == cls.sniffed_data_id).all()
 
     def get_last_id(self, cls):
         max_id = self.__session.query(func.max(cls.id)).scalar()
         return max_id
 
-    def get_data_by_start_time(self, start_time):
-        cd = aliased(ChannelsData)
-        sd = aliased(SniffedData)
+    def get_all_by_join(self, primary_cls, related_cls, attribute):
+        prim_cls = aliased(primary_cls)
+        rel_cls = aliased(related_cls)
 
-        return self.__session.query(cd.channel_data).join(sd, cd.sniffed_data_id == sd.id).filter(sd.start_time == start_time).all()
+        return (self.__session.query(rel_cls)
+                .join(prim_cls, rel_cls.sniffed_data_id == prim_cls.id)
+                .filter(prim_cls.start_time == attribute).all())
 
     def list_all(self, cls):
         return self.__session.query(cls).all()

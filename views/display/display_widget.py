@@ -6,11 +6,11 @@ from views.display.display_setting_widget import DisplaySettingsWidget
 
 class DisplayWidget(QWidget):
 
-    def __init__(self):
+    def __init__(self, parent=None):
         super().__init__()
 
         self.waveform_widget = WaveformWidget()
-        self.display_settings_widget = DisplaySettingsWidget()
+        self.display_settings_widget = DisplaySettingsWidget(parent)
 
         self.init_ui()
         self.start_communication()
