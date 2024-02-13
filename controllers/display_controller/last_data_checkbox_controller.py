@@ -27,15 +27,14 @@ class LastDataCheckboxController(AbstractDataDisplay):
         self.start_communication()
 
     def start_communication(self):
-        self.last_data_checkbox.stateChanged.connect(self.get_last_data_checkbox_state)
+        self.last_data_checkbox.stateChanged.connect(self.toggle_search_timestamp_combobox)
 
-    def get_last_data_checkbox_state(self):
-        state = self.last_data_checkbox.checkState()
-        if state == Qt.Checked:
-            SearchTimestampController.get_instance().toggle_search_timestamp_combobox(False)
-        elif state == Qt.Unchecked:
-            SearchTimestampController.get_instance().toggle_search_timestamp_combobox(True)
-        return state
+    def is_last_data_checkbox_enabled(self):
+        return self.last_data_checkbox.checkState() == Qt.Checked
+
+    def toggle_search_timestamp_combobox(self):
+        state = self.is_last_data_checkbox_enabled()
+        SearchTimestampController.get_instance().toggle_search_timestamp_combobox(not state)
 
     def display_terminal_data(self):
         self.display_data_on_terminal(ChannelsDataDao.get_all_by_last_id())
