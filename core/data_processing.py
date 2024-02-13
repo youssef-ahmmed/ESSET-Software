@@ -10,6 +10,10 @@ class DataProcessing:
         decimal_data = self.convert_data_to_decimal()
         return [(bin(byte)[2:].zfill(8)) for byte in decimal_data]
 
+    def convert_byte_list_to_bit_list(self):
+        byte_list = self.convert_decimal_to_binary()
+        return [int(bit) for byte in byte_list for bit in byte]
+
     def convert_decimal_to_hex(self):
         decimal_data = self.convert_data_to_decimal()
         return [f'/x{hex(byte)[2:].zfill(2).upper()}' for byte in decimal_data]
