@@ -33,33 +33,36 @@ class WaveformWidget(QWidget):
         self.table_widget.setMinimumWidth(700)
         self.table_widget.setMinimumHeight(400)
 
+    def set_channel_name(self, index, text):
+        self.plot_widgets[index - 1].update_channel_label(text)
+
     def create_rows(self):
-        for channel in range(self.channel_numbers):
+        for channel in range(1, self.channel_numbers + 1):
             plot_widget = PlotWidget(channel)
-            self.table_widget.setCellWidget(channel, 0, plot_widget)
-            self.table_widget.setRowHeight(channel, 200)
+            self.table_widget.setCellWidget(channel - 1, 0, plot_widget)
+            self.table_widget.setRowHeight(channel - 1, 200)
             self.table_widget.setColumnWidth(0, 1320)
 
-            vertical_header_item = QTableWidgetItem(f'D{channel}')
-            self.table_widget.setVerticalHeaderItem(channel, vertical_header_item)
+            self.table_widget.setVerticalHeaderItem(channel - 1, QTableWidgetItem(f'D{channel}'))
 
             self.plot_widgets.append(plot_widget)
-
         self.table_widget.horizontalHeader().setVisible(False)
 
     def toggle_visibility(self, channel_number):
         visible_channels = [i for i, plot_widget in enumerate(self.plot_widgets) if plot_widget.isVisible()]
         num_visible_channels = len(visible_channels)
 
-        if channel_number == 0 and num_visible_channels == 1:
+        if channel_number == 1 and num_visible_channels == 1:
             self.plot_widgets[0].show()
 
-        elif channel_number != 0 and num_visible_channels == 1:
+        elif channel_number != 1 and num_visible_channels == 1:
             self.plot_widgets[0].show()
-            self.plot_widgets[channel_number].setVisible(not self.plot_widgets[channel_number].isVisible())
+            self.plot_widgets[channel_number - 1].setVisible(
+                not self.plot_widgets[channel_number - 1].isVisible())
 
         elif num_visible_channels > 0:
-            self.plot_widgets[channel_number].setVisible(not self.plot_widgets[channel_number].isVisible())
+            self.plot_widgets[channel_number - 1].setVisible(
+                not self.plot_widgets[channel_number - 1].isVisible())
 
         self.update_row_heights(self.plot_widgets)
 

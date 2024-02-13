@@ -1,5 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QSplitter
 from PyQt5.QtCore import Qt
+
+from controllers.display_controller.waveform_controller import WaveformController
 from views.display.waveform_widget import WaveformWidget
 from views.display.display_setting_widget import DisplaySettingsWidget
 
@@ -10,6 +12,8 @@ class DisplayWidget(QWidget):
         super().__init__()
 
         self.waveform_widget = WaveformWidget()
+        WaveformController.get_instance(self.waveform_widget)
+
         self.display_settings_widget = DisplaySettingsWidget(parent)
 
         self.init_ui()
