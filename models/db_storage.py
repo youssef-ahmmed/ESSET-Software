@@ -22,7 +22,7 @@ class DBStorage:
     __engine = None
 
     def __init__(self):
-        self.__engine = create_engine(self.__url_sqlitedb, pool_pre_ping=True)
+        self.__engine = create_engine(self.__url_mysqldb, pool_pre_ping=True)
 
     def save(self):
         self.__session.commit()
@@ -33,9 +33,13 @@ class DBStorage:
     def get_by_id(self, cls, id):
         return self.__session.query(cls).get(id)
 
-    def get_by_sniffed_data(self, cls):
+    def get_all_by_sniffed_data(self, cls):
         sniffed_id = self.get_last_id(SniffedData)
         return self.__session.query(cls).where(sniffed_id == cls.sniffed_data_id).all()
+
+    def get_first_by_sniffed_data(self, cls):
+        sniffed_id = self.get_last_id(SniffedData)
+        return self.__session.query(cls).where(sniffed_id == cls.sniffed_data_id).first()
 
     def get_last_id(self, cls):
         max_id = self.__session.query(func.max(cls.id)).scalar()
@@ -48,6 +52,21 @@ class DBStorage:
         return (self.__session.query(rel_cls)
                 .join(prim_cls, rel_cls.sniffed_data_id == prim_cls.id)
                 .filter(prim_cls.start_time == attribute).all())
+
+    def get_all_with_data(self, primary_cls, related_cls):
+        prim_cls = aliased(primary_cls)
+        rel_cls = aliased(related_cls)
+
+        return (self.__session.query(prim_cls)
+                .join(rel_cls, prim_cls.id == rel_cls.sniffed_data_id)
+                .filter(rel_cls.channel_data != None)
+                .all())
+
+    def get_last_not_null_data(self, cls):
+        return (self.__session.query(cls)
+                              .filter(cls.channel_data != None)
+                              .order_by(cls.id.desc())
+                              .all())
 
     def list_all(self, cls):
         return self.__session.query(cls).all()
