@@ -12,18 +12,21 @@ from models import log_messages
 from reusable_functions.file_operations import delete_files
 from views.common.info_bar import create_success_bar
 from views.common.message_box import MessageBox
+from views.sniffing.dialogs.bits_input_dialog import BitsInputDialog
+
+MEGA_HZ = 1_000_000
 
 
 class BitsInputDialogController(QObject):
     _instance = None
 
     @staticmethod
-    def get_instance(parent=None, bits_input_dialog=None):
+    def get_instance(parent=None, bits_input_dialog: BitsInputDialog = None):
         if BitsInputDialogController._instance is None:
             BitsInputDialogController._instance = BitsInputDialogController(parent, bits_input_dialog)
         return BitsInputDialogController._instance
 
-    def __init__(self, parent, bits_input_dialog):
+    def __init__(self, parent, bits_input_dialog: BitsInputDialog):
         super(BitsInputDialogController, self).__init__()
 
         if BitsInputDialogController._instance is not None:
@@ -60,6 +63,7 @@ class BitsInputDialogController(QObject):
 
     def get_bits_number(self):
         no_of_bits = self.bits_input_dialog.bits_input.text()
+        clock_rate = self.bits_input_dialog.clock_rate.text()
         if not no_of_bits:
             QMessageBox.warning(self.bits_input_dialog, "Warning", "Please enter the number of bits.")
             return None
@@ -69,7 +73,8 @@ class BitsInputDialogController(QObject):
         return {
             'option': self.sniffing_type,
             'top_level_name': ProjectPathController.get_instance().get_top_level_name(),
-            'channel_number': no_of_bits
+            'channel_number': no_of_bits,
+            'clock_rate': int(clock_rate) * MEGA_HZ
         }
 
     def render_bit_templates(self):

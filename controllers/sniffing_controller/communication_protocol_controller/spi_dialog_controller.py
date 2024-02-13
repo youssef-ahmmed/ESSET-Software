@@ -1,6 +1,7 @@
 import platform
 
 from PyQt5.QtCore import QObject
+from PyQt5.QtWidgets import QMessageBox
 from loguru import logger
 
 from controllers.project_path_controller import ProjectPathController
@@ -10,18 +11,21 @@ from models import log_messages
 from reusable_functions.file_operations import delete_files
 from views.common.info_bar import create_success_bar
 from views.common.message_box import MessageBox
+from views.sniffing.communication_protocols.spi_config import SpiConfigurations
+
+MEGA_HZ = 1_000_000
 
 
 class SpiDialogController(QObject):
     _instance = None
 
     @staticmethod
-    def get_instance(parent=None, spi_setting_dialog=None):
+    def get_instance(parent=None, spi_setting_dialog: SpiConfigurations = None):
         if SpiDialogController._instance is None:
             SpiDialogController._instance = SpiDialogController(parent, spi_setting_dialog)
         return SpiDialogController._instance
 
-    def __init__(self, parent, spi_setting_dialog):
+    def __init__(self, parent, spi_setting_dialog: SpiConfigurations):
         super(SpiDialogController, self).__init__()
 
         if SpiDialogController._instance is not None:
@@ -65,6 +69,7 @@ class SpiDialogController(QObject):
         miso = self.spi_setting_dialog.miso_combo.currentText()
         clock = self.spi_setting_dialog.clock_combo.currentText()
         enable = self.spi_setting_dialog.enable_combo.currentText()
+        clock_rate = self.spi_setting_dialog.clock_rate_combo.currentText()
         significant_bit = self.spi_setting_dialog.significant_bit_combo.currentText()
         bits_per_transfer = self.spi_setting_dialog.bits_per_transfer_combo.currentText()
         clock_state = self.spi_setting_dialog.clock_state_combo.currentText()
@@ -83,6 +88,7 @@ class SpiDialogController(QObject):
             'MISO': miso,
             'Clock': clock,
             'Enable': enable,
+            'clock_rate': int(clock_rate) * MEGA_HZ,
             'significant_bit': significant_bit,
             'clk_state': clock_state,
             'clk_phase': clock_phase,
@@ -93,6 +99,10 @@ class SpiDialogController(QObject):
             if channel_value == "Select Channel":
                 self.spi_setting_dialog.show_spi_channel_warning(channel_name)
                 return None
+
+        if not clock_rate:
+            QMessageBox.warning(None, "Warning", f"No Clock Rate Selected")
+            return
 
         return spi_configurations
 
@@ -114,7 +124,7 @@ class SpiDialogController(QObject):
                                            configurations=self.collect_spi_settings(),
                                            output_path=self.project_path)
 
-        synthesis_template = 'synthesis_linux.sh.jinja' if platform.system() == 'Linux'else 'synthesis_windows.bat.jinja'
+        synthesis_template = 'synthesis_linux.sh.jinja' if platform.system() == 'Linux' else 'synthesis_windows.bat.jinja'
         vhdl_generator.render_template(template_name=synthesis_template,
                                        configurations=self.collect_spi_settings(),
                                        output_path=self.project_path)
