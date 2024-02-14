@@ -1,4 +1,4 @@
-from controllers.data_collector_controller import DataCollectorController
+from controllers.sniffing_controller.data_sniffing_collector_controller import DataCollectorController
 from models.dto.channel_pins_dto import ChannelPinsDto
 from models.dao.channel_pins_dao import ChannelPinsDao
 from models.dao.sniffed_data_dao import SniffedDataDao

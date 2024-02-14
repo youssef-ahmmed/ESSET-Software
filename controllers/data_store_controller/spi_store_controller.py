@@ -1,4 +1,4 @@
-from controllers.data_collector_controller import DataCollectorController
+from controllers.sniffing_controller.data_sniffing_collector_controller import DataCollectorController
 from models.dao.sniffed_data_dao import SniffedDataDao
 from models.dao.spi_protocol_dao import SpiProtocolDao
 from models.dto.spi_protocol_dto import SpiProtocolDto

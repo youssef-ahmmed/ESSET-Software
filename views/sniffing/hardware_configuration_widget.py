@@ -19,7 +19,7 @@ class HardwareConfigurations(QWidget):
     def __init__(self, parent):
         super().__init__()
 
-        self.bits_input_dialog = BitsInputDialog("test")
+        self.bits_input_dialog = BitsInputDialog()
         BitsInputDialogController.get_instance(parent, self.bits_input_dialog)
 
         self.comm_protocol = CommunicationProtocolSelect(parent)

@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from PyQt5.QtCore import QObject
 from qfluentwidgets import Action
 
+from controllers.display_controller.search_timestamp_controller import SearchTimestampController
 from controllers.project_path_controller import ProjectPathController
 from core.ftp_receiver import FtpReceiver
 from models import log_messages
@@ -35,7 +36,7 @@ class ReceiveButtonController(QObject):
         self.start_communication()
 
     def start_communication(self) -> None:
-        self.receive_data_button.triggered.connect(self.receive_sniffed_data)
+        self.receive_data_button.triggered.connect(self.store_sniffed_data)
 
     def receive_sniffed_data(self):
         try:
@@ -43,6 +44,7 @@ class ReceiveButtonController(QObject):
                 return
             self.initiate_ftp_connection()
             self.store_sniffed_data()
+            SearchTimestampController.get_instance().update_timestamp_combobox()
             create_success_bar(self.parent, 'SUCCESS', log_messages.RECEIVED_SUCCESS)
         except Exception:
             create_error_bar(self.parent, 'ERROR', log_messages.FTP_NOT_OPENED)
@@ -59,13 +61,13 @@ class ReceiveButtonController(QObject):
         return True
 
     def initiate_ftp_connection(self):
-        self.local_file_path = join_paths(ProjectPathController.get_instance().get_project_path(), 'data')
-        remote_file_path = 'Sniffing/data'
+        self.local_file_path = join_paths(ProjectPathController.get_instance().get_project_path(), 'data.bin')
+        remote_file_path = 'Sniffing/data.bin'
         ftp_receiver = FtpReceiver()
         ftp_receiver.receive_file_via_ftp(self.local_file_path, remote_file_path)
 
     def store_sniffed_data(self):
-        self.local_file_path = join_paths(ProjectPathController.get_instance().get_project_path(), 'data')
+        self.local_file_path = join_paths(ProjectPathController.get_instance().get_project_path(), 'data.bin')
         file_content = read_binary_file(self.local_file_path)
         ChannelsDataDao.update_channel_data(file_content)
         delete_file(self.local_file_path)

@@ -1,3 +1,4 @@
+from models.entities.sniffed_data import SniffedData
 from models.entities.uart_protocol import Uart
 from models import storage
 from models.dto.uart_protocol_dto import UartProtocolDto
@@ -26,6 +27,14 @@ class UartProtocolDao:
     @staticmethod
     def get_all():
         return storage.list_all(Uart)
+
+    @staticmethod
+    def get_baudrate_by_start_time(start_time):
+        return storage.get_all_by_join(SniffedData, Uart, start_time)[0].baud_rate
+
+    @staticmethod
+    def get_baudrate_by_last_id():
+        return storage.get_first_by_sniffed_data(Uart).baud_rate
 
     def insert(self):
         storage.insert(self.uart)

@@ -1,8 +1,9 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QLabel, \
     QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication, QMessageBox
+from PyQt5.QtGui import QIntValidator
 from loguru import logger
-from qfluentwidgets import FluentIcon as FIF, ComboBox
+from qfluentwidgets import FluentIcon as FIF, ComboBox, LineEdit, EditableComboBox
 from qfluentwidgets import PrimaryPushButton, StrongBodyLabel
 from qframelesswindow import FramelessDialog
 
@@ -53,6 +54,11 @@ class SpiConfigurations(FramelessDialog):
         clock_label, self.clock_combo = self.create_channels_combo_box("Clock", ComboBox())
         enable_label, self.enable_combo = self.create_channels_combo_box("Enable", ComboBox())
 
+        clock_rate_label = QLabel("Clock Rate (MHz)")
+        self.clock_rate_combo = EditableComboBox()
+        self.clock_rate_combo.addItems(["10", "25", "50"])
+        self.clock_rate_combo.setValidator(QIntValidator())
+
         significant_bit_label, self.significant_bit_combo = self.create_setup_combo_box("Significant Bit",
                                                                                         ["L", "M"],
                                                                                         "L")
@@ -70,6 +76,7 @@ class SpiConfigurations(FramelessDialog):
         self.base_layout.addRow(miso_label, self.miso_combo)
         self.base_layout.addRow(clock_label, self.clock_combo)
         self.base_layout.addRow(enable_label, self.enable_combo)
+        self.base_layout.addRow(clock_rate_label, self.clock_rate_combo)
         self.base_layout.addRow(significant_bit_label, self.significant_bit_combo)
         self.base_layout.addRow(bits_per_transfer_label, self.bits_per_transfer_combo)
         self.base_layout.addRow(clock_state_label, self.clock_state_combo)
@@ -78,7 +85,6 @@ class SpiConfigurations(FramelessDialog):
     def create_channels_combo_box(self, label_text, combo_box):
         label = QLabel(label_text)
         combo_box.addItems(self.initial_values)
-        # combo_box.setItemData(0, 0, role=Qt.UserRole - 1)
         combo_box.setCurrentIndex(0)
         return label, combo_box
 
@@ -130,10 +136,10 @@ class SpiConfigurations(FramelessDialog):
         self.sender_combo_box = self.sender()
         self.selected_channel = self.sender_combo_box.currentText()
 
-        self.current_texts = {combo_box: combo_box.currentText() for combo_box in
-                              [self.mosi_combo, self.miso_combo, self.clock_combo, self.enable_combo]}
-
         self.pins_values = [self.mosi_combo, self.miso_combo, self.clock_combo, self.enable_combo]
+
+        self.current_texts = {combo_box: combo_box.currentText() for combo_box in
+                              self.pins_values}
 
         for combo_box in self.pins_values:
             combo_box.currentIndexChanged.disconnect(self.update_comboboxes)
@@ -158,7 +164,7 @@ class SpiConfigurations(FramelessDialog):
         self.prev_value = getattr(self, f"prev_b{self.combo_box_index}")
 
         self.update_prev_value(combo_box, items_without_selected)
-        # combo_box.model().sort(0)
+        # TODO: combo_box.model().sort(0)
 
     def update_prev_value(self, combo_box, items_without_selected):
         if self.prev_value != "Select Channel" and self.prev_value != self.selected_channel:
@@ -184,15 +190,7 @@ class SpiConfigurations(FramelessDialog):
             if self.current_texts[combo_box] not in items_without_selected:
                 combo_box.addItem(self.current_texts[combo_box])
         combo_box.setCurrentText(self.current_texts[combo_box])
-        # combo_box.model().sort(0)
-
-    def get_selected_channels(self):
-        mosi = self.mosi_combo.currentText()
-        miso = self.miso_combo.currentText()
-        clock = self.clock_combo.currentText()
-        enable = self.enable_combo.currentText()
-
-        return mosi, miso, clock, enable
+        # TODO: combo_box.model().sort(0)
 
     def reset_settings(self):
         self.disconnect_signals()
@@ -204,6 +202,7 @@ class SpiConfigurations(FramelessDialog):
 
         self.connect_signals()
 
+        self.clock_rate_combo.setCurrentText('10')
         self.significant_bit_combo.setCurrentText('L')
         self.bits_per_transfer_combo.setCurrentText('8')
         self.clock_state_combo.setCurrentText('0')

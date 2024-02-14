@@ -1,4 +1,4 @@
-from controllers.data_collector_controller import DataCollectorController
+from controllers.sniffing_controller.data_sniffing_collector_controller import DataCollectorController
 from models.dto.uart_protocol_dto import UartProtocolDto
 from models.dao.uart_protocol_dao import UartProtocolDao
 from models.dao.sniffed_data_dao import SniffedDataDao

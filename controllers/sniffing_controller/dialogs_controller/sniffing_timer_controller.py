@@ -2,7 +2,7 @@ from enum import IntEnum
 
 from PyQt5.QtCore import QObject
 
-from controllers.data_collector_controller import DataCollectorController
+from controllers.sniffing_controller.data_sniffing_collector_controller import DataCollectorController
 from controllers.data_store_controller.channel_pins_store_controller import ChannelPinsStoreController
 from controllers.data_store_controller.channels_data_store_controller import ChannelsDataStoreController
 from controllers.data_store_controller.n_bit_store_controller import NBitStoreController
@@ -71,7 +71,6 @@ class SniffingTimerDialogController(QObject):
         self.send_svf_file()
 
         create_success_bar(self.parent, 'SUCCESS', 'Sniffing Started Successfully ...')
-        SearchTimestampController.get_instance().update_timestamp_combobox()
         self.sniffing_timer_dialog.accept()
 
     def send_svf_file(self):

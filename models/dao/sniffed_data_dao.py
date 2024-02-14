@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from models.entities.channels_data import ChannelsData
 from models.entities.sniffed_data import SniffedData
 from models import storage
 from models.dto.sniffed_data_dto import SniffedDataDto
@@ -30,6 +31,10 @@ class SniffedDataDao:
     @staticmethod
     def get_all():
         return storage.list_all(SniffedData)
+
+    @staticmethod
+    def get_all_with_channel_data():
+        return storage.get_all_with_data(SniffedData, ChannelsData)
 
     @staticmethod
     def get_last_sniffed_data_id():

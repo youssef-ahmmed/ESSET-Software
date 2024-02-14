@@ -1,4 +1,4 @@
-from controllers.data_collector_controller import DataCollectorController
+from controllers.sniffing_controller.data_sniffing_collector_controller import DataCollectorController
 from models.dto.n_bit_sniffing_dto import NBitDto
 from models.dao.n_bit_sniffing_dao import NBitSniffingDao
 from models.dao.sniffed_data_dao import SniffedDataDao

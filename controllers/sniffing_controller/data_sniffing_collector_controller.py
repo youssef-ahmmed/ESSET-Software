@@ -33,6 +33,7 @@ class DataCollectorController(QObject):
     def collect_spi_data():
         spi_data = SpiDialogController.get_instance().collect_spi_settings()
         return {
+            'clock_rate': spi_data['clock_rate'],
             'significant_bit': spi_data['significant_bit'],
             'clk_state': int(spi_data['clk_state']),
             'clk_phase': int(spi_data['clk_phase']),

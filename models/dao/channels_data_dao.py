@@ -33,7 +33,11 @@ class ChannelsDataDao:
 
     @staticmethod
     def get_all_by_last_id():
-        return storage.get_by_sniffed_data(ChannelsData)
+        return storage.get_all_by_sniffed_data(ChannelsData)
+
+    @staticmethod
+    def get_last_not_null_data():
+        return storage.get_last_not_null_data(ChannelsData)
 
     def insert(self):
         storage.insert(self.channels_data)
@@ -54,7 +58,7 @@ class ChannelsDataDao:
 
     @staticmethod
     def update_channel_data(channel_data: Any):
-        channel_data_record: ChannelsData = storage.get_by_sniffed_data(ChannelsData)
+        channel_data_record: ChannelsData = storage.get_first_by_sniffed_data(ChannelsData)
         if channel_data_record:
             channel_data_record.channel_data = channel_data
 

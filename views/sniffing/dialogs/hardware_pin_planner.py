@@ -20,7 +20,6 @@ class HardwarePinPlanner(FramelessDialog):
         self.cancel_button = PrimaryPushButton(FIF.CANCEL_MEDIUM, "Cancel")
 
         self.init_ui()
-
         self.start_communication()
 
     def start_communication(self):

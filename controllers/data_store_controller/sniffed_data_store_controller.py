@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from controllers.data_collector_controller import DataCollectorController
+from controllers.sniffing_controller.data_sniffing_collector_controller import DataCollectorController
 from models.dao.sniffed_data_dao import SniffedDataDao
 from models.dto.sniffed_data_dto import SniffedDataDto
 

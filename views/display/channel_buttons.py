@@ -30,14 +30,14 @@ class ChannelButtons(QWidget):
         self.clear_button.clicked.connect(lambda: self.clear_plots.emit())
         self.all_button.clicked.connect(lambda: self.show_plots.emit())
 
-        for button_number, channel_button in enumerate(self.channel_buttons):
+        for button_number, channel_button in enumerate(self.channel_buttons, start=1):
             channel_button.clicked.connect(lambda _, num=button_number: self.channel_visibility.emit(num))
 
     def init_ui(self):
         self.clear_button = PushButton(FIF.REMOVE_FROM, "Clear")
         self.all_button = PushButton(FIF.VIEW, "Show All")
 
-        for button in range(self.button_numbers):
+        for button in range(1, self.button_numbers + 1):
             channel_button = PrimaryPushButton(f'{button}')
             channel_button.setFixedSize(50, 30)
             self.channel_buttons.append(channel_button)
