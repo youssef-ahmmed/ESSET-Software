@@ -7,6 +7,7 @@ from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets import (NavigationBar, NavigationItemPosition, isDarkTheme)
 from qframelesswindow import FramelessWindow
 
+from views.common.info_bar import main_window_manager, create_info_bar
 from views.common.log_widget import LogWidget
 from views.common.settings_menu import SettingsMenu
 from views.custom_component.custom_title_bar import CustomTitleBar
@@ -15,7 +16,7 @@ from views.display.display_widget import DisplayWidget
 from views.sniffing.sniffing_widget import SniffingWidget
 
 
-class Window(FramelessWindow):
+class MainWindow(FramelessWindow):
     def __init__(self):
         super().__init__()
         self.setTitleBar(CustomTitleBar(self))
@@ -23,11 +24,11 @@ class Window(FramelessWindow):
         self.layout = QHBoxLayout(self)
         self.navigation_bar = NavigationBar(self)
         self.stack_widget = StackedWidget(self)
-        self.log = LogWidget()
+        self.log = LogWidget(self)
 
-        self.sniffing_widget = SniffingWidget(self)
+        self.sniffing_widget = SniffingWidget()
         self.sniffing_widget.setObjectName("Sniffing Widget")
-        self.display_widget = DisplayWidget(self)
+        self.display_widget = DisplayWidget()
         self.display_widget.setObjectName("Display Widget")
         self.settings_menu = SettingsMenu(self)
 
@@ -44,17 +45,14 @@ class Window(FramelessWindow):
         self.layout.setStretchFactor(self.stack_widget, 1)
 
     def init_navigation(self):
-        self.addSubInterface(self.sniffing_widget, QIcon('../assets/icons/sniffing.svg'), 'Sniffing')
-        self.addSubInterface(self.display_widget, QIcon('../assets/icons/display.svg'), 'Display')
-        self.navigation_bar.addItem(
-            routeKey='Settings Button',
-            icon=FIF.SETTING,
-            text='Settings',
-            onClick=self.settings_menu.open_settings_menu,
-            position=NavigationItemPosition.BOTTOM,
-        )
+        self.add_sub_interface(self.sniffing_widget, QIcon('../assets/icons/sniffing.svg'), 'Sniffing')
+        self.add_sub_interface(self.display_widget, QIcon('../assets/icons/display.svg'), 'Display')
+        self.add_navigatiob_bar_button('Log Button', FIF.CALENDAR, 'Log', self.log.open_log_widget,
+                                       NavigationItemPosition.BOTTOM)
+        self.add_navigatiob_bar_button('Settings Button', FIF.SETTING, 'Settings',
+                                       self.settings_menu.open_settings_menu, NavigationItemPosition.BOTTOM)
 
-        self.stack_widget.currentChanged.connect(self.onCurrentInterfaceChanged)
+        self.stack_widget.currentChanged.connect(self.on_current_interface_changed)
         self.navigation_bar.setCurrentItem(self.sniffing_widget.objectName())
 
     def init_window(self):
@@ -62,34 +60,45 @@ class Window(FramelessWindow):
         self.setWindowIcon(QIcon(':/qfluentwidgets/images/logo.png'))
         self.setWindowTitle('ESSET')
         self.titleBar.setAttribute(Qt.WA_StyledBackground)
-        self.setQss()
+        self.set_qss()
 
-    def addSubInterface(self, interface, icon, text: str, position=NavigationItemPosition.TOP, selectedIcon=None):
+    def add_sub_interface(self, interface, icon, text: str, position=NavigationItemPosition.TOP, selectedIcon=None):
         self.stack_widget.addWidget(interface)
         self.navigation_bar.addItem(
             routeKey=interface.objectName(),
             icon=icon,
             text=text,
-            onClick=lambda: self.switchTo(interface),
+            onClick=lambda: self.switch_to(interface),
             selectedIcon=selectedIcon,
             position=position,
         )
+    
+    def add_navigatiob_bar_button(self, route_key, icon, text, on_click, position):
+        self.navigation_bar.addItem(
+            routeKey=route_key,
+            icon=icon,
+            text=text,
+            onClick=on_click,
+            position=position
+        )
 
-    def setQss(self):
+    def set_qss(self):
         color = 'dark' if isDarkTheme() else 'light'
         with open(f'../assets/{color}/demo.qss', encoding='utf-8') as f:
             self.setStyleSheet(f.read())
 
-    def switchTo(self, widget):
+    def switch_to(self, widget):
         self.stack_widget.setCurrentWidget(widget)
 
-    def onCurrentInterfaceChanged(self, index):
+    def on_current_interface_changed(self, index):
         widget = self.stack_widget.widget(index)
         self.navigation_bar.setCurrentItem(widget.objectName())
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = Window()
+    window = MainWindow()
     window.showMaximized()
+    main_window_manager.main_window = window
+    create_info_bar("Welcome To ESSET")
     app.exec_()
