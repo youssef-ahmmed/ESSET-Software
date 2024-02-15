@@ -1,6 +1,5 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QTableWidgetItem, QVBoxLayout, QHBoxLayout, QCompleter
-from loguru import logger
 from qfluentwidgets import FluentIcon as FIF, StrongBodyLabel, EditableComboBox
 from qfluentwidgets import TableWidget, PrimaryPushButton
 from qframelesswindow import FramelessDialog
@@ -11,10 +10,9 @@ from views.common.info_bar import create_success_bar
 
 
 class HardwarePinPlanner(FramelessDialog):
-    def __init__(self, parent=None, info_bar=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.info_bar = info_bar
         self.pin_planner = TableWidget()
         self.save_button = PrimaryPushButton(FIF.SAVE, "Save")
         self.cancel_button = PrimaryPushButton(FIF.CANCEL_MEDIUM, "Cancel")
@@ -82,6 +80,5 @@ class HardwarePinPlanner(FramelessDialog):
         qsf_writer = QsfWriter()
         qsf_writer.write_hardware_pins(hardware_pins)
 
-        create_success_bar(self.info_bar, 'SUCCESS', log_messages.PINS_SET)
-        logger.success(log_messages.PINS_SET)
+        create_success_bar(log_messages.PINS_SET)
         self.accept()

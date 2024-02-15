@@ -5,10 +5,10 @@ from views.sniffing.sniffing_modes_widget import SniffingModesWidget
 
 class SniffingWidget(QWidget):
 
-    def __init__(self, parent):
+    def __init__(self):
         super().__init__()
 
-        self.sniffing_mode_widget = SniffingModesWidget(parent)
+        self.sniffing_mode_widget = SniffingModesWidget()
 
         self.init_ui()
 

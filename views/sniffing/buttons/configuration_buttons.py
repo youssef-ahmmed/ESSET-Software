@@ -12,28 +12,28 @@ from views.sniffing.dialogs.sniffing_timer import SniffingTimer
 
 class ConfigurationButtons(QWidget):
 
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__()
         self.start_sniffing = PrimarySplitPushButton(FIF.IOT, 'Start Sniffing')
         self.synthesis_button = PrimaryPushButton(FIF.ROBOT, 'Synthesis')
         self.sniffing_timer_dialog = SniffingTimer(self.start_sniffing)
 
-        SynthesisButtonController.get_instance(parent, self.synthesis_button)
-        StartSniffingButtonController.get_instance(parent, self.start_sniffing)
-        SniffingTimerDialogController.get_instance(parent, self.sniffing_timer_dialog)
+        SynthesisButtonController.get_instance(self.synthesis_button)
+        StartSniffingButtonController.get_instance(self.start_sniffing)
+        SniffingTimerDialogController.get_instance(self.sniffing_timer_dialog)
 
         self.init_ui()
-        self.create_sniffing_options(parent)
+        self.create_sniffing_options()
 
     def init_ui(self):
         self.setLayout(QHBoxLayout())
         self.layout().addWidget(self.synthesis_button)
         self.layout().addWidget(self.start_sniffing)
 
-    def create_sniffing_options(self, parent):
-        sniffing_button_option = RoundMenu(parent)
+    def create_sniffing_options(self):
+        sniffing_button_option = RoundMenu()
         receive_data_button = Action(FIF.LINK, 'Receive Data')
         sniffing_button_option.addAction(receive_data_button)
         self.start_sniffing.setFlyout(sniffing_button_option)
 
-        ReceiveButtonController.get_instance(parent, receive_data_button)
+        ReceiveButtonController.get_instance(receive_data_button)

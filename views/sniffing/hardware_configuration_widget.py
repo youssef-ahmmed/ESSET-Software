@@ -16,23 +16,23 @@ from views.sniffing.number_bits_select import NumberBitsSelect
 
 class HardwareConfigurations(QWidget):
 
-    def __init__(self, parent):
+    def __init__(self):
         super().__init__()
 
         self.bits_input_dialog = BitsInputDialog()
-        BitsInputDialogController.get_instance(parent, self.bits_input_dialog)
+        BitsInputDialogController.get_instance(self.bits_input_dialog)
 
-        self.comm_protocol = CommunicationProtocolSelect(parent)
+        self.comm_protocol = CommunicationProtocolSelect()
         CommProtocolSelectController.get_instance(self.comm_protocol)
 
         self.no_bits = NumberBitsSelect()
         NumberBitsSelectController.get_instance(self.no_bits, self.bits_input_dialog)
 
-        self.channel_button = SelectChannelPinsButton(parent)
-        ChannelPinsButtonController.get_instance(self.channel_button, parent)
+        self.channel_button = SelectChannelPinsButton()
+        ChannelPinsButtonController.get_instance(self.channel_button)
 
         self.terminal = OutputTerminal()
-        self.configuration_buttons = ConfigurationButtons(parent)
+        self.configuration_buttons = ConfigurationButtons()
 
         TerminalController.get_instance(self.terminal.terminal)
 
