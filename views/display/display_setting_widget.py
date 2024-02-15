@@ -19,7 +19,7 @@ class DisplaySettingsWidget(QWidget):
     show_plots = pyqtSignal()
     clear_plots = pyqtSignal()
 
-    def __init__(self, parent=None):
+    def __init__(self):
         super().__init__()
 
         self.channel_button = ChannelButtons()
@@ -28,10 +28,10 @@ class DisplaySettingsWidget(QWidget):
         self.last_data_checkbox = LastDataCheckbox()
         self.display_button = PrimaryPushButton(FIF.TRAIN, "Display")
 
-        SearchTimestampController.get_instance(self.search_timestamp, parent)
+        SearchTimestampController.get_instance(self.search_timestamp)
         DisplayTerminalController.get_instance(self.display_terminal.terminal)
-        DisplayButtonController.get_instance(self.display_button, parent)
-        LastDataCheckboxController.get_instance(self.last_data_checkbox.last_data_checkbox, parent)
+        DisplayButtonController.get_instance(self.display_button)
+        LastDataCheckboxController.get_instance(self.last_data_checkbox.last_data_checkbox)
 
         self.init_ui()
         self.start_communication()
