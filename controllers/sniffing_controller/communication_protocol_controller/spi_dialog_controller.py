@@ -20,18 +20,17 @@ class SpiDialogController(QObject):
     _instance = None
 
     @staticmethod
-    def get_instance(parent=None, spi_setting_dialog: SpiConfigurations = None):
+    def get_instance(spi_setting_dialog: SpiConfigurations = None):
         if SpiDialogController._instance is None:
-            SpiDialogController._instance = SpiDialogController(parent, spi_setting_dialog)
+            SpiDialogController._instance = SpiDialogController(spi_setting_dialog)
         return SpiDialogController._instance
 
-    def __init__(self, parent, spi_setting_dialog: SpiConfigurations):
+    def __init__(self, spi_setting_dialog: SpiConfigurations):
         super(SpiDialogController, self).__init__()
 
         if SpiDialogController._instance is not None:
             raise Exception("An instance of SpiDialogController already exists. Use get_instance() to access it.")
 
-        self.parent = parent
         self.spi_setting_dialog = spi_setting_dialog
         self.project_path_controller = ProjectPathController.get_instance()
         self.spi_configurations = []
@@ -54,8 +53,7 @@ class SpiDialogController(QObject):
         if self.spi_configurations is not None:
             self.render_spi_slave_templates()
             self.spi_setting_dialog.accept()
-            create_success_bar(self.parent, 'SUCCESS', log_messages.SPI_CONFIG_SET)
-            logger.success(log_messages.SPI_CONFIG_SET)
+            create_success_bar(log_messages.SPI_CONFIG_SET)
 
     def show_spi_dialog(self):
         try:

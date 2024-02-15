@@ -1,9 +1,9 @@
 from PyQt5.QtCore import pyqtSignal, QObject
-from PyQt5.QtWidgets import QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QFileDialog
 
 from controllers.project_path_controller import ProjectPathController
-from reusable_functions.file_operations import read_text_file, write_to_text_file
 from reusable_functions.dialog_message_box import show_error_message
+from reusable_functions.file_operations import read_text_file, write_to_text_file
 from views.common.message_box import MessageBox
 
 

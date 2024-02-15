@@ -18,12 +18,12 @@ class ReceiveButtonController(QObject):
     _instance = None
 
     @staticmethod
-    def get_instance(parent=None, receive_data_button: Action = None) -> None:
+    def get_instance(receive_data_button: Action = None) -> None:
         if ReceiveButtonController._instance is None:
-            ReceiveButtonController._instance = ReceiveButtonController(parent, receive_data_button)
+            ReceiveButtonController._instance = ReceiveButtonController(receive_data_button)
         return ReceiveButtonController._instance
 
-    def __init__(self, parent, receive_data_button: Action) -> None:
+    def __init__(self, receive_data_button: Action) -> None:
         super(ReceiveButtonController, self).__init__()
 
         if ReceiveButtonController._instance is not None:
@@ -31,12 +31,11 @@ class ReceiveButtonController(QObject):
                             "Use get_instance() to access it.")
 
         self.receive_data_button = receive_data_button
-        self.parent = parent
 
         self.start_communication()
 
     def start_communication(self) -> None:
-        self.receive_data_button.triggered.connect(self.store_sniffed_data)
+        self.receive_data_button.triggered.connect(self.receive_sniffed_data)
 
     def receive_sniffed_data(self):
         try:
@@ -45,9 +44,9 @@ class ReceiveButtonController(QObject):
             self.initiate_ftp_connection()
             self.store_sniffed_data()
             SearchTimestampController.get_instance().update_timestamp_combobox()
-            create_success_bar(self.parent, 'SUCCESS', log_messages.RECEIVED_SUCCESS)
+            create_success_bar(log_messages.RECEIVED_SUCCESS)
         except Exception:
-            create_error_bar(self.parent, 'ERROR', log_messages.FTP_NOT_OPENED)
+            create_error_bar(log_messages.FTP_NOT_OPENED)
 
     def check_time_taken_passed(self) -> bool:
         last_sniffed_data_id = SniffedDataDao.get_last_sniffed_data_id()
@@ -55,7 +54,7 @@ class ReceiveButtonController(QObject):
 
         finished_sniffing_time = start_time + timedelta(seconds=time_taken)
         if datetime.now() < finished_sniffing_time:
-            create_error_bar(self.parent, 'ERROR', log_messages.SNIFFING_NOT_FINISHED)
+            create_error_bar(log_messages.SNIFFING_NOT_FINISHED)
             return False
 
         return True

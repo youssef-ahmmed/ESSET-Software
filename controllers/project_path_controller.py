@@ -1,12 +1,11 @@
-import os
 import platform
 
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QFileDialog
-from loguru import logger
 
 from models import log_messages
 from reusable_functions.os_operations import split_pathname, join_paths, dir_list, check_path_exists
+from views.common.info_bar import create_success_bar, create_warning_bar
 
 
 class ProjectPathController(QObject):
@@ -35,9 +34,9 @@ class ProjectPathController(QObject):
         if directory_path:
             self.project_path = directory_path
             self.directory_path_changed.emit(directory_path)
-            logger.success(log_messages.QUARTUS_PATH_SPECIFIED)
+            create_success_bar(log_messages.QUARTUS_PATH_SPECIFIED)
         else:
-            logger.warning(log_messages.NO_QUARTUS_PATH)
+            create_warning_bar(log_messages.NO_QUARTUS_PATH)
 
     def get_project_path(self):
         return self.project_path
@@ -87,10 +86,10 @@ class ProjectPathController(QObject):
     def open_env_path_dialog(self):
         env_path = QFileDialog.getExistingDirectory(None, 'Select Environment Path')
         if env_path:
-            logger.success(log_messages.ENV_PATH_SET)
+            create_success_bar(log_messages.ENV_PATH_SET)
             self.env_path = env_path
         else:
-            logger.warning(log_messages.NO_ENV_PATH)
+            create_warning_bar(log_messages.NO_ENV_PATH)
 
     def get_env_path(self):
         return self.env_path

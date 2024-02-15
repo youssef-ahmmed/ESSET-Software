@@ -1,12 +1,11 @@
 from PyQt5.QtCore import QObject
-from loguru import logger
-from views.common.info_bar import create_error_bar
-from views.common.message_box import MessageBox
 
 from controllers.project_path_controller import ProjectPathController
 from core.vhdl_parser import VhdlParser
 from models import log_messages
 from reusable_functions.os_operations import join_paths, get_last_modification_time
+from views.common.info_bar import create_error_bar
+from views.common.message_box import MessageBox
 from views.sniffing.buttons.select_channel_pins_button import SelectChannelPinsButton
 
 
@@ -14,19 +13,18 @@ class ChannelPinsButtonController(QObject):
     _instance = None
 
     @staticmethod
-    def get_instance(channel_pins=None, parent=None):
+    def get_instance(channel_pins=None):
         if ChannelPinsButtonController._instance is None:
-            ChannelPinsButtonController._instance = ChannelPinsButtonController(channel_pins, parent)
+            ChannelPinsButtonController._instance = ChannelPinsButtonController(channel_pins)
         return ChannelPinsButtonController._instance
 
-    def __init__(self, channel_pins: SelectChannelPinsButton, parent) -> None:
+    def __init__(self, channel_pins: SelectChannelPinsButton) -> None:
         super(ChannelPinsButtonController, self).__init__()
 
         if ChannelPinsButtonController._instance is not None:
             raise Exception("An instance of ChannelPinsButtonController already exists. "
                             "Use get_instance() to access it.")
 
-        self.parent = parent
         self.channel_pins = channel_pins
         self.channel_pins_button = channel_pins.channel_pins_button
         self.pin_planner_table = channel_pins.pin_planner_table
@@ -49,8 +47,7 @@ class ChannelPinsButtonController(QObject):
 
         top_level_name: str = self.project_path_controller.get_top_level_name()
         if top_level_name == "not exist":
-            logger.error(log_messages.NO_TOP_LEVEL_FILE)
-            create_error_bar(self.parent, 'ERROR', log_messages.NO_TOP_LEVEL_FILE)
+            create_error_bar(log_messages.NO_TOP_LEVEL_FILE)
             return
 
         return join_paths(project_path, top_level_name + '.vhd')
@@ -79,4 +76,3 @@ class ChannelPinsButtonController(QObject):
 
     def get_pin_planner_data(self):
         return self.pin_planner_table.get_table_data()
-
