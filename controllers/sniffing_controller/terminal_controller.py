@@ -3,6 +3,11 @@ from PyQt5.QtGui import QTextCursor
 
 class TerminalController:
     _instance = None
+    PREFIX_COLORS = {
+        'Info': 'darkgreen',
+        'Warning': 'Goldenrod',
+        'Error': 'red',
+    }
 
     @staticmethod
     def get_instance(terminal=None):
@@ -19,28 +24,21 @@ class TerminalController:
         self.terminal = terminal
 
     def write_text(self, text):
-        self.terminal.clear()
+        self.clear_terminal()
         self.terminal.insertPlainText(text)
-
-    def append_line(self, line):
-        self.terminal.appendPlainText(line)
 
     def clear_terminal(self):
         self.terminal.clear()
 
-    def append_success(self, text):
-        self._append_colored_text(text, 'green')
+    def append_line(self, line):
+        color = 'darkblue'
+        for prefix, prefix_color in self.PREFIX_COLORS.items():
+            if line.startswith(prefix):
+                color = prefix_color
+                break
+        self.append_colored_text(line, color)
 
-    def append_error(self, text):
-        self._append_colored_text(text, 'red')
-
-    def append_warning(self, text):
-        self._append_colored_text(text, 'yellow')
-
-    def append_info(self, text):
-        self._append_colored_text(text, 'darkblue')
-
-    def _append_colored_text(self, text, color):
+    def append_colored_text(self, text, color):
         cursor = self.terminal.textCursor()
         cursor.movePosition(QTextCursor.End)
         cursor.insertHtml(f'<font color="{color}">{text}</font><br>')
