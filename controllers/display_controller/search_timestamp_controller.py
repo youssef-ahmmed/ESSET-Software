@@ -10,13 +10,13 @@ class SearchTimestampController(AbstractDataDisplay):
     _instance = None
 
     @staticmethod
-    def get_instance(search_timestamp=None, parent=None):
+    def get_instance(search_timestamp=None):
         if SearchTimestampController._instance is None:
-            SearchTimestampController._instance = SearchTimestampController(search_timestamp, parent)
+            SearchTimestampController._instance = SearchTimestampController(search_timestamp)
         return SearchTimestampController._instance
 
-    def __init__(self, search_timestamp, parent):
-        super(SearchTimestampController, self).__init__(parent)
+    def __init__(self, search_timestamp):
+        super(SearchTimestampController, self).__init__()
 
         if SearchTimestampController._instance is not None:
             raise Exception("An instance of SearchTimestampController already exists. Use get_instance() to access it.")
