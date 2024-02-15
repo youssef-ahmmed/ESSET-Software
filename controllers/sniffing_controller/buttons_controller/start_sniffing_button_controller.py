@@ -1,11 +1,18 @@
 import platform
 
 from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QPushButton
 from qfluentwidgets import PrimarySplitPushButton
 
 from controllers.project_path_controller import ProjectPathController
+from controllers.sniffing_controller.comm_protocol_select_controller import CommProtocolSelectController
+from controllers.sniffing_controller.communication_protocol_controller.spi_dialog_controller import SpiDialogController
+from controllers.sniffing_controller.communication_protocol_controller.uart_dialog_controller import \
+    UartDialogController
+from controllers.sniffing_controller.dialogs_controller.hardware_pin_planner_controller import \
+    HardwarePinPlannerController
 from controllers.sniffing_controller.dialogs_controller.sniffing_timer_controller import SniffingTimerDialogController
+from controllers.sniffing_controller.number_bits_select_controller import NumberBitsSelectController
+from controllers.sniffing_controller.terminal_controller import TerminalController
 from core.script_executor import ScriptExecutor
 from core.vhdl_generator import VhdlGenerator
 from models import log_messages
@@ -45,6 +52,7 @@ class StartSniffingButtonController(QObject):
             SniffingTimerDialogController.get_instance().show_sniffing_timer_dialog()
         else:
             create_error_bar(self.parent, 'ERROR', log_messages.NO_SOF_FILE)
+        self.clear_all_previous_configuration()
 
     def render_svf_script(self, sof_file_path):
         vhdl_generator = VhdlGenerator()
@@ -64,3 +72,24 @@ class StartSniffingButtonController(QObject):
         script_path = join_paths(svf_output_path, 'generate_svf.sh')
         script_execute = ScriptExecutor(script_path)
         script_execute.execute_script()
+
+    @staticmethod
+    def clear_all_previous_configuration():
+        comm_protocol_selected = CommProtocolSelectController.get_instance().get_selected_option()
+        number_bit_selected = NumberBitsSelectController.get_instance()
+        connection_way = number_bit_selected.get_selected_option()
+
+        StartSniffingButtonController.comm_protocol_settings_reset(comm_protocol_selected)
+
+        if connection_way != 'Choose':
+            number_bit_selected.restart_settings()
+
+        TerminalController.get_instance().clear_terminal()
+        HardwarePinPlannerController.get_instance().reset_table()
+
+    @staticmethod
+    def comm_protocol_settings_reset(comm_protocol_selected):
+        if comm_protocol_selected == 'SPI':
+            SpiDialogController.get_instance().restart_settings()
+        elif comm_protocol_selected == 'UART':
+            UartDialogController.get_instance().restart_settings()
