@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QMessageBox
 from loguru import logger
 
 from controllers.project_path_controller import ProjectPathController
+from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_controller import PinPlannerDialogController
 from controllers.sniffing_controller.number_bits_select_controller import NumberBitsSelectController
 from core.qsf_writer import QsfWriter
 from core.vhdl_generator import VhdlGenerator
@@ -55,6 +56,7 @@ class BitsInputDialogController(QObject):
         if bits_number is not None:
             self.bits_input_dialog.accept()
             self.render_bit_templates()
+            PinPlannerDialogController.get_instance().send_data_to_pin_planner()
             if self.sniffing_type == "One_Bit":
                 create_success_bar(self.parent, 'SUCCESS', log_messages.ONE_BIT_CONFIG_SET)
                 logger.success(log_messages.ONE_BIT_CONFIG_SET)
