@@ -11,13 +11,13 @@ class WaveformController(QObject):
     _instance = None
 
     @staticmethod
-    def get_instance(waveform_widget: WaveformWidget = None, parent=None):
+    def get_instance(waveform_widget: WaveformWidget = None):
         if WaveformController._instance is None:
-            WaveformController._instance = WaveformController(waveform_widget, parent)
+            WaveformController._instance = WaveformController(waveform_widget)
         return WaveformController._instance
 
-    def __init__(self, waveform_widget: WaveformWidget, parent=None):
-        super(WaveformController, self).__init__(parent)
+    def __init__(self, waveform_widget: WaveformWidget):
+        super(WaveformController, self).__init__()
 
         if WaveformController._instance is not None:
             raise Exception(instance_exists_error(self.__class__.__name__))

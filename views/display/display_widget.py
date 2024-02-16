@@ -1,20 +1,20 @@
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QSplitter
 from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QSplitter
 
 from controllers.display_controller.waveform_controller import WaveformController
-from views.display.waveform_widget import WaveformWidget
 from views.display.display_setting_widget import DisplaySettingsWidget
+from views.display.waveform_widget import WaveformWidget
 
 
 class DisplayWidget(QWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self):
         super().__init__()
 
         self.waveform_widget = WaveformWidget()
-        WaveformController.get_instance(self.waveform_widget)
+        self.display_settings_widget = DisplaySettingsWidget()
 
-        self.display_settings_widget = DisplaySettingsWidget(parent)
+        WaveformController.get_instance(self.waveform_widget)
 
         self.init_ui()
         self.start_communication()

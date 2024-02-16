@@ -1,7 +1,6 @@
 import time
 
 from PyQt5.QtCore import QObject, pyqtSignal, QThread
-from loguru import logger
 
 from controllers.project_path_controller import ProjectPathController
 from controllers.sniffing_controller.terminal_controller import TerminalController
@@ -38,19 +37,18 @@ class SynthesisButtonController(QObject):
     _instance = None
 
     @staticmethod
-    def get_instance(parent=None, synthesis_button=None):
+    def get_instance(synthesis_button=None):
         if SynthesisButtonController._instance is None:
-            SynthesisButtonController._instance = SynthesisButtonController(parent, synthesis_button)
+            SynthesisButtonController._instance = SynthesisButtonController(synthesis_button)
         return SynthesisButtonController._instance
 
-    def __init__(self, parent, synthesis_button):
+    def __init__(self, synthesis_button):
         super(SynthesisButtonController, self).__init__()
 
         if SynthesisButtonController._instance is not None:
             raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.synthesis_button = synthesis_button
-        self.parent = parent
         self.start_communication()
 
     def start_communication(self):
@@ -60,8 +58,7 @@ class SynthesisButtonController(QObject):
         script_path = self.get_script_path()
         if script_path is None:
             return
-        logger.info(log_messages.SYNTHESIZE_INITIATED)
-        create_info_bar(self.parent, 'INFO', log_messages.SYNTHESIZE_INITIATED)
+        create_info_bar(log_messages.SYNTHESIZE_INITIATED)
         self.thread = QThread()
         self.worker = ScriptThread(script_path)
         self.worker.moveToThread(self.thread)
@@ -69,7 +66,7 @@ class SynthesisButtonController(QObject):
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
         self.thread.finished.connect(self.thread.deleteLater)
-        self.worker.progress.connect(self.append_output)
+        self.worker.progress.connect(TerminalController.get_instance().append_line)
         TerminalController.get_instance().clear_terminal()
         self.thread.start()
         self.synthesis_button.setEnabled(False)
@@ -91,21 +88,8 @@ class SynthesisButtonController(QObject):
         return script_path
 
     @staticmethod
-    def append_output(line):
-        if line.startswith('Info'):
-            TerminalController.get_instance().append_success(line)
-        elif line.startswith('Warning'):
-            TerminalController.get_instance().append_warning(line)
-        elif line.startswith('Error'):
-            TerminalController.get_instance().append_error(line)
-        else:
-            TerminalController.get_instance().append_info(line)
-
-    def display_log_message(self, return_code, execution_time):
+    def display_log_message(return_code, execution_time):
         if return_code == 0:
-            create_success_bar(self.parent, 'SUCCESS',
-                               f"{log_messages.SYNTHESIZE_SUCCESS} {execution_time} seconds.")
-            logger.success(f"{log_messages.SYNTHESIZE_SUCCESS} {execution_time} seconds.")
+            create_success_bar(f"{log_messages.SYNTHESIZE_SUCCESS} {execution_time} seconds.")
         else:
-            create_error_bar(self.parent, 'ERROR', log_messages.SYNTHESIZE_FAILED)
-            logger.error(log_messages.SYNTHESIZE_FAILED)
+            create_error_bar(log_messages.SYNTHESIZE_FAILED)

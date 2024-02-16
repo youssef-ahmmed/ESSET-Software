@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QVBoxLayout, QApplication, QHBoxLayout, QLabel
+from PyQt5.QtWidgets import QVBoxLayout, QApplication, QHBoxLayout
 from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets import PrimaryPushButton, StrongBodyLabel, LineEdit, CaptionLabel
 from qframelesswindow import FramelessDialog

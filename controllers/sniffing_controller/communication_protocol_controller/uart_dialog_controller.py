@@ -1,7 +1,6 @@
 import platform
 
 from PyQt5.QtCore import QObject
-from loguru import logger
 
 from controllers.project_path_controller import ProjectPathController
 from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_controller import PinPlannerDialogController
@@ -20,18 +19,17 @@ class UartDialogController(QObject):
     _instance = None
 
     @staticmethod
-    def get_instance(parent=None, uart_setting_dialog=None):
+    def get_instance(uart_setting_dialog=None):
         if UartDialogController._instance is None:
-            UartDialogController._instance = UartDialogController(parent, uart_setting_dialog)
+            UartDialogController._instance = UartDialogController(uart_setting_dialog)
         return UartDialogController._instance
 
-    def __init__(self, parent, uart_setting_dialog):
+    def __init__(self, uart_setting_dialog):
         super(UartDialogController, self).__init__()
 
         if UartDialogController._instance is not None:
             raise Exception(instance_exists_error(self.__class__.__name__))
 
-        self.parent = parent
         self.uart_setting_dialog = uart_setting_dialog
         self.project_path_controller = ProjectPathController.get_instance()
 
@@ -54,8 +52,7 @@ class UartDialogController(QObject):
             self.uart_setting_dialog.accept()
             self.render_uart_templates()
             PinPlannerDialogController.get_instance().send_data_to_pin_planner()
-            create_success_bar(self.parent, 'SUCCESS', log_messages.UART_CONFIG_SET)
-            logger.success(log_messages.UART_CONFIG_SET)
+            create_success_bar(log_messages.UART_CONFIG_SET)
 
     def show_uart_dialog(self):
         try:

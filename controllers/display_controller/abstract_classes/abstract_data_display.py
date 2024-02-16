@@ -4,14 +4,13 @@ from views.common.info_bar import create_success_bar, create_error_bar
 
 
 class AbstractDataDisplay:
-    def __init__(self, parent=None):
-        self.parent = parent
 
-    def display_data_on_terminal(self, data):
+    @staticmethod
+    def display_data_on_terminal(data):
         if data:
             for row in range(len(data)):
                 DisplayTerminalController.get_instance().append_text(str(data[row].channel_data)[2:-1])
-            create_success_bar(self.parent, 'SUCCESS', log_messages.TIMESTAMP_SET)
+            create_success_bar(log_messages.DATA_DISPLAYED)
         else:
             DisplayTerminalController.get_instance().write_text('')
-            create_error_bar(self.parent, 'ERROR', log_messages.NO_TIMESTAMP_SET)
+            create_error_bar(log_messages.NO_TIMESTAMP_SET)

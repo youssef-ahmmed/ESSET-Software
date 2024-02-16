@@ -1,7 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QLabel, \
     QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication, QMessageBox
-from loguru import logger
 from qfluentwidgets import ComboBox, PrimaryPushButton, StrongBodyLabel, EditableComboBox
 from qfluentwidgets import FluentIcon as FIF
 from qframelesswindow import FramelessDialog
@@ -13,13 +12,12 @@ from views.sniffing.dialogs.channel_pins_dialog import ChannelPinsDialog
 
 class UartConfigurations(FramelessDialog):
 
-    def __init__(self, parent=None):
+    def __init__(self):
         super().__init__()
 
         self.reset_button = None
         self.cancel_button = None
         self.save_button = None
-        self.parent = parent
 
         self.init_ui()
 
@@ -123,8 +121,7 @@ class UartConfigurations(FramelessDialog):
         self.stop_bits_combo.setCurrentText('1')
         self.parity_combo.setCurrentText('N')
         self.significant_bit_combo.setCurrentText('L')
-        logger.info(log_messages.UART_RESET)
-        create_info_bar(self.parent, 'INFO', log_messages.UART_RESET)
+        create_info_bar(log_messages.UART_RESET)
 
     def save_settings(self):
         input_channel = self.get_selected_input_channel()

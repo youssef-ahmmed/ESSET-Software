@@ -9,13 +9,13 @@ from views.sniffing.dialogs.hardware_pin_planner import HardwarePinPlanner
 
 
 class SelectChannelPinsButton(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self):
         super().__init__()
 
         self.channel_pins_button = PrimaryPushButton(FIF.PIN, "Select Channel Pins")
         self.pin_planner_table = HardwarePinPlanner(self.channel_pins_button)
-        HardwarePinPlannerController.get_instance(self.pin_planner_table)
 
+        HardwarePinPlannerController.get_instance(self.pin_planner_table)
         ChannelPinsButtonController.get_instance(self.channel_pins_button, parent)
         PinPlannerDialogController.get_instance(self.pin_planner_table, parent)
 

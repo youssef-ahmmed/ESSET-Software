@@ -19,8 +19,8 @@ class CommunicationProtocolSelect(QWidget):
         self.spi_page = SpiConfigurations(parent)
         self.spi_controller = SpiDialogController.get_instance(parent, self.spi_page)
 
-        self.uart_page = UartConfigurations(parent)
-        self.uart_controller = UartDialogController.get_instance(parent, self.uart_page)
+        self.uart_page = UartConfigurations()
+        self.uart_controller = UartDialogController.get_instance(self.uart_page)
 
         self.selected_protocol = None
         self.init_ui()

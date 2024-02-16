@@ -4,10 +4,10 @@ def instance_exists_error(class_name):
 
 
 # Path Messages
-NO_TOP_LEVEL_FILE = "There is no top level file"
+NO_TOP_LEVEL_FILE = "There is No Top Level File"
 QUARTUS_PATH_SPECIFIED = "Quartus Path Specified Successfully."
 NO_QUARTUS_PATH = "No Quartus Path Specified."
-NO_SOF_FILE = "There is no sof file after Synthesis"
+NO_SOF_FILE = "There is no Sof File. Try Synthesis"
 ENV_PATH_SET = "Quartus Environment Path Set Successfully."
 NO_ENV_PATH = "NO Quartus Environment Path Specified"
 
@@ -27,6 +27,7 @@ SYNTHESIZE_FAILED = "Synthesizing Process Failed. Please review and try again."
 # Sniffing Messages
 SNIFFING_TIME_WARNING = "Sniffing Data Time Exceeds 2 Hours, Data Will Be Sniffed Until 2 Hours Only."
 NO_CONFIGURATIONS_FOUND = "There is No Configurations Found."
+SNIFFING_STARTED = 'Sniffing Started Successfully ...'
 
 # Receiving Data Messages
 RECEIVED_SUCCESS = "Data Received Successfully."
@@ -62,5 +63,5 @@ PINS_NUMBERS = [
 PINS_RESET = "Hardware Pins Configuration is Reset."
 
 # Display Button Messages
-TIMESTAMP_SET = "Selected Data Displayed Successfully"
+DATA_DISPLAYED = "Selected Data Displayed Successfully"
 NO_TIMESTAMP_SET = "No Selected Data to Display"

@@ -1,9 +1,8 @@
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIntValidator
 from PyQt5.QtWidgets import QLabel, \
     QVBoxLayout, QFormLayout, QWidget, QHBoxLayout, QApplication, QMessageBox
-from PyQt5.QtGui import QIntValidator
-from loguru import logger
-from qfluentwidgets import FluentIcon as FIF, ComboBox, LineEdit, EditableComboBox
+from qfluentwidgets import FluentIcon as FIF, ComboBox, EditableComboBox
 from qfluentwidgets import PrimaryPushButton, StrongBodyLabel
 from qframelesswindow import FramelessDialog
 
@@ -12,10 +11,9 @@ from views.common.info_bar import create_info_bar
 
 
 class SpiConfigurations(FramelessDialog):
-    def __init__(self, parent=None):
+    def __init__(self):
         super().__init__()
 
-        self.parent = parent
         self.reset_button = None
         self.cancel_button = None
         self.save_button = None
@@ -206,8 +204,7 @@ class SpiConfigurations(FramelessDialog):
         self.bits_per_transfer_combo.setCurrentText('8')
         self.clock_state_combo.setCurrentText('0')
         self.clock_phase_combo.setCurrentText('0')
-        logger.info(log_messages.SPI_RESET)
-        create_info_bar(self.parent, 'INFO', log_messages.SPI_RESET)
+        create_info_bar(log_messages.SPI_RESET)
 
     @staticmethod
     def show_spi_channel_warning(channel_name):

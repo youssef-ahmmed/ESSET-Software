@@ -8,10 +8,9 @@ from models import log_messages
 
 
 class HardwarePinPlanner(FramelessDialog):
-    def __init__(self, info_bar=None):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
 
-        self.info_bar = info_bar
         self.pin_planner = TableWidget()
         self.save_button = PrimaryPushButton(FIF.SAVE, "Save")
         self.cancel_button = PrimaryPushButton(FIF.CANCEL_MEDIUM, "Cancel")
@@ -60,5 +59,4 @@ class HardwarePinPlanner(FramelessDialog):
 
             combobox.addItems(pin_list)
             combobox.setCompleter(QCompleter(pin_list, self))
-
             self.pin_planner.setCellWidget(row, 1, combobox)

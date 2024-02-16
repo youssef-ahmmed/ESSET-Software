@@ -1,6 +1,5 @@
 from PyQt5.QtCore import QObject
 
-from controllers.display_controller.search_timestamp_controller import SearchTimestampController
 from core.data_processing import DataProcessing
 
 

@@ -11,19 +11,18 @@ class LastDataCheckboxController(AbstractDataDisplay):
     _instance = None
 
     @staticmethod
-    def get_instance(last_data_checkbox=None, parent=None):
+    def get_instance(last_data_checkbox=None):
         if LastDataCheckboxController._instance is None:
-            LastDataCheckboxController._instance = LastDataCheckboxController(last_data_checkbox, parent)
+            LastDataCheckboxController._instance = LastDataCheckboxController(last_data_checkbox)
         return LastDataCheckboxController._instance
 
-    def __init__(self, last_data_checkbox, parent=None):
-        super(LastDataCheckboxController, self).__init__(parent)
+    def __init__(self, last_data_checkbox):
+        super(LastDataCheckboxController, self).__init__()
 
         if LastDataCheckboxController._instance is not None:
             raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.last_data_checkbox = last_data_checkbox
-        self.parent = parent
 
         self.start_communication()
 

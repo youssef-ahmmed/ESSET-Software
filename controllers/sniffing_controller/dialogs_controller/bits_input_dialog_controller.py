@@ -2,7 +2,6 @@ import platform
 
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QMessageBox
-from loguru import logger
 
 from controllers.project_path_controller import ProjectPathController
 from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_controller import PinPlannerDialogController
@@ -23,18 +22,17 @@ class BitsInputDialogController(QObject):
     _instance = None
 
     @staticmethod
-    def get_instance(parent=None, bits_input_dialog: BitsInputDialog = None):
+    def get_instance(bits_input_dialog: BitsInputDialog = None):
         if BitsInputDialogController._instance is None:
-            BitsInputDialogController._instance = BitsInputDialogController(parent, bits_input_dialog)
+            BitsInputDialogController._instance = BitsInputDialogController(bits_input_dialog)
         return BitsInputDialogController._instance
 
-    def __init__(self, parent, bits_input_dialog: BitsInputDialog):
+    def __init__(self, bits_input_dialog: BitsInputDialog):
         super(BitsInputDialogController, self).__init__()
 
         if BitsInputDialogController._instance is not None:
             raise Exception(instance_exists_error(self.__class__.__name__))
 
-        self.parent = parent
         self.bits_input_dialog = bits_input_dialog
         self.n_bits = None
         self.project_path_controller = ProjectPathController.get_instance()
@@ -58,11 +56,9 @@ class BitsInputDialogController(QObject):
             self.render_bit_templates()
             PinPlannerDialogController.get_instance().send_data_to_pin_planner()
             if self.sniffing_type == "One_Bit":
-                create_success_bar(self.parent, 'SUCCESS', log_messages.ONE_BIT_CONFIG_SET)
-                logger.success(log_messages.ONE_BIT_CONFIG_SET)
+                create_success_bar(log_messages.ONE_BIT_CONFIG_SET)
             elif self.sniffing_type == "NBits":
-                create_success_bar(self.parent, 'SUCCESS', log_messages.N_BITS_CONFIG_SET)
-                logger.success(log_messages.N_BITS_CONFIG_SET)
+                create_success_bar(log_messages.N_BITS_CONFIG_SET)
 
     def get_bits_number(self):
         no_of_bits = self.bits_input_dialog.bits_input.text()
