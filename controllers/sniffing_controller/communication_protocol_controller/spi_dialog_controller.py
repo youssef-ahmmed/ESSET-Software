@@ -132,3 +132,6 @@ class SpiDialogController(QObject):
                                        configurations=self.collect_spi_settings(),
                                        output_path=self.project_path)
         qsf_writer.write_vhdl_files_to_qsf()
+
+    def restart_settings(self):
+        self.spi_setting_dialog.reset_settings()

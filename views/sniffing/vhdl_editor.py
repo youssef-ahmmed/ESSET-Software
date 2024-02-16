@@ -29,6 +29,7 @@ class VhdlEditor(QWidget):
 
         self.tab_widget.addTab(self.editor, 'Untitled')
         self.tab_widget.addTab(QWidget(), '+')
+        self.tab_widget.setTabsClosable(True)
         self.tab_widget.setTabEnabled(-1, False)
         self.tab_widget.tabBar().setTabButton(-1, QTabBar.RightSide, None)
 
@@ -42,8 +43,6 @@ class VhdlEditor(QWidget):
         if (index == self.tab_widget.count() - 1) and (VhdlEditor.flag_close == False):
             self.add_blank_editor_tab()
         VhdlEditor.flag_close = False
-        tab_index = self.tab_widget.count() - 2
-        self.tab_widget.setCurrentIndex(tab_index)
 
     def add_blank_editor_tab(self):
         new_editor = Editor(self)

@@ -4,7 +4,6 @@ from models.log_messages import instance_exists_error
 
 
 class NumberBitsSelectController(QObject):
-
     _instance = None
 
     @staticmethod
@@ -44,3 +43,6 @@ class NumberBitsSelectController(QObject):
 
     def get_selected_option(self):
         return self.number_bit_select.get_selected_pin_number()
+
+    def restart_settings(self):
+        self.bits_input_dialog.reset_bits_number_settings()
