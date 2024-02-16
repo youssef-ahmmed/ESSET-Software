@@ -1,3 +1,8 @@
+# SINGLETON EXCEPTION
+def instance_exists_error(class_name):
+    return f"An instance of {class_name} already exists. Use get_instance() to access it."
+
+
 # Path Messages
 NO_TOP_LEVEL_FILE = "There is No Top Level File"
 QUARTUS_PATH_SPECIFIED = "Quartus Path Specified Successfully."
@@ -40,6 +45,7 @@ CONFIGURATION_ERROR = "Device Can Not Be Found or Can Not Be Configured"
 # Bit Sniffing Messages
 ONE_BIT_CONFIG_SET = "One Bit Sniffing Configurations Set Successfully."
 N_BITS_CONFIG_SET = "N Bits Sniffing Configurations Set Successfully."
+NUMBER_BITS_RESET = "Number Bits Configuration is Reset."
 
 # Hardware Pin Planner
 PINS_SET = "Hardware Pins Set Successfully."
@@ -54,6 +60,7 @@ PINS_NUMBERS = [
     'PIN_121', 'PIN_124', 'PIN_125', 'PIN_126', 'PIN_127', 'PIN_128', 'PIN_129', 'PIN_132', 'PIN_133',
     'PIN_135', 'PIN_136', 'PIN_137', 'PIN_138', 'PIN_141', 'PIN_142', 'PIN_143', 'PIN_144'
 ]
+PINS_RESET = "Hardware Pins Configuration is Reset."
 
 # Display Button Messages
 DATA_DISPLAYED = "Selected Data Displayed Successfully"

@@ -1,6 +1,6 @@
 from loguru import logger
 
-from .os_operations import dir_list, join_paths, check_is_file, remove_file
+from .os_operations import dir_list, join_paths, check_is_file, remove_file, get_last_modification_time
 
 
 def read_text_file(file_path: str) -> str:
@@ -49,3 +49,8 @@ def delete_file(file_path):
         logger.error(f"File '{file_path}' not found.")
     except Exception as e:
         logger.error(f"Error deleting file '{file_path}': {e}")
+
+
+def is_modification_time_changed(path, last_mod_time):
+    current_mod_time: float = get_last_modification_time(path)
+    return current_mod_time != last_mod_time

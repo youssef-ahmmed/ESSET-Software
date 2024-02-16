@@ -1,5 +1,7 @@
 from PyQt5.QtCore import QObject
 
+from models.log_messages import instance_exists_error
+
 
 class CommProtocolSelectController(QObject):
 
@@ -15,7 +17,7 @@ class CommProtocolSelectController(QObject):
         super(CommProtocolSelectController, self).__init__()
 
         if CommProtocolSelectController._instance is not None:
-            raise Exception("An instance of CommProtocolSelectController already exists. Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.comm_protocol_select = comm_protocol_select
 

@@ -22,7 +22,6 @@ class UartConfigurations(FramelessDialog):
         self.init_ui()
 
     def init_ui(self):
-        self.setWindowTitle("Uart Settings")
         self.setGeometry(100, 100, 400, 300)
 
         screen_geometry = QApplication.desktop().availableGeometry()

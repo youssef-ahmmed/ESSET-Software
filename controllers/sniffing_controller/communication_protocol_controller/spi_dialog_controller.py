@@ -24,7 +24,7 @@ class SpiDialogController(QObject):
         super(SpiDialogController, self).__init__()
 
         if SpiDialogController._instance is not None:
-            raise Exception("An instance of SpiDialogController already exists. Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.spi_setting_dialog = spi_setting_dialog
         self.project_path_controller = ProjectPathController.get_instance()
@@ -47,7 +47,9 @@ class SpiDialogController(QObject):
             self.spi_setting_dialog.accept()
             template_generator_controller = TemplateGeneratorController()
             template_generator_controller.render_uart_templates(self.collect_spi_settings())
+            PinPlannerDialogController.get_instance().send_data_to_pin_planner()
             create_success_bar(log_messages.SPI_CONFIG_SET)
+
 
     def show_spi_dialog(self):
         try:

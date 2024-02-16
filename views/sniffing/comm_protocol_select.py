@@ -1,3 +1,4 @@
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout
 from qfluentwidgets import ComboBox
 
@@ -10,13 +11,13 @@ from views.sniffing.communication_protocols.uart_config import UartConfiguration
 
 class CommunicationProtocolSelect(QWidget):
 
-    def __init__(self):
+    sniff_number_bits_changed = pyqtSignal(int)
+
+    def __init__(self, parent=None):
         super().__init__()
 
-        self.setGeometry(100, 100, 400, 300)
-
-        self.spi_page = SpiConfigurations()
-        self.spi_controller = SpiDialogController.get_instance(self.spi_page)
+        self.spi_page = SpiConfigurations(parent)
+        self.spi_controller = SpiDialogController.get_instance(parent, self.spi_page)
 
         self.uart_page = UartConfigurations()
         self.uart_controller = UartDialogController.get_instance(self.uart_page)
@@ -25,6 +26,7 @@ class CommunicationProtocolSelect(QWidget):
         self.init_ui()
 
     def init_ui(self):
+        self.setGeometry(100, 100, 400, 300)
         layout = QHBoxLayout()
         comm_label = QLabel("Communication Protocol")
 
@@ -35,7 +37,11 @@ class CommunicationProtocolSelect(QWidget):
         layout.addWidget(self.protocol_combo)
 
         self.setLayout(layout)
-        self.protocol_combo.currentIndexChanged.connect(self.show_selected_settings)
+        self.protocol_combo.currentIndexChanged.connect(self.handle_changed_comm_combo_index)
+
+    def handle_changed_comm_combo_index(self, index):
+        self.show_selected_settings(index)
+        self.protocol_changed(index)
 
     def show_selected_settings(self, index):
         if index >= 0:
@@ -55,3 +61,6 @@ class CommunicationProtocolSelect(QWidget):
 
     def get_selected_protocol(self):
         return self.protocol_combo.currentText()
+
+    def protocol_changed(self, index):
+        self.sniff_number_bits_changed.emit(index)

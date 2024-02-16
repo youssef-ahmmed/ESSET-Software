@@ -4,11 +4,13 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QMessageBox
 
 from controllers.project_path_controller import ProjectPathController
+from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_controller import PinPlannerDialogController
 from controllers.sniffing_controller.number_bits_select_controller import NumberBitsSelectController
 from controllers.sniffing_controller.template_generator_controller import TemplateGeneratorController
 from core.qsf_writer import QsfWriter
 from core.jinja_generator import JinjaGenerator
 from models import log_messages
+from models.log_messages import instance_exists_error
 from reusable_functions.file_operations import delete_files
 from views.common.info_bar import create_success_bar
 from views.common.message_box import MessageBox
@@ -30,7 +32,7 @@ class BitsInputDialogController(QObject):
         super(BitsInputDialogController, self).__init__()
 
         if BitsInputDialogController._instance is not None:
-            raise Exception("An instance of BitsInputDialogController already exists. Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.bits_input_dialog = bits_input_dialog
         self.n_bits = None
@@ -51,6 +53,7 @@ class BitsInputDialogController(QObject):
             self.bits_input_dialog.accept()
             template_generator_controller = TemplateGeneratorController()
             template_generator_controller.render_uart_templates(self.get_bits_configurations())
+            PinPlannerDialogController.get_instance().send_data_to_pin_planner()
             if self.sniffing_type == "One_Bit":
                 create_success_bar(log_messages.ONE_BIT_CONFIG_SET)
             elif self.sniffing_type == "NBits":

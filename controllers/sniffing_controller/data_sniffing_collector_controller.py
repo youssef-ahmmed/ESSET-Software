@@ -1,12 +1,11 @@
 from PyQt5.QtCore import QObject
 
-from controllers.sniffing_controller.dialogs_controller.bits_input_dialog_controller import BitsInputDialogController
-from controllers.sniffing_controller.buttons_controller.channel_pins_button_controller import \
-    ChannelPinsButtonController
 from controllers.sniffing_controller.comm_protocol_select_controller import CommProtocolSelectController
 from controllers.sniffing_controller.communication_protocol_controller.spi_dialog_controller import SpiDialogController
 from controllers.sniffing_controller.communication_protocol_controller.uart_dialog_controller import \
     UartDialogController
+from controllers.sniffing_controller.dialogs_controller.bits_input_dialog_controller import BitsInputDialogController
+from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_controller import PinPlannerDialogController
 from controllers.sniffing_controller.number_bits_select_controller import NumberBitsSelectController
 
 
@@ -65,7 +64,7 @@ class DataCollectorController(QObject):
 
     @staticmethod
     def collect_pin_planner_data():
-        return ChannelPinsButtonController.get_instance().get_pin_planner_data()
+        return PinPlannerDialogController.get_instance().get_pin_planner_data()
 
     def collect_channels_data(self):
         communication_protocol = self.get_communication_protocol()
