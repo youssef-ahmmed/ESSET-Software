@@ -55,3 +55,6 @@ class CommunicationProtocolSelect(QWidget):
 
     def get_selected_protocol(self):
         return self.protocol_combo.currentText()
+
+    def reset_selected_protocol(self):
+        self.protocol_combo.setCurrentText("Choose")

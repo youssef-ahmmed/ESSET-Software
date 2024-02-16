@@ -20,3 +20,6 @@ class NumberBitsSelect(QWidget):
 
     def get_selected_pin_number(self):
         return self.bits_combo.currentText()
+
+    def reset_bits_selection(self):
+        self.bits_combo.setCurrentText("Choose")
