@@ -83,6 +83,7 @@ class StartSniffingButtonController(QObject):
 
         if connection_way != 'Choose':
             number_bit_selected.restart_settings()
+            number_bit_selected.reset_bits_combo_selection()
 
         TerminalController.get_instance().clear_terminal()
         HardwarePinPlannerController.get_instance().reset_table()
@@ -93,3 +94,5 @@ class StartSniffingButtonController(QObject):
             SpiDialogController.get_instance().restart_settings()
         elif comm_protocol_selected == 'UART':
             UartDialogController.get_instance().restart_settings()
+
+        CommProtocolSelectController.get_instance().reset_comm_protocol_selection()
