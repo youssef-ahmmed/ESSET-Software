@@ -3,6 +3,7 @@ from PyQt5.QtCore import Qt
 from controllers.display_controller.abstract_classes.abstract_data_display import AbstractDataDisplay
 from controllers.display_controller.search_timestamp_controller import SearchTimestampController
 from models.dao.channels_data_dao import ChannelsDataDao
+from models.log_messages import instance_exists_error
 
 
 class LastDataCheckboxController(AbstractDataDisplay):
@@ -19,7 +20,7 @@ class LastDataCheckboxController(AbstractDataDisplay):
         super(LastDataCheckboxController, self).__init__(parent)
 
         if LastDataCheckboxController._instance is not None:
-            raise Exception("An instance of LastDataCheckboxController already exists. Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.last_data_checkbox = last_data_checkbox
         self.parent = parent

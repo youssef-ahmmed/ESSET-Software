@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QFileDialog
 from loguru import logger
 
 from models import log_messages
+from models.log_messages import instance_exists_error
 from reusable_functions.os_operations import split_pathname, join_paths, dir_list, check_path_exists
 
 
@@ -24,7 +25,7 @@ class ProjectPathController(QObject):
     def __init__(self, parent=None):
         super(ProjectPathController, self).__init__()
         if ProjectPathController._instance is not None:
-            raise Exception("Controllers are singleton classes, please use the instance function")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.parent = parent
         self.project_path = ""

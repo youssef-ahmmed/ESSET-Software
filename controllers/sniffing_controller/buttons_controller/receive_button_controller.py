@@ -9,6 +9,7 @@ from core.ftp_receiver import FtpReceiver
 from models import log_messages
 from models.dao.channels_data_dao import ChannelsDataDao
 from models.dao.sniffed_data_dao import SniffedDataDao
+from models.log_messages import instance_exists_error
 from reusable_functions.file_operations import delete_file, read_binary_file
 from reusable_functions.os_operations import join_paths
 from views.common.info_bar import create_error_bar, create_success_bar
@@ -27,8 +28,7 @@ class ReceiveButtonController(QObject):
         super(ReceiveButtonController, self).__init__()
 
         if ReceiveButtonController._instance is not None:
-            raise Exception("An instance of ReceiveButtonController already exists. "
-                            "Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.receive_data_button = receive_data_button
         self.parent = parent

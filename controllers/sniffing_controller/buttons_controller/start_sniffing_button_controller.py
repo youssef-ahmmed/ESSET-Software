@@ -9,6 +9,7 @@ from controllers.sniffing_controller.dialogs_controller.sniffing_timer_controlle
 from core.script_executor import ScriptExecutor
 from core.vhdl_generator import VhdlGenerator
 from models import log_messages
+from models.log_messages import instance_exists_error
 from reusable_functions.os_operations import join_paths
 from views.common.info_bar import create_error_bar
 
@@ -26,8 +27,7 @@ class StartSniffingButtonController(QObject):
         super(StartSniffingButtonController, self).__init__()
 
         if StartSniffingButtonController._instance is not None:
-            raise Exception("An instance of StartSniffingButtonController already exists. "
-                            "Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.parent = parent
         self.start_sniffing_button = start_sniffing_button

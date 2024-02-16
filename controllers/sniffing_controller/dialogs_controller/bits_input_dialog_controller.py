@@ -9,6 +9,7 @@ from controllers.sniffing_controller.number_bits_select_controller import Number
 from core.qsf_writer import QsfWriter
 from core.vhdl_generator import VhdlGenerator
 from models import log_messages
+from models.log_messages import instance_exists_error
 from reusable_functions.file_operations import delete_files
 from views.common.info_bar import create_success_bar
 from views.common.message_box import MessageBox
@@ -30,7 +31,7 @@ class BitsInputDialogController(QObject):
         super(BitsInputDialogController, self).__init__()
 
         if BitsInputDialogController._instance is not None:
-            raise Exception("An instance of BitsInputDialogController already exists. Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.parent = parent
         self.bits_input_dialog = bits_input_dialog

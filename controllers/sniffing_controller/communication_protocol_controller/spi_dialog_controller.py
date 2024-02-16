@@ -8,6 +8,7 @@ from controllers.project_path_controller import ProjectPathController
 from core.qsf_writer import QsfWriter
 from core.vhdl_generator import VhdlGenerator
 from models import log_messages
+from models.log_messages import instance_exists_error
 from reusable_functions.file_operations import delete_files
 from views.common.info_bar import create_success_bar
 from views.common.message_box import MessageBox
@@ -29,7 +30,7 @@ class SpiDialogController(QObject):
         super(SpiDialogController, self).__init__()
 
         if SpiDialogController._instance is not None:
-            raise Exception("An instance of SpiDialogController already exists. Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.parent = parent
         self.spi_setting_dialog = spi_setting_dialog

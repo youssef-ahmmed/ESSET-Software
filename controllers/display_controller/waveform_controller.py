@@ -3,6 +3,7 @@ from PyQt5.QtCore import QObject
 from controllers.display_controller.data_display_last_id_controller import DataDisplayLastIdController
 from controllers.display_controller.data_display_start_time_controller import DataDisplayStartTimeController
 from controllers.display_controller.last_data_checkbox_controller import LastDataCheckboxController
+from models.log_messages import instance_exists_error
 from views.display.waveform_widget import WaveformWidget
 
 
@@ -19,7 +20,7 @@ class WaveformController(QObject):
         super(WaveformController, self).__init__(parent)
 
         if WaveformController._instance is not None:
-            raise Exception("An instance of WaveformController already exists. Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.waveform_widget = waveform_widget
         self.time_period = None

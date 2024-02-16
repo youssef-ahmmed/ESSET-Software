@@ -1,5 +1,7 @@
 from PyQt5.QtCore import QObject
 
+from models.log_messages import instance_exists_error
+
 
 class DisplayTerminalController(QObject):
 
@@ -15,7 +17,7 @@ class DisplayTerminalController(QObject):
         super(DisplayTerminalController, self).__init__()
 
         if DisplayTerminalController._instance is not None:
-            raise Exception("An instance of DisplayTerminalController already exists. Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.display_terminal = display_terminal
 
