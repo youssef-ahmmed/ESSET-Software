@@ -3,9 +3,11 @@ import platform
 from PyQt5.QtCore import QObject
 
 from controllers.project_path_controller import ProjectPathController
+from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_controller import PinPlannerDialogController
 from core.qsf_writer import QsfWriter
 from core.vhdl_generator import VhdlGenerator
 from models import log_messages
+from models.log_messages import instance_exists_error
 from reusable_functions.file_operations import delete_files
 from views.common.info_bar import create_success_bar
 from views.common.message_box import MessageBox
@@ -26,7 +28,7 @@ class UartDialogController(QObject):
         super(UartDialogController, self).__init__()
 
         if UartDialogController._instance is not None:
-            raise Exception("An instance of SpiDialogController already exists. Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.uart_setting_dialog = uart_setting_dialog
         self.project_path_controller = ProjectPathController.get_instance()
@@ -49,6 +51,7 @@ class UartDialogController(QObject):
         if self.uart_configurations is not None:
             self.uart_setting_dialog.accept()
             self.render_uart_templates()
+            PinPlannerDialogController.get_instance().send_data_to_pin_planner()
             create_success_bar(log_messages.UART_CONFIG_SET)
 
     def show_uart_dialog(self):
@@ -103,8 +106,11 @@ class UartDialogController(QObject):
                                            configurations=self.uart_configurations,
                                            output_path=self.project_path)
 
-        synthesis_template = 'synthesis_linux.sh.jinja' if platform.system() == 'Linux'else 'synthesis_windows.bat.jinja'
+        synthesis_template = 'synthesis_linux.sh.jinja' if platform.system() == 'Linux' else 'synthesis_windows.bat.jinja'
         vhdl_generator.render_template(template_name=synthesis_template,
                                        configurations=self.uart_configurations,
                                        output_path=self.project_path)
         qsf_writer.write_vhdl_files_to_qsf()
+
+    def restart_settings(self):
+        self.uart_setting_dialog.reset_settings()

@@ -5,9 +5,11 @@ from PyQt5.QtWidgets import QMessageBox
 from loguru import logger
 
 from controllers.project_path_controller import ProjectPathController
+from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_controller import PinPlannerDialogController
 from core.qsf_writer import QsfWriter
 from core.vhdl_generator import VhdlGenerator
 from models import log_messages
+from models.log_messages import instance_exists_error
 from reusable_functions.file_operations import delete_files
 from views.common.info_bar import create_success_bar
 from views.common.message_box import MessageBox
@@ -29,7 +31,7 @@ class SpiDialogController(QObject):
         super(SpiDialogController, self).__init__()
 
         if SpiDialogController._instance is not None:
-            raise Exception("An instance of SpiDialogController already exists. Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.spi_setting_dialog = spi_setting_dialog
         self.project_path_controller = ProjectPathController.get_instance()
@@ -53,7 +55,9 @@ class SpiDialogController(QObject):
         if self.spi_configurations is not None:
             self.render_spi_slave_templates()
             self.spi_setting_dialog.accept()
+            PinPlannerDialogController.get_instance().send_data_to_pin_planner()
             create_success_bar(log_messages.SPI_CONFIG_SET)
+
 
     def show_spi_dialog(self):
         try:
@@ -127,3 +131,6 @@ class SpiDialogController(QObject):
                                        configurations=self.collect_spi_settings(),
                                        output_path=self.project_path)
         qsf_writer.write_vhdl_files_to_qsf()
+
+    def restart_settings(self):
+        self.spi_setting_dialog.reset_settings()

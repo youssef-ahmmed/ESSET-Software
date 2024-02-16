@@ -4,6 +4,9 @@ from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets import PrimaryPushButton, StrongBodyLabel, LineEdit, CaptionLabel
 from qframelesswindow import FramelessDialog
 
+from models import log_messages
+from views.common.info_bar import create_info_bar
+
 
 class BitsInputDialog(FramelessDialog):
 
@@ -58,3 +61,8 @@ class BitsInputDialog(FramelessDialog):
         self.layout().addLayout(bits_layout)
         self.layout().addLayout(clock_layout)
         self.layout().addLayout(buttons_layout)
+
+    def reset_bits_number_settings(self):
+        self.bits_input.setText('')
+        self.clock_rate.setText('')
+        create_info_bar(log_messages.NUMBER_BITS_RESET)
