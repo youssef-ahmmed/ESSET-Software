@@ -2,12 +2,6 @@ from PyQt5.QtCore import QObject
 from qfluentwidgets import PrimarySplitPushButton
 
 from controllers.project_path_controller import ProjectPathController
-from controllers.sniffing_controller.comm_protocol_select_controller import CommProtocolSelectController
-from controllers.sniffing_controller.communication_protocol_controller.spi_dialog_controller import SpiDialogController
-from controllers.sniffing_controller.communication_protocol_controller.uart_dialog_controller import \
-    UartDialogController
-from controllers.sniffing_controller.dialogs_controller.hardware_pin_planner_controller import \
-    HardwarePinPlannerController
 from controllers.sniffing_controller.dialogs_controller.sniffing_timer_controller import SniffingTimerDialogController
 from core.command_executor import CommandExecutor
 from models import log_messages
@@ -59,24 +53,3 @@ class StartSniffingButtonController(QObject):
         quartus_cpf_command = f"quartus_cpf -c -q 25MHz -g 3.3 -n p {input_sof_file} {output_svf_file}"
         command_executor = CommandExecutor(quartus_cpf_command)
         command_executor.execute_command()
-
-    @staticmethod
-    def clear_all_previous_configuration():
-        comm_protocol_selected = CommProtocolSelectController.get_instance().get_selected_option()
-        number_bit_selected = NumberBitsSelectController.get_instance()
-        connection_way = number_bit_selected.get_selected_option()
-
-        StartSniffingButtonController.comm_protocol_settings_reset(comm_protocol_selected)
-
-        if connection_way != 'Choose':
-            number_bit_selected.restart_settings()
-
-        TerminalController.get_instance().clear_terminal()
-        HardwarePinPlannerController.get_instance().reset_table()
-
-    @staticmethod
-    def comm_protocol_settings_reset(comm_protocol_selected):
-        if comm_protocol_selected == 'SPI':
-            SpiDialogController.get_instance().restart_settings()
-        elif comm_protocol_selected == 'UART':
-            UartDialogController.get_instance().restart_settings()
