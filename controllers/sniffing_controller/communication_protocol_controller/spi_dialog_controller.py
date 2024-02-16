@@ -2,8 +2,10 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QMessageBox
 
 from controllers.project_path_controller import ProjectPathController
+from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_controller import PinPlannerDialogController
 from controllers.sniffing_controller.template_generator_controller import TemplateGeneratorController
 from models import log_messages
+from models.log_messages import instance_exists_error
 from views.common.info_bar import create_success_bar
 from views.common.message_box import MessageBox
 from views.sniffing.communication_protocols.spi_config import SpiConfigurations
@@ -50,13 +52,15 @@ class SpiDialogController(QObject):
             PinPlannerDialogController.get_instance().send_data_to_pin_planner()
             create_success_bar(log_messages.SPI_CONFIG_SET)
 
-
     def show_spi_dialog(self):
         try:
             self.spi_setting_dialog.setParent(None)
             self.spi_setting_dialog.exec_()
         except Exception as e:
             print(f"Error in show_spi_dialog: {e}")
+
+    def restart_settings(self):
+        self.spi_setting_dialog.reset_settings()
 
     def collect_spi_settings(self):
         mosi = self.spi_setting_dialog.mosi_combo.currentText()
