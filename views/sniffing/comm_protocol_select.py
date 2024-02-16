@@ -13,11 +13,11 @@ class CommunicationProtocolSelect(QWidget):
 
     sniff_number_bits_changed = pyqtSignal(int)
 
-    def __init__(self, parent=None):
+    def __init__(self):
         super().__init__()
 
-        self.spi_page = SpiConfigurations(parent)
-        self.spi_controller = SpiDialogController.get_instance(parent, self.spi_page)
+        self.spi_page = SpiConfigurations()
+        self.spi_controller = SpiDialogController.get_instance(self.spi_page)
 
         self.uart_page = UartConfigurations()
         self.uart_controller = UartDialogController.get_instance(self.uart_page)

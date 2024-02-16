@@ -15,9 +15,8 @@ class SelectChannelPinsButton(QWidget):
         self.channel_pins_button = PrimaryPushButton(FIF.PIN, "Select Channel Pins")
         self.pin_planner_table = HardwarePinPlanner(self.channel_pins_button)
 
-        HardwarePinPlannerController.get_instance(self.pin_planner_table)
-        ChannelPinsButtonController.get_instance(self.channel_pins_button, parent)
-        PinPlannerDialogController.get_instance(self.pin_planner_table, parent)
+        ChannelPinsButtonController.get_instance(self.channel_pins_button)
+        PinPlannerDialogController.get_instance(self.pin_planner_table)
 
         self.init_ui()
 
