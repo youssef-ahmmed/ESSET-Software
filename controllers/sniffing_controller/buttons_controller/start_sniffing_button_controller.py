@@ -1,13 +1,9 @@
-import platform
-
 from PyQt5.QtCore import QObject
 from qfluentwidgets import PrimarySplitPushButton
 
 from controllers.project_path_controller import ProjectPathController
 from controllers.sniffing_controller.dialogs_controller.sniffing_timer_controller import SniffingTimerDialogController
 from core.command_executor import CommandExecutor
-from core.script_executor import ScriptExecutor
-from core.vhdl_generator import VhdlGenerator
 from models import log_messages
 from reusable_functions.os_operations import join_paths
 from views.common.info_bar import create_error_bar

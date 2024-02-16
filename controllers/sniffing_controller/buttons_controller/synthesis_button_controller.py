@@ -3,9 +3,9 @@ import time
 from PyQt5.QtCore import QObject, pyqtSignal, QThread
 
 from controllers.project_path_controller import ProjectPathController
+from controllers.sniffing_controller.template_generator_controller import TemplateGeneratorController
 from controllers.sniffing_controller.terminal_controller import TerminalController
 from core.script_executor import ScriptExecutor
-from core.vhdl_generator import VhdlGenerator
 from models import log_messages
 from views.common.info_bar import create_success_bar, create_error_bar, create_info_bar
 from views.common.message_box import MessageBox
@@ -82,8 +82,8 @@ class SynthesisButtonController(QObject):
 
         script_path = project_path_controller.get_script_path()
         if not script_path:
-            vhdl_generator = VhdlGenerator()
-            script_path = vhdl_generator.generate_script(project_path)
+            template_generator_controller = TemplateGeneratorController()
+            script_path = template_generator_controller.render_synthesis_script()
         return script_path
 
     @staticmethod
