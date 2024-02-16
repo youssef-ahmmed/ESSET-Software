@@ -6,11 +6,11 @@ from PyQt5.QtWidgets import QFileDialog
 from loguru import logger
 
 from models import log_messages
+from models.log_messages import instance_exists_error
 from reusable_functions.os_operations import split_pathname, join_paths, dir_list, check_path_exists
 
 
 class ProjectPathController(QObject):
-
     directory_path_changed = pyqtSignal(str)
 
     _instance = None
@@ -24,7 +24,7 @@ class ProjectPathController(QObject):
     def __init__(self, parent=None):
         super(ProjectPathController, self).__init__()
         if ProjectPathController._instance is not None:
-            raise Exception("Controllers are singleton classes, please use the instance function")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.parent = parent
         self.project_path = ""
@@ -42,12 +42,22 @@ class ProjectPathController(QObject):
     def get_project_path(self):
         return self.project_path
 
+    def is_project_path_exists(self) -> bool:
+        return self.project_path != ""
+
+    def is_top_level_exists(self) -> bool:
+        if self.is_project_path_exists() and self.get_top_level_name() != "not exist":
+            return True
+
     def get_top_level_name(self):
         qsf_files = [file for file in dir_list(self.project_path) if file.endswith('.qsf')]
 
         if qsf_files:
             return split_pathname(qsf_files[0])
         return "not exist"
+
+    def get_top_level_file_path(self):
+        return join_paths(self.project_path, self.get_top_level_name() + ".vhd")
 
     def get_qsf_file_path(self):
         qsf_file_path = [file for file in dir_list(self.project_path) if file.endswith('.qsf')]

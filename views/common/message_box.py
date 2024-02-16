@@ -6,6 +6,7 @@ from models import log_messages
 
 
 class MessageBox(QWidget):
+
     def __init__(self, parent=None):
         super().__init__()
         self.parent = parent
@@ -20,4 +21,3 @@ class MessageBox(QWidget):
             ProjectPathController.get_instance().open_directory_dialog()
         else:
             logger.warning(log_messages.NO_QUARTUS_PATH)
-

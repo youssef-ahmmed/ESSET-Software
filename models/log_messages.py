@@ -1,3 +1,8 @@
+# SINGLETON EXCEPTION
+def instance_exists_error(class_name):
+    return f"An instance of {class_name} already exists. Use get_instance() to access it."
+
+
 # Path Messages
 NO_TOP_LEVEL_FILE = "There is no top level file"
 QUARTUS_PATH_SPECIFIED = "Quartus Path Specified Successfully."

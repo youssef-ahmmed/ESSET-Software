@@ -14,6 +14,7 @@ from controllers.display_controller.search_timestamp_controller import SearchTim
 from controllers.project_path_controller import ProjectPathController
 from core.ftp_sender import FtpSender
 from models import log_messages
+from models.log_messages import instance_exists_error
 from views.common.info_bar import create_success_bar, create_warning_bar, create_error_bar
 from views.sniffing.dialogs.sniffing_timer import SniffingTimer
 
@@ -37,8 +38,7 @@ class SniffingTimerDialogController(QObject):
         super(SniffingTimerDialogController, self).__init__()
 
         if SniffingTimerDialogController._instance is not None:
-            raise Exception("An instance of SniffingTimerDialogController already exists. "
-                            "Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.sniffing_timer_dialog = sniffing_timer_dialog
         self.ok_button = self.sniffing_timer_dialog.ok_button

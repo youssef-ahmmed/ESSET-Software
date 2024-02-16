@@ -8,6 +8,7 @@ from controllers.sniffing_controller.terminal_controller import TerminalControll
 from core.script_executor import ScriptExecutor
 from core.vhdl_generator import VhdlGenerator
 from models import log_messages
+from models.log_messages import instance_exists_error
 from views.common.info_bar import create_success_bar, create_error_bar, create_info_bar
 from views.common.message_box import MessageBox
 
@@ -46,7 +47,7 @@ class SynthesisButtonController(QObject):
         super(SynthesisButtonController, self).__init__()
 
         if SynthesisButtonController._instance is not None:
-            raise Exception("An instance of SynthesisButtonController already exists. Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.synthesis_button = synthesis_button
         self.parent = parent

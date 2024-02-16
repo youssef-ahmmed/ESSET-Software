@@ -3,6 +3,7 @@ from PyQt5.QtCore import QObject
 from controllers.display_controller.last_data_checkbox_controller import LastDataCheckboxController
 from controllers.display_controller.search_timestamp_controller import SearchTimestampController
 from controllers.display_controller.waveform_controller import WaveformController
+from models.log_messages import instance_exists_error
 
 
 class DisplayButtonController(QObject):
@@ -19,7 +20,7 @@ class DisplayButtonController(QObject):
         super(DisplayButtonController, self).__init__()
 
         if DisplayButtonController._instance is not None:
-            raise Exception("An instance of DisplayButtonController already exists. Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.display_button = display_button
         self.parent = parent

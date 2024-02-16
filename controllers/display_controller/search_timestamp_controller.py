@@ -3,6 +3,7 @@ from datetime import datetime
 from controllers.display_controller.abstract_classes.abstract_data_display import AbstractDataDisplay
 from models.dao.channels_data_dao import ChannelsDataDao
 from models.dao.sniffed_data_dao import SniffedDataDao
+from models.log_messages import instance_exists_error
 
 
 class SearchTimestampController(AbstractDataDisplay):
@@ -19,7 +20,7 @@ class SearchTimestampController(AbstractDataDisplay):
         super(SearchTimestampController, self).__init__(parent)
 
         if SearchTimestampController._instance is not None:
-            raise Exception("An instance of SearchTimestampController already exists. Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.search_timestamp = search_timestamp
         self.update_timestamp_combobox()

@@ -4,9 +4,11 @@ from PyQt5.QtCore import QObject
 from loguru import logger
 
 from controllers.project_path_controller import ProjectPathController
+from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_controller import PinPlannerDialogController
 from core.qsf_writer import QsfWriter
 from core.vhdl_generator import VhdlGenerator
 from models import log_messages
+from models.log_messages import instance_exists_error
 from reusable_functions.file_operations import delete_files
 from views.common.info_bar import create_success_bar
 from views.common.message_box import MessageBox
@@ -27,7 +29,7 @@ class UartDialogController(QObject):
         super(UartDialogController, self).__init__()
 
         if UartDialogController._instance is not None:
-            raise Exception("An instance of SpiDialogController already exists. Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.parent = parent
         self.uart_setting_dialog = uart_setting_dialog
@@ -51,6 +53,7 @@ class UartDialogController(QObject):
         if self.uart_configurations is not None:
             self.uart_setting_dialog.accept()
             self.render_uart_templates()
+            PinPlannerDialogController.get_instance().send_data_to_pin_planner()
             create_success_bar(self.parent, 'SUCCESS', log_messages.UART_CONFIG_SET)
             logger.success(log_messages.UART_CONFIG_SET)
 

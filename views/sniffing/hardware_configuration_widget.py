@@ -29,7 +29,6 @@ class HardwareConfigurations(QWidget):
         NumberBitsSelectController.get_instance(self.number_bits_select, bits_input_dialog)
 
         self.channel_button = SelectChannelPinsButton(parent)
-        ChannelPinsButtonController.get_instance(self.channel_button, parent)
 
         self.terminal = OutputTerminal()
         self.configuration_buttons = ConfigurationButtons(parent)

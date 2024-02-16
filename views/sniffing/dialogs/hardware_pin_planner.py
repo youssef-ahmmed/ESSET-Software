@@ -45,6 +45,9 @@ class HardwarePinPlanner(FramelessDialog):
 
         layout.addLayout(button_layout)
 
+    def show_pin_planner_dialog(self):
+        self.exec_()
+
     def populate_pin_planner(self, nodes_name):
         data = [(node, log_messages.PINS_NUMBERS) for node in nodes_name]
 
@@ -54,7 +57,8 @@ class HardwarePinPlanner(FramelessDialog):
             self.pin_planner.setItem(row, 0, QTableWidgetItem(node_name))
 
             combobox = EditableComboBox()
+
             combobox.addItems(pin_list)
-            completer = QCompleter(pin_list, self)
-            combobox.setCompleter(completer)
+            combobox.setCompleter(QCompleter(pin_list, self))
+
             self.pin_planner.setCellWidget(row, 1, combobox)

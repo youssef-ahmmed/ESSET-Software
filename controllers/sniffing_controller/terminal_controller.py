@@ -1,5 +1,7 @@
 from PyQt5.QtGui import QTextCursor
 
+from models.log_messages import instance_exists_error
+
 
 class TerminalController:
     _instance = None
@@ -14,7 +16,7 @@ class TerminalController:
         super(TerminalController, self).__init__()
 
         if TerminalController._instance is not None:
-            raise Exception("An instance of TerminalController already exists. Use get_instance() to access it.")
+            raise Exception(instance_exists_error(self.__class__.__name__))
 
         self.terminal = terminal
 
