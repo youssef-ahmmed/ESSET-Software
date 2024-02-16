@@ -1,5 +1,8 @@
 from PyQt5.QtCore import QObject
 from loguru import logger
+
+from controllers.sniffing_controller.dialogs_controller.hardware_pin_planner_controller import \
+    HardwarePinPlannerController
 from views.common.info_bar import create_error_bar
 from views.common.message_box import MessageBox
 
@@ -75,8 +78,8 @@ class ChannelPinsButtonController(QObject):
         self.pin_planner_table.populate_pin_planner(nodes_name)
         self.channel_pins.show_pin_planner_dialog()
 
-        self.get_pin_planner_data()
+        ChannelPinsButtonController.get_pin_planner_data()
 
-    def get_pin_planner_data(self):
-        return self.pin_planner_table.get_table_data()
-
+    @staticmethod
+    def get_pin_planner_data():
+        return HardwarePinPlannerController.get_instance().get_table_data()

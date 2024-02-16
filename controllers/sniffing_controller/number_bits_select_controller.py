@@ -2,7 +2,6 @@ from PyQt5.QtCore import QObject
 
 
 class NumberBitsSelectController(QObject):
-
     _instance = None
 
     @staticmethod
@@ -15,7 +14,8 @@ class NumberBitsSelectController(QObject):
         super(NumberBitsSelectController, self).__init__()
 
         if NumberBitsSelectController._instance is not None:
-            raise Exception("An instance of NumberBitsSelectController already exists. Use get_instance() to access it.")
+            raise Exception(
+                "An instance of NumberBitsSelectController already exists. Use get_instance() to access it.")
 
         self.number_bit_select = number_bit_select
         self.bits_input_dialog = bits_input_dialog
@@ -42,3 +42,6 @@ class NumberBitsSelectController(QObject):
 
     def get_selected_option(self):
         return self.number_bit_select.get_selected_pin_number()
+
+    def restart_settings(self):
+        self.bits_input_dialog.reset_bits_number_settings()
