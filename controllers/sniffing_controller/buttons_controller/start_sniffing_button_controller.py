@@ -1,5 +1,3 @@
-import platform
-
 from PyQt5.QtCore import QObject
 from qfluentwidgets import PrimarySplitPushButton
 
@@ -12,8 +10,6 @@ from controllers.sniffing_controller.dialogs_controller.hardware_pin_planner_con
     HardwarePinPlannerController
 from controllers.sniffing_controller.dialogs_controller.sniffing_timer_controller import SniffingTimerDialogController
 from core.command_executor import CommandExecutor
-from core.script_executor import ScriptExecutor
-from core.vhdl_generator import VhdlGenerator
 from models import log_messages
 from models.log_messages import instance_exists_error
 from reusable_functions.os_operations import join_paths

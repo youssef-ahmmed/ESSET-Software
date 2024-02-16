@@ -3,9 +3,10 @@ import platform
 from PyQt5.QtCore import QObject
 
 from controllers.project_path_controller import ProjectPathController
+from controllers.sniffing_controller.template_generator_controller import TemplateGeneratorController
 from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_controller import PinPlannerDialogController
 from core.qsf_writer import QsfWriter
-from core.vhdl_generator import VhdlGenerator
+from core.jinja_generator import JinjaGenerator
 from models import log_messages
 from models.log_messages import instance_exists_error
 from reusable_functions.file_operations import delete_files
@@ -41,16 +42,14 @@ class UartDialogController(QObject):
         self.uart_setting_dialog.save_button.clicked.connect(self.save_uart_settings)
 
     def save_uart_settings(self):
-        self.project_path = self.project_path_controller.get_project_path()
-
-        if not self.project_path:
+        if not self.project_path_controller.get_project_path():
             MessageBox.show_project_path_error_dialog(self.uart_setting_dialog.save_button)
             return
 
-        self.uart_configurations = self.collect_uart_settings()
-        if self.uart_configurations is not None:
+        if self.collect_uart_settings():
             self.uart_setting_dialog.accept()
-            self.render_uart_templates()
+            template_generator_controller = TemplateGeneratorController()
+            template_generator_controller.render_uart_templates(self.collect_uart_settings())
             PinPlannerDialogController.get_instance().send_data_to_pin_planner()
             create_success_bar(log_messages.UART_CONFIG_SET)
 
@@ -86,31 +85,3 @@ class UartDialogController(QObject):
             'channel_name': input_channel
         }
         return uart_configurations
-
-    def render_uart_templates(self):
-        vhdl_generator = VhdlGenerator()
-        qsf_writer = QsfWriter()
-
-        template_names = [
-            'top_level.vhd.jinja',
-            'UART_Receiver.vhd.jinja',
-            'UART_Transmitter.vhd.jinja',
-            'Common_Ports.vhd.jinja',
-            'Communication_Module.vhd.jinja'
-        ]
-
-        delete_files(self.project_path, '.vhd')
-
-        for template in template_names:
-            vhdl_generator.render_template(template_name=template,
-                                           configurations=self.uart_configurations,
-                                           output_path=self.project_path)
-
-        synthesis_template = 'synthesis_linux.sh.jinja' if platform.system() == 'Linux' else 'synthesis_windows.bat.jinja'
-        vhdl_generator.render_template(template_name=synthesis_template,
-                                       configurations=self.uart_configurations,
-                                       output_path=self.project_path)
-        qsf_writer.write_vhdl_files_to_qsf()
-
-    def restart_settings(self):
-        self.uart_setting_dialog.reset_settings()

@@ -1,16 +1,9 @@
-import platform
-
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QMessageBox
-from loguru import logger
 
 from controllers.project_path_controller import ProjectPathController
-from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_controller import PinPlannerDialogController
-from core.qsf_writer import QsfWriter
-from core.vhdl_generator import VhdlGenerator
+from controllers.sniffing_controller.template_generator_controller import TemplateGeneratorController
 from models import log_messages
-from models.log_messages import instance_exists_error
-from reusable_functions.file_operations import delete_files
 from views.common.info_bar import create_success_bar
 from views.common.message_box import MessageBox
 from views.sniffing.communication_protocols.spi_config import SpiConfigurations
@@ -45,16 +38,15 @@ class SpiDialogController(QObject):
         self.spi_setting_dialog.save_button.clicked.connect(self.save_spi_settings)
 
     def save_spi_settings(self):
-        self.project_path = self.project_path_controller.get_project_path()
-
-        if not self.project_path:
+        if not self.project_path_controller.get_project_path():
             MessageBox.show_project_path_error_dialog(self.spi_setting_dialog.save_button)
             return
 
         self.spi_configurations = self.collect_spi_settings()
-        if self.spi_configurations is not None:
-            self.render_spi_slave_templates()
+        if self.spi_configurations:
             self.spi_setting_dialog.accept()
+            template_generator_controller = TemplateGeneratorController()
+            template_generator_controller.render_uart_templates(self.collect_spi_settings())
             PinPlannerDialogController.get_instance().send_data_to_pin_planner()
             create_success_bar(log_messages.SPI_CONFIG_SET)
 
@@ -107,30 +99,3 @@ class SpiDialogController(QObject):
             return
 
         return spi_configurations
-
-    def render_spi_slave_templates(self):
-        vhdl_generator = VhdlGenerator()
-        qsf_writer = QsfWriter()
-
-        template_names = [
-            'top_level.vhd.jinja',
-            'SPI_Slave.vhd.jinja',
-            'Common_Ports.vhd.jinja',
-            'Communication_Module.vhd.jinja'
-        ]
-
-        delete_files(self.project_path, '.vhd')
-
-        for template in template_names:
-            vhdl_generator.render_template(template_name=template,
-                                           configurations=self.collect_spi_settings(),
-                                           output_path=self.project_path)
-
-        synthesis_template = 'synthesis_linux.sh.jinja' if platform.system() == 'Linux' else 'synthesis_windows.bat.jinja'
-        vhdl_generator.render_template(template_name=synthesis_template,
-                                       configurations=self.collect_spi_settings(),
-                                       output_path=self.project_path)
-        qsf_writer.write_vhdl_files_to_qsf()
-
-    def restart_settings(self):
-        self.spi_setting_dialog.reset_settings()
