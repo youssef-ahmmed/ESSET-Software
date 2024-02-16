@@ -42,7 +42,7 @@ class DataCollectorController(QObject):
 
     @staticmethod
     def collect_one_bit_data():
-        bits_data = BitsInputDialogController.get_instance().get_bits_number()
+        bits_data = BitsInputDialogController.get_instance().get_bits_configurations()
         option = bits_data.pop('option', None)
         if option == "NBits":
             return
@@ -55,7 +55,7 @@ class DataCollectorController(QObject):
 
     @staticmethod
     def collect_n_bit_data():
-        bits_data = BitsInputDialogController.get_instance().get_bits_number()
+        bits_data = BitsInputDialogController.get_instance().get_bits_configurations()
         option = bits_data.pop('option', None)
         if option == "One_Bit":
             return

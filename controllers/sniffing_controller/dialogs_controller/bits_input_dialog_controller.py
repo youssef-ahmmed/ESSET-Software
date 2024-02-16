@@ -5,8 +5,9 @@ from PyQt5.QtWidgets import QMessageBox
 
 from controllers.project_path_controller import ProjectPathController
 from controllers.sniffing_controller.number_bits_select_controller import NumberBitsSelectController
+from controllers.sniffing_controller.template_generator_controller import TemplateGeneratorController
 from core.qsf_writer import QsfWriter
-from core.vhdl_generator import VhdlGenerator
+from core.jinja_generator import JinjaGenerator
 from models import log_messages
 from reusable_functions.file_operations import delete_files
 from views.common.info_bar import create_success_bar
@@ -42,22 +43,20 @@ class BitsInputDialogController(QObject):
         self.bits_input_dialog.save_button.clicked.connect(self.save_clicked)
 
     def save_clicked(self):
-        self.project_path = self.project_path_controller.get_project_path()
-
-        if not self.project_path:
+        if not self.project_path_controller.get_project_path():
             MessageBox.show_project_path_error_dialog(self.bits_input_dialog)
             return
 
-        bits_number = self.get_bits_number()
-        if bits_number is not None:
+        if self.get_bits_configurations():
             self.bits_input_dialog.accept()
-            self.render_bit_templates()
+            template_generator_controller = TemplateGeneratorController()
+            template_generator_controller.render_uart_templates(self.get_bits_configurations())
             if self.sniffing_type == "One_Bit":
                 create_success_bar(log_messages.ONE_BIT_CONFIG_SET)
             elif self.sniffing_type == "NBits":
                 create_success_bar(log_messages.N_BITS_CONFIG_SET)
 
-    def get_bits_number(self):
+    def get_bits_configurations(self):
         no_of_bits = self.bits_input_dialog.bits_input.text()
         clock_rate = self.bits_input_dialog.clock_rate.text()
         if not no_of_bits:
@@ -72,26 +71,3 @@ class BitsInputDialogController(QObject):
             'channel_number': no_of_bits,
             'clock_rate': int(clock_rate) * MEGA_HZ
         }
-
-    def render_bit_templates(self):
-        vhdl_generator = VhdlGenerator()
-        qsf_writer = QsfWriter()
-
-        templates = [
-            'top_level.vhd.jinja',
-            str(self.sniffing_type) + '_Sniffing.vhd.jinja',
-            'Common_Ports.vhd.jinja',
-            'Communication_Module.vhd.jinja'
-        ]
-        delete_files(self.project_path, '.vhd')
-
-        for template in templates:
-            vhdl_generator.render_template(template_name=template,
-                                           configurations=self.get_bits_number(),
-                                           output_path=self.project_path)
-
-        synthesis_template = 'synthesis_linux.sh.jinja' if platform.system() == 'Linux' else 'synthesis_windows.bat.jinja'
-        vhdl_generator.render_template(template_name=synthesis_template,
-                                       configurations=self.get_bits_number(),
-                                       output_path=self.project_path)
-        qsf_writer.write_vhdl_files_to_qsf()
