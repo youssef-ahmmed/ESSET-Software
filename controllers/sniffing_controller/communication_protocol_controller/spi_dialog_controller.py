@@ -81,16 +81,15 @@ class SpiDialogController(QObject):
         }
         spi_configurations = {
             'option': 'SPI Slave',
-            'top_level_name': self.project_path_controller.get_top_level_name(),
             'MOSI': mosi,
             'MISO': miso,
             'Clock': clock,
             'Enable': enable,
             'clock_rate': int(clock_rate) * MEGA_HZ,
             'significant_bit': significant_bit,
-            'clk_state': clock_state,
-            'clk_phase': clock_phase,
-            'data_size': bits_per_transfer,
+            'clk_state': int(clock_state),
+            'clk_phase': int(clock_phase),
+            'data_size': int(bits_per_transfer),
         }
 
         for channel_name, channel_value in settings.items():

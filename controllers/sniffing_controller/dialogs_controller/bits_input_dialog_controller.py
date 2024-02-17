@@ -1,5 +1,3 @@
-import platform
-
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QMessageBox
 
@@ -7,11 +5,8 @@ from controllers.project_path_controller import ProjectPathController
 from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_controller import PinPlannerDialogController
 from controllers.sniffing_controller.number_bits_select_controller import NumberBitsSelectController
 from controllers.sniffing_controller.template_generator_controller import TemplateGeneratorController
-from core.qsf_writer import QsfWriter
-from core.jinja_generator import JinjaGenerator
 from models import log_messages
 from models.log_messages import instance_exists_error
-from reusable_functions.file_operations import delete_files
 from views.common.info_bar import create_success_bar
 from views.common.message_box import MessageBox
 from views.sniffing.dialogs.bits_input_dialog import BitsInputDialog
@@ -70,7 +65,6 @@ class BitsInputDialogController(QObject):
             self.sniffing_type = 'One_Bit'
         return {
             'option': self.sniffing_type,
-            'top_level_name': ProjectPathController.get_instance().get_top_level_name(),
-            'channel_number': no_of_bits,
+            'channel_number': int(no_of_bits),
             'clock_rate': int(clock_rate) * MEGA_HZ
         }
