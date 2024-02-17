@@ -12,7 +12,7 @@ class NBitStoreController:
         self.n_bit_dao = None
 
     def store_n_bit_sniffing(self):
-        n_bit_data = self.data_collector_controller.collect_n_bit_data()
+        n_bit_data = self.data_collector_controller.collect_bits_data()
         last_sniffed_data_id = SniffedDataDao.get_last_sniffed_data_id()
 
         self.n_bit_dto = NBitDto(last_sniffed_data_id, **n_bit_data)

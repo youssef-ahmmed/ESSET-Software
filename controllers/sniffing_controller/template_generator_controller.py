@@ -20,6 +20,7 @@ class TemplateGeneratorController:
             'Common_Ports.vhd.jinja',
             'Communication_Module.vhd.jinja'
         ]
+        configurations['top_level_name'] = self.top_level_name
         delete_files(self.project_path, '.vhd')
         self.jinja_generator.render_templates(common_template_names + template_names, configurations, self.project_path)
         self.render_synthesis_script()
