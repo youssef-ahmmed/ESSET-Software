@@ -23,3 +23,6 @@ class CommProtocolSelectController(QObject):
 
     def get_selected_option(self):
         return self.comm_protocol_select.get_selected_protocol()
+
+    def reset_comm_protocol_selection(self):
+        self.comm_protocol_select.reset_selected_protocol()

@@ -62,5 +62,8 @@ class CommunicationProtocolSelect(QWidget):
     def get_selected_protocol(self):
         return self.protocol_combo.currentText()
 
+    def reset_selected_protocol(self):
+        self.protocol_combo.setCurrentText("Choose")
+
     def protocol_changed(self, index):
         self.sniff_number_bits_changed.emit(index)
