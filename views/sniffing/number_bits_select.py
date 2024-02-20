@@ -31,3 +31,6 @@ class NumberBitsSelect(QWidget):
 
     def protocol_changed(self, index):
         self.comm_protocol_changed.emit(index)
+
+    def reset_bits_selection(self):
+        self.bits_combo.setCurrentText("Choose")

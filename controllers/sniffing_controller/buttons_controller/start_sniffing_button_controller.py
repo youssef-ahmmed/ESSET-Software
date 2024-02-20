@@ -53,3 +53,27 @@ class StartSniffingButtonController(QObject):
         quartus_cpf_command = f"quartus_cpf -c -q 25MHz -g 3.3 -n p {input_sof_file} {output_svf_file}"
         command_executor = CommandExecutor(quartus_cpf_command)
         command_executor.execute_command()
+
+    @staticmethod
+    def clear_all_previous_configuration():
+        comm_protocol_selected = CommProtocolSelectController.get_instance().get_selected_option()
+        number_bit_selected = NumberBitsSelectController.get_instance()
+        connection_way = number_bit_selected.get_selected_option()
+
+        StartSniffingButtonController.comm_protocol_settings_reset(comm_protocol_selected)
+
+        if connection_way != 'Choose':
+            number_bit_selected.restart_settings()
+            number_bit_selected.reset_bits_combo_selection()
+
+        TerminalController.get_instance().clear_terminal()
+        PinPlannerDialogController.get_instance().reset_table()
+
+    @staticmethod
+    def comm_protocol_settings_reset(comm_protocol_selected):
+        if comm_protocol_selected == 'SPI':
+            SpiDialogController.get_instance().restart_settings()
+        elif comm_protocol_selected == 'UART':
+            UartDialogController.get_instance().restart_settings()
+
+        CommProtocolSelectController.get_instance().reset_comm_protocol_selection()

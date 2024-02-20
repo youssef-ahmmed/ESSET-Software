@@ -46,3 +46,6 @@ class NumberBitsSelectController(QObject):
 
     def restart_settings(self):
         self.bits_input_dialog.reset_bits_number_settings()
+
+    def reset_bits_combo_selection(self):
+        self.number_bit_select.reset_bits_selection()
