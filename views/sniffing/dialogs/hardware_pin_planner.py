@@ -5,6 +5,7 @@ from qfluentwidgets import TableWidget, PrimaryPushButton
 from qframelesswindow import FramelessDialog
 
 from models import log_messages
+from views.common.info_bar import create_info_bar
 
 
 class HardwarePinPlanner(FramelessDialog):
@@ -60,3 +61,24 @@ class HardwarePinPlanner(FramelessDialog):
             combobox.addItems(pin_list)
             combobox.setCompleter(QCompleter(pin_list, self))
             self.pin_planner.setCellWidget(row, 1, combobox)
+
+    def get_table_data(self) -> dict:
+        table_data: dict[str, str] = {}
+
+        for row in range(self.pin_planner.rowCount()):
+            node_name = self.pin_planner.item(row, 0)
+            hardware_pin = self.pin_planner.cellWidget(row, 1)
+
+            if node_name is not None and hardware_pin is not None:
+                node_name = node_name.text()
+                hardware_pin = hardware_pin.currentText()
+                table_data[node_name] = hardware_pin
+
+        return table_data
+
+    def reset_table(self):
+        for row in range(self.pin_planner.rowCount()):
+            combobox = self.pin_planner.cellWidget(row, 1)
+            if combobox is not None and isinstance(combobox, EditableComboBox):
+                combobox.setCurrentIndex(0)
+        create_info_bar(log_messages.PINS_RESET)

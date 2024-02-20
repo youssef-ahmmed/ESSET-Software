@@ -1,15 +1,10 @@
-import platform
-
 from PyQt5.QtCore import QObject
 
 from controllers.project_path_controller import ProjectPathController
-from controllers.sniffing_controller.template_generator_controller import TemplateGeneratorController
 from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_controller import PinPlannerDialogController
-from core.qsf_writer import QsfWriter
-from core.jinja_generator import JinjaGenerator
+from controllers.sniffing_controller.template_generator_controller import TemplateGeneratorController
 from models import log_messages
 from models.log_messages import instance_exists_error
-from reusable_functions.file_operations import delete_files
 from views.common.info_bar import create_success_bar
 from views.common.message_box import MessageBox
 
@@ -85,3 +80,6 @@ class UartDialogController(QObject):
             'channel_name': input_channel
         }
         return uart_configurations
+
+    def restart_settings(self):
+        self.uart_setting_dialog.reset_settings()

@@ -11,12 +11,12 @@ class ChannelPinsButtonController(QObject):
     _instance = None
 
     @staticmethod
-    def get_instance(channel_pins=None):
+    def get_instance(channel_pins_button: PrimaryPushButton = None, parent=None):
         if ChannelPinsButtonController._instance is None:
-            ChannelPinsButtonController._instance = ChannelPinsButtonController(channel_pins)
+            ChannelPinsButtonController._instance = ChannelPinsButtonController(channel_pins_button, parent)
         return ChannelPinsButtonController._instance
 
-    def __init__(self, channel_pins: SelectChannelPinsButton) -> None:
+    def __init__(self, channel_pins_button: PrimaryPushButton, parent) -> None:
         super(ChannelPinsButtonController, self).__init__()
 
         if ChannelPinsButtonController._instance is not None:

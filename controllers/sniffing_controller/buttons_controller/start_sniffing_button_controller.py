@@ -2,12 +2,6 @@ from PyQt5.QtCore import QObject
 from qfluentwidgets import PrimarySplitPushButton
 
 from controllers.project_path_controller import ProjectPathController
-from controllers.sniffing_controller.comm_protocol_select_controller import CommProtocolSelectController
-from controllers.sniffing_controller.communication_protocol_controller.spi_dialog_controller import SpiDialogController
-from controllers.sniffing_controller.communication_protocol_controller.uart_dialog_controller import \
-    UartDialogController
-from controllers.sniffing_controller.dialogs_controller.hardware_pin_planner_controller import \
-    HardwarePinPlannerController
 from controllers.sniffing_controller.dialogs_controller.sniffing_timer_controller import SniffingTimerDialogController
 from core.command_executor import CommandExecutor
 from models import log_messages
@@ -73,7 +67,7 @@ class StartSniffingButtonController(QObject):
             number_bit_selected.reset_bits_combo_selection()
 
         TerminalController.get_instance().clear_terminal()
-        HardwarePinPlannerController.get_instance().reset_table()
+        PinPlannerDialogController.get_instance().reset_table()
 
     @staticmethod
     def comm_protocol_settings_reset(comm_protocol_selected):
