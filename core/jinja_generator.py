@@ -3,6 +3,7 @@ import platform
 from jinja2 import Environment, select_autoescape, PackageLoader
 
 from controllers.project_path_controller import ProjectPathController
+from controllers.synthesis_files_controller.top_level_file_controller import TopLevelFileController
 from reusable_functions.file_operations import write_to_text_file
 from reusable_functions.os_operations import join_paths
 
@@ -14,10 +15,10 @@ class JinjaGenerator:
             loader=PackageLoader("models", "vhdl_templates"),
             autoescape=select_autoescape()
         )
-        self.project_path_controller = ProjectPathController.get_instance()
+        self.top_level_file_instance = TopLevelFileController.get_instance()
 
     def render_templates(self, template_names, configurations, output_path):
-        top_level_name = self.project_path_controller.get_top_level_name()
+        top_level_name = self.top_level_file_instance.get_top_level_name()
 
         for template_name in template_names:
             template = self.env.get_template(template_name)
