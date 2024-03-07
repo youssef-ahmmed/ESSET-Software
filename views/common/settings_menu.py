@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QWidget, QApplication
 from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets import RoundMenu, Action, MenuAnimationType
 
+from controllers.environment_path_controller import EnvironmentPathController
 from controllers.project_path_controller import ProjectPathController
 
 
@@ -31,4 +32,4 @@ class SettingsMenu(QWidget):
 
     def start_communication(self):
         self.new_project_path_action.triggered.connect(ProjectPathController.get_instance().open_project_path_dialog)
-        self.set_env_path_action.triggered.connect(ProjectPathController.get_instance().open_env_path_dialog)
+        self.set_env_path_action.triggered.connect(EnvironmentPathController.get_instance().open_env_path_dialog)

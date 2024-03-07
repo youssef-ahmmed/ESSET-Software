@@ -48,7 +48,7 @@ class SpiDialogController(QObject):
         if self.spi_configurations:
             self.spi_setting_dialog.accept()
             template_generator_controller = TemplateGeneratorController()
-            template_generator_controller.render_uart_templates(self.collect_spi_settings())
+            template_generator_controller.render_spi_slave_templates(self.collect_spi_settings())
             PinPlannerDialogController.get_instance().send_data_to_pin_planner()
             create_success_bar(log_messages.SPI_CONFIG_SET)
 

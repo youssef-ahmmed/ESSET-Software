@@ -55,7 +55,3 @@ def delete_file(file_path):
 def is_modification_time_changed(path, last_mod_time):
     current_mod_time: float = get_last_modification_time(path)
     return current_mod_time != last_mod_time
-
-
-def get_files_with_extension(path, extension):
-    return [file for file in dir_list(path) if file.endswith(extension)][0]

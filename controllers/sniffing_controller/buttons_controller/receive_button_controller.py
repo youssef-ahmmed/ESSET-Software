@@ -61,7 +61,7 @@ class ReceiveButtonController(QObject):
 
     def initiate_ftp_connection(self):
         self.local_file_path = join_paths(ProjectPathController.get_instance().get_project_path(), 'data.bin')
-        remote_file_path = 'Sniffing/data.bin'
+        remote_file_path = 'sniffing/data.bin'
         ftp_receiver = FtpReceiver()
         ftp_receiver.receive_file_via_ftp(self.local_file_path, remote_file_path)
 
