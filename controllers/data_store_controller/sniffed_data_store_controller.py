@@ -17,6 +17,6 @@ class SniffedDataStoreController:
                                          '%Y-%m-%d %H:%M:%S')
 
         self.sniffed_data_dto = SniffedDataDto(current_time, time_taken,
-                                               **self.data_collector_controller.collect_sniffed_data())
+                                               **self.data_collector_controller.collect_sniffing_option())
         self.sniffed_data_dao = SniffedDataDao(self.sniffed_data_dto)
         self.sniffed_data_dao.insert()

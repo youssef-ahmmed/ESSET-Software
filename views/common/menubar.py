@@ -24,6 +24,6 @@ class MenuBar(QMenuBar):
 
     def start_communication(self):
         self.add_new_path_action.triggered.connect(
-            lambda: ProjectPathController.get_instance().open_directory_dialog()
+            lambda: ProjectPathController.get_instance().open_project_path_dialog()
         )
         self.exit_action.triggered.connect(lambda: QApplication.instance().quit())

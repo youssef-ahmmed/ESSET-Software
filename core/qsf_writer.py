@@ -2,6 +2,7 @@ import os
 import re
 
 from controllers.project_path_controller import ProjectPathController
+from controllers.synthesis_files_controller.qsf_file_controller import QsfFileController
 from reusable_functions.file_operations import read_text_file, write_to_text_file
 from reusable_functions.os_operations import dir_list, join_paths, check_is_file
 
@@ -9,10 +10,11 @@ from reusable_functions.os_operations import dir_list, join_paths, check_is_file
 class QsfWriter:
     def __init__(self):
         self.project_path_controller = ProjectPathController.get_instance()
+        self.qsf_file_controller = QsfFileController.get_instance()
 
     def write_qsf_content(self, pattern: str, new_assignments: list):
-        qsf_file_path = self.project_path_controller.get_qsf_file_path()
-        if qsf_file_path == 'not exist':
+        qsf_file_path = self.qsf_file_controller.get_qsf_file_path()
+        if not qsf_file_path:
             return
 
         qsf_file_content = read_text_file(qsf_file_path)

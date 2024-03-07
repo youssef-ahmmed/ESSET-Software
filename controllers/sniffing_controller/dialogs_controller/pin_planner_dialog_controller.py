@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QObject
 
-from controllers.project_path_controller import ProjectPathController
+from controllers.synthesis_files_controller.top_level_file_controller import TopLevelFileController
 from core.qsf_writer import QsfWriter
 from core.vhdl_parser import VhdlParser
 from models import log_messages
@@ -38,18 +38,13 @@ class PinPlannerDialogController(QObject):
         self.pin_planner_dialog.reset_button.clicked.connect(self.reset_pin_planner_table)
 
     def send_data_to_pin_planner(self) -> None:
-        self.top_level_file_path: str = self.get_top_level_file_path()
+        self.top_level_file_path: str = TopLevelFileController.get_instance().get_top_level_file_path()
+
         if not self.top_level_file_path:
+            create_error_bar(log_messages.NO_TOP_LEVEL_FILE)
             return
 
         self.update_modification_time()
-
-    def get_top_level_file_path(self) -> str:
-        project_path_instance = ProjectPathController.get_instance()
-        if project_path_instance.is_top_level_exists:
-            return project_path_instance.get_top_level_file_path()
-
-        create_error_bar(log_messages.NO_TOP_LEVEL_FILE)
 
     def update_modification_time(self) -> None:
         if is_modification_time_changed(self.top_level_file_path,

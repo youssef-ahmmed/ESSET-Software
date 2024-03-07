@@ -7,7 +7,7 @@ from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets import (NavigationBar, NavigationItemPosition, isDarkTheme)
 from qframelesswindow import FramelessWindow
 
-from views.common.info_bar import main_window_manager, create_info_bar
+from views.common.info_bar import main_window_manager
 from views.common.log_widget import LogWidget
 from views.common.settings_menu import SettingsMenu
 from views.custom_component.custom_title_bar import CustomTitleBar
@@ -100,5 +100,4 @@ if __name__ == '__main__':
     window = MainWindow()
     window.showMaximized()
     main_window_manager.main_window = window
-    create_info_bar("Welcome To ESSET")
     app.exec_()

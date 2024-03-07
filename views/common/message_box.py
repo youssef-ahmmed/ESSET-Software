@@ -18,6 +18,6 @@ class MessageBox(QWidget):
                                      'There is No Quartus Path Specified\n\nDo You Want to specify one?',
                                      QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
-            ProjectPathController.get_instance().open_directory_dialog()
+            ProjectPathController.get_instance().open_project_path_dialog()
         else:
             logger.warning(log_messages.NO_QUARTUS_PATH)

@@ -4,7 +4,7 @@ import subprocess
 
 from loguru import logger
 
-from controllers.project_path_controller import ProjectPathController
+from controllers.environment_path_controller import EnvironmentPathController
 from reusable_functions.os_operations import change_dir, change_file_mode, \
     get_path_separation, get_directory_name
 
@@ -12,7 +12,7 @@ from reusable_functions.os_operations import change_dir, change_file_mode, \
 class ScriptExecutor:
     def __init__(self, script_path):
         self.script_path = script_path
-        os.environ['PATH'] += get_path_separation() + ProjectPathController.get_instance().get_env_path()
+        os.environ['PATH'] += get_path_separation() + EnvironmentPathController.get_instance().get_env_path()
 
     def execute_synthesis_script(self):
         try:

@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QFileDialog
 
 from models import log_messages
 from models.log_messages import instance_exists_error
-from reusable_functions.os_operations import split_pathname, join_paths, dir_list, check_path_exists
+from reusable_functions.os_operations import join_paths, dir_list
 from views.common.info_bar import create_success_bar, create_warning_bar
 
 
@@ -15,25 +15,23 @@ class ProjectPathController(QObject):
     _instance = None
 
     @staticmethod
-    def get_instance(parent=None):
+    def get_instance():
         if ProjectPathController._instance is None:
-            ProjectPathController._instance = ProjectPathController(parent)
+            ProjectPathController._instance = ProjectPathController()
         return ProjectPathController._instance
 
-    def __init__(self, parent=None):
+    def __init__(self):
         super(ProjectPathController, self).__init__()
         if ProjectPathController._instance is not None:
             raise Exception(instance_exists_error(self.__class__.__name__))
 
-        self.parent = parent
         self.project_path = ""
-        self.env_path = ""
 
-    def open_directory_dialog(self):
-        directory_path = QFileDialog.getExistingDirectory(None, 'Select Project Directory')
-        if directory_path:
-            self.project_path = directory_path
-            self.directory_path_changed.emit(directory_path)
+    def open_project_path_dialog(self):
+        path = QFileDialog.getExistingDirectory(None, 'Select Project Directory')
+        if path:
+            self.project_path = path
+            self.directory_path_changed.emit(self.project_path)
             create_success_bar(log_messages.QUARTUS_PATH_SPECIFIED)
         else:
             create_warning_bar(log_messages.NO_QUARTUS_PATH)
@@ -44,62 +42,9 @@ class ProjectPathController(QObject):
     def is_project_path_exists(self) -> bool:
         return self.project_path != ""
 
-    def is_top_level_exists(self) -> bool:
-        if self.is_project_path_exists() and self.get_top_level_name() != "not exist":
-            return True
-
-    def get_top_level_name(self):
-        qsf_files = [file for file in dir_list(self.project_path) if file.endswith('.qsf')]
-
-        if qsf_files:
-            return split_pathname(qsf_files[0])
-        return "not exist"
-
-    def get_top_level_file_path(self):
-        return join_paths(self.project_path, self.get_top_level_name() + ".vhd")
-
-    def get_qsf_file_path(self):
-        qsf_file_path = [file for file in dir_list(self.project_path) if file.endswith('.qsf')]
-        if not qsf_file_path:
-            return "not exist"
-        return join_paths(self.get_project_path(), ''.join(qsf_file_path))
-
     def get_script_path(self):
         script_extension = ".sh" if platform.system() == "Linux" else ".bat"
-        script_files = [
-            file for file in dir_list(self.project_path) if file.endswith(script_extension)
-        ]
-
-        if script_files:
-            return join_paths(self.project_path, script_files[0])
-
+        for file_name in dir_list(self.project_path):
+            if file_name.endswith(script_extension):
+                return join_paths(self.project_path, file_name)
         return None
-
-    def get_sof_file_path(self) -> str | None:
-        sof_dir_path = join_paths(self.project_path, 'output_files')
-        if not check_path_exists(sof_dir_path):
-            return None
-        sof_files = [file for file in dir_list(sof_dir_path) if file.endswith('.sof')]
-        if not sof_files:
-            return None
-        return join_paths(sof_dir_path, sof_files[0])
-
-    def get_svf_file_path(self) -> str | None:
-        svf_dir_path = join_paths(self.project_path, 'output_files')
-        if not check_path_exists(svf_dir_path):
-            return None
-        sof_files = [file for file in dir_list(svf_dir_path) if file.endswith('.svf')]
-        if not sof_files:
-            return None
-        return join_paths(svf_dir_path, sof_files[0])
-
-    def open_env_path_dialog(self):
-        env_path = QFileDialog.getExistingDirectory(None, 'Select Environment Path')
-        if env_path:
-            create_success_bar(log_messages.ENV_PATH_SET)
-            self.env_path = env_path
-        else:
-            create_warning_bar(log_messages.NO_ENV_PATH)
-
-    def get_env_path(self):
-        return self.env_path

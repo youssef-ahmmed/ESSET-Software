@@ -12,7 +12,7 @@ class OneBitStoreController:
         self.one_bit_dao = None
 
     def store_one_bit_sniffing(self):
-        one_bit_data = self.data_collector_controller.collect_one_bit_data()
+        one_bit_data = self.data_collector_controller.collect_bits_data()
         last_sniffed_data_id = SniffedDataDao.get_last_sniffed_data_id()
 
         self.one_bit_dto = OneBitDto(last_sniffed_data_id, **one_bit_data)

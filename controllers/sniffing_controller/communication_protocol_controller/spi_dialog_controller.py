@@ -48,7 +48,7 @@ class SpiDialogController(QObject):
         if self.spi_configurations:
             self.spi_setting_dialog.accept()
             template_generator_controller = TemplateGeneratorController()
-            template_generator_controller.render_uart_templates(self.collect_spi_settings())
+            template_generator_controller.render_spi_slave_templates(self.collect_spi_settings())
             PinPlannerDialogController.get_instance().send_data_to_pin_planner()
             create_success_bar(log_messages.SPI_CONFIG_SET)
 
@@ -81,16 +81,15 @@ class SpiDialogController(QObject):
         }
         spi_configurations = {
             'option': 'SPI Slave',
-            'top_level_name': self.project_path_controller.get_top_level_name(),
             'MOSI': mosi,
             'MISO': miso,
             'Clock': clock,
             'Enable': enable,
             'clock_rate': int(clock_rate) * MEGA_HZ,
             'significant_bit': significant_bit,
-            'clk_state': clock_state,
-            'clk_phase': clock_phase,
-            'data_size': bits_per_transfer,
+            'clk_state': int(clock_state),
+            'clk_phase': int(clock_phase),
+            'data_size': int(bits_per_transfer),
         }
 
         for channel_name, channel_value in settings.items():

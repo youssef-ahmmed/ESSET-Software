@@ -2,10 +2,10 @@ from enum import IntEnum
 
 from PyQt5.QtCore import QObject
 
-from controllers.project_path_controller import ProjectPathController
 from controllers.sniffing_controller.reset_controller import ResetController
 from controllers.sniffing_controller.store_sniffing_configurations_controller import \
     StoreSniffingConfigurationsController
+from controllers.synthesis_files_controller.svf_file_controller import SvfFileController
 from core.ftp_sender import FtpSender
 from models import log_messages
 from models.log_messages import instance_exists_error
@@ -49,20 +49,18 @@ class SniffingTimerDialogController(QObject):
 
     def start_sniffing(self):
         try:
+            self.sniffing_timer_dialog.accept()
             self.send_svf_file()
             store_sniffing_configurations_controller = StoreSniffingConfigurationsController()
             store_sniffing_configurations_controller.store_sniffing_configurations(self.get_sniffing_time())
             ResetController.clear_all_previous_configuration()
-            self.sniffing_timer_dialog.accept()
             create_success_bar(log_messages.SNIFFING_STARTED)
         except Exception:
             create_error_bar(log_messages.FTP_NOT_OPENED)
 
-    @staticmethod
-    def send_svf_file():
-        project_path_controller = ProjectPathController.get_instance()
-        svf_file_path = project_path_controller.get_svf_file_path()
-        remote_file_path = f'Svf/top_level.svf'
+    def send_svf_file(self):
+        svf_file_path = SvfFileController.get_instance().get_svf_file_path()
+        remote_file_path = 'svf/top_level.svf'
         ftp_sender = FtpSender()
         ftp_sender.send_file_via_ftp(svf_file_path, remote_file_path)
 
