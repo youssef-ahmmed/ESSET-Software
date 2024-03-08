@@ -45,7 +45,7 @@ class MainWindow(FramelessWindow):
         self.layout.setStretchFactor(self.stack_widget, 1)
 
     def init_navigation(self):
-        self.add_sub_interface(self.sniffing_widget, QIcon('../assets/icons/sniffing.svg'), 'Sniffing')
+        self.add_sub_interface(self.sniffing_widget, QIcon('../assets/icons/config.svg'), 'Config')
         self.add_sub_interface(self.display_widget, QIcon('../assets/icons/display.svg'), 'Display')
         self.add_navigatiob_bar_button('Log Button', FIF.CALENDAR, 'Log', self.log.open_log_widget,
                                        NavigationItemPosition.BOTTOM)
