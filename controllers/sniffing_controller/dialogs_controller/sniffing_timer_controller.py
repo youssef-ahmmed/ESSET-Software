@@ -58,12 +58,6 @@ class SniffingTimerDialogController(QObject):
         except Exception:
             create_error_bar(log_messages.FTP_NOT_OPENED)
 
-    def send_svf_file(self):
-        svf_file_path = SvfFileController.get_instance().get_svf_file_path()
-        remote_file_path = 'svf/top_level.svf'
-        ftp_sender = FtpSender()
-        ftp_sender.send_file_via_ftp(svf_file_path, remote_file_path)
-
     def get_sniffing_time(self):
         sniffing_time = int(self.sniffing_timer_dialog.time_edit.text())
         time_unit = self.sniffing_timer_dialog.unit_combo.currentText()
