@@ -49,10 +49,13 @@ class HardwareConfigurations(QWidget):
         self.layout().addWidget(self.configuration_buttons)
 
     def start_communication(self):
-        self.number_bits_select.comm_protocol_changed.connect(
+        self.number_bits_select.sniff_number_bits_changed.connect(
             self.set_protocol_combo_disabled
         )
-        self.comm_protocol.sniff_number_bits_changed.connect(
+        self.comm_protocol_select.comm_protocol_changed.connect(
+            self.set_bits_combo_disabled
+        )
+        self.attack_operation_select.attack_operation_changed.connect(
             self.set_bits_combo_disabled
         )
 
@@ -60,4 +63,4 @@ class HardwareConfigurations(QWidget):
         self.number_bits_select.bits_combo.setDisabled(disable)
 
     def set_protocol_combo_disabled(self, disable):
-        self.comm_protocol.protocol_combo.setDisabled(disable)
+        self.comm_protocol_select.protocol_combo.setDisabled(disable)

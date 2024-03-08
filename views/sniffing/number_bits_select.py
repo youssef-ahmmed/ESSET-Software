@@ -4,7 +4,7 @@ from qfluentwidgets import ComboBox
 
 
 class NumberBitsSelect(QWidget):
-    comm_protocol_changed = pyqtSignal(int)
+    sniff_number_bits_changed = pyqtSignal(int)
 
     def __init__(self):
         super().__init__()
@@ -14,7 +14,7 @@ class NumberBitsSelect(QWidget):
         self.start_communication()
 
     def start_communication(self):
-        self.bits_combo.currentIndexChanged.connect(self.protocol_changed)
+        self.bits_combo.currentIndexChanged.connect(self.number_bits_changed)
 
     def init_ui(self):
         self.setLayout(QHBoxLayout())
@@ -29,8 +29,8 @@ class NumberBitsSelect(QWidget):
     def get_selected_pin_number(self):
         return self.bits_combo.currentText()
 
-    def protocol_changed(self, index):
-        self.comm_protocol_changed.emit(index)
+    def number_bits_changed(self, index):
+        self.sniff_number_bits_changed.emit(index)
 
     def reset_bits_selection(self):
         self.bits_combo.setCurrentText("Choose")
