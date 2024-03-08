@@ -4,6 +4,7 @@ from PyQt5.QtCore import QObject
 from qfluentwidgets import PrimaryPushButton
 
 from controllers.project_path_controller import ProjectPathController
+from controllers.synthesis_files_controller.config_file_controller import ConfigFileController
 from controllers.synthesis_files_controller.sof_file_controller import SofFileController
 from core.command_executor import CommandExecutor
 from core.ftp_sender import FtpSender
@@ -49,6 +50,7 @@ class StartConfigButtonController(QObject):
         try:
             self.generate_svf_file()
             self.send_svf_file()
+            ConfigFileController.get_instance().send_config_file(True)
             create_success_bar(log_messages.CONFIGURATION_SUCCESS)
         except CalledProcessError:
             create_error_bar(log_messages.NO_ENV_PATH)

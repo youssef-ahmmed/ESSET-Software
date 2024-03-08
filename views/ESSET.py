@@ -9,6 +9,7 @@ from qframelesswindow import FramelessWindow
 
 from views.common.info_bar import main_window_manager
 from views.common.log_widget import LogWidget
+from views.common.operation_button import OperationsButton
 from views.common.settings_menu import SettingsMenu
 from views.custom_component.custom_title_bar import CustomTitleBar
 from views.custom_component.stacked_widget import StackedWidget
@@ -31,6 +32,7 @@ class MainWindow(FramelessWindow):
         self.display_widget = DisplayWidget()
         self.display_widget.setObjectName("Display Widget")
         self.settings_menu = SettingsMenu(self)
+        self.operations_button = OperationsButton(self)
 
         self.init_ui()
         self.init_navigation()
@@ -47,6 +49,8 @@ class MainWindow(FramelessWindow):
     def init_navigation(self):
         self.add_sub_interface(self.sniffing_widget, QIcon('../assets/icons/config.svg'), 'Config')
         self.add_sub_interface(self.display_widget, QIcon('../assets/icons/display.svg'), 'Display')
+        self.add_navigatiob_bar_button('Attack Operations', FIF.PLAY_SOLID, 'Operations',
+                                       self.operations_button.open_operations_menu, NavigationItemPosition.BOTTOM)
         self.add_navigatiob_bar_button('Log Button', FIF.CALENDAR, 'Log', self.log.open_log_widget,
                                        NavigationItemPosition.BOTTOM)
         self.add_navigatiob_bar_button('Settings Button', FIF.SETTING, 'Settings',
