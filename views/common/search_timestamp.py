@@ -6,8 +6,6 @@ class SearchTimestamp(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Data Search")
-
         self.init_ui()
 
     def init_ui(self):
