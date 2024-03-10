@@ -7,10 +7,10 @@ from controllers.display_controller.display_button_controller import DisplayButt
 from controllers.display_controller.display_terminal_controller import DisplayTerminalController
 from controllers.display_controller.last_data_checkbox_controller import LastDataCheckboxController
 from controllers.display_controller.search_timestamp_controller import SearchTimestampController
-from views.custom_component.output_terminal import OutputTerminal
+from views.common.output_terminal import OutputTerminal
 from views.display.channel_buttons import ChannelButtons
 from views.display.last_data_checkbox import LastDataCheckbox
-from views.display.search_timestamp import SearchTimestamp
+from views.common.search_timestamp import SearchTimestamp
 
 
 class DisplaySettingsWidget(QWidget):

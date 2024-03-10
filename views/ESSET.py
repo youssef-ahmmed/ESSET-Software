@@ -2,8 +2,8 @@ import sys
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QHBoxLayout, QApplication
-from qfluentwidgets import FluentIcon as FIF
+from PyQt5.QtWidgets import QHBoxLayout, QApplication, QMessageBox
+from qfluentwidgets import FluentIcon as FIF, MessageBox
 from qfluentwidgets import (NavigationBar, NavigationItemPosition, isDarkTheme)
 from qframelesswindow import FramelessWindow
 
@@ -14,6 +14,7 @@ from views.common.settings_menu import SettingsMenu
 from views.custom_component.custom_title_bar import CustomTitleBar
 from views.custom_component.stacked_widget import StackedWidget
 from views.display.display_widget import DisplayWidget
+from views.intercept.intercept_widget import InterceptWidget
 from views.sniffing.sniffing_widget import SniffingWidget
 
 
@@ -31,6 +32,8 @@ class MainWindow(FramelessWindow):
         self.sniffing_widget.setObjectName("Sniffing Widget")
         self.display_widget = DisplayWidget()
         self.display_widget.setObjectName("Display Widget")
+        self.intercept_widget = InterceptWidget()
+        self.intercept_widget.setObjectName("Intercept Widget")
         self.settings_menu = SettingsMenu(self)
         self.operations_button = OperationsButton(self)
 
@@ -49,6 +52,8 @@ class MainWindow(FramelessWindow):
     def init_navigation(self):
         self.add_sub_interface(self.sniffing_widget, QIcon('../assets/icons/config.svg'), 'Config')
         self.add_sub_interface(self.display_widget, QIcon('../assets/icons/display.svg'), 'Display')
+        self.add_sub_interface(self.intercept_widget, QIcon('../assets/icons/intercept.png'), 'Intercept')
+
         self.add_navigatiob_bar_button('Attack Operations', FIF.PLAY_SOLID, 'Operations',
                                        self.operations_button.open_operations_menu, NavigationItemPosition.BOTTOM)
         self.add_navigatiob_bar_button('Log Button', FIF.CALENDAR, 'Log', self.log.open_log_widget,
@@ -97,6 +102,12 @@ class MainWindow(FramelessWindow):
     def on_current_interface_changed(self, index):
         widget = self.stack_widget.widget(index)
         self.navigation_bar.setCurrentItem(widget.objectName())
+
+        if widget == self.intercept_widget:
+            QMessageBox.warning(self, "Warning", "Tool Must Be Connected In Series")
+            title = 'Warning'
+            content = """Tool Must Be Connected In Series"""
+            MessageBox(title, content, self)
 
 
 if __name__ == '__main__':

@@ -14,3 +14,8 @@ class OutputTerminal(QWidget):
         self.terminal = PlainTextEdit(self)
         self.terminal.setReadOnly(True)
         layout.addWidget(self.terminal)
+
+    def set_editable(self, editable):
+        self.terminal.setReadOnly(not editable)
+        if editable:
+            self.terminal.setFocus()
