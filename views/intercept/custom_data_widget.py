@@ -14,7 +14,6 @@ class CustomDataWidget(QWidget):
 
     def set_custom_data_properties(self):
         self.custom_data.setEnabled(False)
-        self.custom_data.setFixedHeight(500)
 
     def create_layout(self):
         self.custom_data_layout = QVBoxLayout()
