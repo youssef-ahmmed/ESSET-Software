@@ -10,8 +10,7 @@ from views.sniffing.communication_protocols.uart_config import UartConfiguration
 
 
 class CommunicationProtocolSelect(QWidget):
-
-    sniff_number_bits_changed = pyqtSignal(int)
+    comm_protocol_changed = pyqtSignal(int)
 
     def __init__(self):
         super().__init__()
@@ -66,4 +65,4 @@ class CommunicationProtocolSelect(QWidget):
         self.protocol_combo.setCurrentText("Choose")
 
     def protocol_changed(self, index):
-        self.sniff_number_bits_changed.emit(index)
+        self.comm_protocol_changed.emit(index)
