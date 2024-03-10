@@ -1,7 +1,4 @@
-from datetime import datetime, timedelta
-
-from PyQt5.QtCore import QObject
-from qfluentwidgets import Action
+from datetime import timedelta, datetime
 
 from controllers.display_controller.search_timestamp_controller import SearchTimestampController
 from controllers.project_path_controller import ProjectPathController
@@ -9,33 +6,14 @@ from core.ftp_receiver import FtpReceiver
 from models import log_messages
 from models.dao.channels_data_dao import ChannelsDataDao
 from models.dao.sniffed_data_dao import SniffedDataDao
-from models.log_messages import instance_exists_error
-from reusable_functions.file_operations import delete_file, read_binary_file
+from reusable_functions.file_operations import read_binary_file, delete_file
 from reusable_functions.os_operations import join_paths
-from views.common.info_bar import create_error_bar, create_success_bar
+from views.common.info_bar import create_success_bar, create_error_bar
 
 
-class ReceiveButtonController(QObject):
-    _instance = None
-
-    @staticmethod
-    def get_instance(receive_data_button: Action = None) -> None:
-        if ReceiveButtonController._instance is None:
-            ReceiveButtonController._instance = ReceiveButtonController(receive_data_button)
-        return ReceiveButtonController._instance
-
-    def __init__(self, receive_data_button: Action) -> None:
-        super(ReceiveButtonController, self).__init__()
-
-        if ReceiveButtonController._instance is not None:
-            raise Exception(instance_exists_error(self.__class__.__name__))
-
-        self.receive_data_button = receive_data_button
-
-        self.start_communication()
-
-    def start_communication(self) -> None:
-        self.receive_data_button.triggered.connect(self.receive_sniffed_data)
+class ReceiveDataActionController:
+    def __init__(self):
+        self.receive_sniffed_data()
 
     def receive_sniffed_data(self):
         try:
