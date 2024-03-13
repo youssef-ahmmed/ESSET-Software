@@ -8,7 +8,8 @@ class StreamFinderWidget(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.conditions = ["cond1", "cond2", "cond3", "cond4"]
+        self.conditions = ["Choose Condition", "cond1", "cond2", "cond3", "cond4"]
+        self.actions = ["Choose Action", "Flip Bits", "Drop Communication", "Raise Flag"]
 
         self.initialize_components()
 
@@ -21,10 +22,13 @@ class StreamFinderWidget(QWidget):
         self.make_terminal_editable()
 
     def init_ui(self):
-        self.stream_finder_checkbox = QLabel("Stream Finder")
-
+        self.stream_finder_label = QLabel("Stream Finder")
         self.conditional_bypass_checkbox = CheckBox("Set Condition")
         self.input_stream = LineEdit()
+        self.input_stream.setPlaceholderText("Enter your stream...")
+
+        self.stream_finder_actions = ComboBox()
+        self.stream_finder_actions.addItems(self.actions)
 
         self.conditional_bypass_combobox = ComboBox()
         self.conditional_bypass_combobox.setEnabled(False)
@@ -45,8 +49,9 @@ class StreamFinderWidget(QWidget):
         self.stream_layout = QVBoxLayout()
 
         self.stream_layout.setContentsMargins(11, 0, 11, 0)
-        self.stream_layout.addWidget(self.stream_finder_checkbox)
+        self.stream_layout.addWidget(self.stream_finder_label)
         self.stream_layout.addWidget(self.input_stream)
+        self.stream_layout.addWidget(self.stream_finder_actions)
 
     def setup_conditional_layout(self):
         self.conditional_layout = QVBoxLayout()
@@ -66,6 +71,7 @@ class StreamFinderWidget(QWidget):
 
     def reset_to_default(self):
         self.input_stream.clear()
+        self.stream_finder_actions.setCurrentIndex(0)
         self.conditional_bypass_combobox.setCurrentIndex(0)
         self.terminal.terminal.clear()
 
