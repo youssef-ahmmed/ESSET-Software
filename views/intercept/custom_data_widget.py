@@ -28,5 +28,15 @@ class CustomDataWidget(QWidget):
     def toggle_custom_data_visibility(self, state):
         if state == 2:
             self.custom_data.setEnabled(True)
+            self.disable_data_operation_widgets()
         else:
             self.custom_data.setEnabled(False)
+            self.enable_data_operation_widgets()
+
+    def disable_data_operation_widgets(self):
+        self.parent().data_operation_widget.set_enabled(False)
+        self.parent().search_timestamp.set_enabled(False)
+
+    def enable_data_operation_widgets(self):
+        self.parent().data_operation_widget.set_enabled(True)
+        self.parent().search_timestamp.set_enabled(True)
