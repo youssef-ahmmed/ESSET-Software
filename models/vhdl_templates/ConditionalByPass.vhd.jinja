@@ -1,0 +1,42 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity ConditionalByPass is
+    port (
+        clk       : in  std_logic;
+        i_DV      : in  std_logic;
+        o_output  : out std_logic_vector(7 downto 0) := (others => '1');
+        o_DV      : out std_logic := '0';
+        o_status  : out std_logic;
+        i_input   : in  std_logic_vector(7 downto 0)
+    );
+end ConditionalByPass;
+
+architecture behav of ConditionalByPass is
+    signal r_input     : std_logic_vector(7 downto 0) := (others => '0');
+    signal r_condition : std_logic_vector(7 downto 0) := X"{{ conditional_data }}";
+    signal r_status    : std_logic := '0';
+begin
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            if i_DV = '1' then
+                if r_status = '0' then
+                    if r_input = r_condition then
+                      --   o_output <= (others => '1');
+                        r_status <= '1';
+                        o_DV <= '0';
+                    else
+                        o_output <= r_input;  -- Assign default value
+                        o_DV <= '1';
+                    end if;
+                end if;
+            else
+                o_DV <= '0';  -- Ensure o_DV is deasserted when i_DV is not asserted
+            end if;
+        end if;
+    end process;
+    o_status <= r_status;
+    r_input <= i_input;
+end behav;
