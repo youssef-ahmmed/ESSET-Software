@@ -20,7 +20,7 @@ class StoreSniffingConfigurationsController:
         channel_pins_store = ChannelPinsStoreController()
         channel_pins_store.store_channel_pins()
 
-        connection_way, comm_protocol = self.data_collector.collect_sniffing_option().values()
+        _, connection_way, comm_protocol = self.data_collector.collect_sniffing_option().values()
 
         self.store_comm_protocol(comm_protocol)
         self.store_connection_way(connection_way)
