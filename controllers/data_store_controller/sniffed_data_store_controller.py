@@ -12,11 +12,11 @@ class SniffedDataStoreController:
         self.sniffed_data_dto = None
         self.sniffed_data_dao = None
 
-    def store_sniffed_data(self, time_taken):
+    def store_sniffed_data(self):
         current_time = datetime.strptime(datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                                          '%Y-%m-%d %H:%M:%S')
 
-        self.sniffed_data_dto = SniffedDataDto(current_time, time_taken,
+        self.sniffed_data_dto = SniffedDataDto(current_time, 0,
                                                **self.data_collector_controller.collect_sniffing_option())
         self.sniffed_data_dao = SniffedDataDao(self.sniffed_data_dto)
         self.sniffed_data_dao.insert()

@@ -13,9 +13,9 @@ class StoreSniffingConfigurationsController:
     def __init__(self):
         self.data_collector = DataCollectorController()
 
-    def store_sniffing_configurations(self, sniffing_time):
+    def store_sniffing_configurations(self):
         sniffed_data_store = SniffedDataStoreController()
-        sniffed_data_store.store_sniffed_data(sniffing_time)
+        sniffed_data_store.store_sniffed_data()
 
         channel_pins_store = ChannelPinsStoreController()
         channel_pins_store.store_channel_pins()
