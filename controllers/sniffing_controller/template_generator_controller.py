@@ -33,12 +33,32 @@ class TemplateGeneratorController:
         self.render_synthesis_script()
         self.qsf_writer.write_vhdl_files_to_qsf()
 
-    def render_uart_templates(self, configurations):
-        template_names = ['UART_Receiver.vhd.jinja', 'UART_Transmitter.vhd.jinja']
+    def render_uart_receiver_templates(self, configurations):
+        template_names = ['UART_Receiver.vhd.jinja']
+        self.render_templates(template_names, configurations)
+
+    def render_uart_transmitter_templates(self, configurations):
+        template_names = ['UART_Transmitter.vhd.jinja']
         self.render_templates(template_names, configurations)
 
     def render_spi_slave_templates(self, configurations):
         template_names = ['SPI_Slave.vhd.jinja']
+        self.render_templates(template_names, configurations)
+
+    def render_spi_master_templates(self, configurations):
+        template_names = ['SPI_Master.vhd.jinja']
+        self.render_templates(template_names, configurations)
+
+    def render_stream_finder_templates(self, configurations):
+        template_names = ['StreamFinder.vhd.jinja']
+        self.render_templates(template_names, configurations)
+
+    def render_stream_finder_with_flib_bits_templates(self, configurations):
+        template_names = ['StreamFinderWithFlipBits.vhd.jinja']
+        self.render_templates(template_names, configurations)
+
+    def render_conditional_bypass_templates(self, configurations):
+        template_names = ['ConditionalByPass.vhd.jinja']
         self.render_templates(template_names, configurations)
 
     def render_bit_templates(self, configurations, sniffing_type):
