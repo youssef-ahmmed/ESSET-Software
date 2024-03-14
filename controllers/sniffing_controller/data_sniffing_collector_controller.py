@@ -1,5 +1,6 @@
 from PyQt5.QtCore import QObject
 
+from controllers.sniffing_controller.attack_operation_select_controller import AttackOperationSelectController
 from controllers.sniffing_controller.comm_protocol_select_controller import CommProtocolSelectController
 from controllers.sniffing_controller.communication_protocol_controller.spi_dialog_controller import SpiDialogController
 from controllers.sniffing_controller.communication_protocol_controller.uart_dialog_controller import \
@@ -54,11 +55,13 @@ class DataCollectorController(QObject):
     def collect_sniffing_option(self):
         comm_protocol = CommProtocolSelectController.get_instance().get_selected_option()
         connection_way = NumberBitsSelectController.get_instance().get_selected_option()
+        last_config_option = AttackOperationSelectController.get_instance().get_selected_attack_operation()
         if comm_protocol not in self.COMM_PROTOCOL:
             comm_protocol = None
         if connection_way not in self.CONNECTION_WAY:
             connection_way = None
         return {
+            'last_config_option': last_config_option,
             'connection_way': connection_way,
             'communication_protocol_name': comm_protocol
         }
