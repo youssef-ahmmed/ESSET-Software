@@ -9,10 +9,10 @@ class SearchTimestamp(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        search_label = QLabel("Search for data:")
+        self.search_label = QLabel("Search for data:")
         self.time_stamp_combobox = EditableComboBox()
         layout = QVBoxLayout()
-        layout.addWidget(search_label)
+        layout.addWidget(self.search_label)
         layout.addWidget(self.time_stamp_combobox)
 
         self.setLayout(layout)
@@ -25,3 +25,7 @@ class SearchTimestamp(QWidget):
 
         completer = QCompleter(items, self)
         self.time_stamp_combobox.setCompleter(completer)
+
+    def set_enabled(self, enabled):
+        self.search_label.setEnabled(enabled)
+        self.time_stamp_combobox.setEnabled(enabled)
