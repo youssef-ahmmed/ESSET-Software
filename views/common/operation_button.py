@@ -19,7 +19,7 @@ class OperationsButton(QWidget):
         self.operations_menu = RoundMenu()
 
         self.init_ui()
-        # self.start_communication()
+        self.start_communication()
 
     def init_ui(self):
         self.sniffing_action = Action(FIF.ROBOT, 'Sniffing Data', shortcut='Ctrl+n')

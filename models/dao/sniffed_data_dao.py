@@ -16,6 +16,7 @@ class SniffedDataDao:
     def create_sniffed_data(self):
         self.sniffed_data.start_time = self.sniffed_data_dto.start_time
         self.sniffed_data.time_taken = self.sniffed_data_dto.time_taken
+        self.sniffed_data.last_config_option = self.sniffed_data_dto.last_config_option
         self.sniffed_data.connection_way = self.sniffed_data_dto.connection_way
         self.sniffed_data.communication_protocol_name = self.sniffed_data_dto.communication_protocol_name
 

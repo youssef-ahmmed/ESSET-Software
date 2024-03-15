@@ -8,7 +8,8 @@ class SniffedData(BaseModel, Base):
 
     id = Column(Integer, primary_key=True)
     start_time = Column(DateTime, nullable=False)
-    time_taken = Column(Integer, nullable=False)
+    time_taken = Column(Integer)
+    last_config_option = Column(String(20), default=None)
     connection_way = Column(String(10))
     communication_protocol_name = Column(String(10))
 

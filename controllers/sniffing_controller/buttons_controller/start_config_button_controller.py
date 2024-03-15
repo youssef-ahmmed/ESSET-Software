@@ -4,6 +4,8 @@ from PyQt5.QtCore import QObject
 from qfluentwidgets import PrimaryPushButton
 
 from controllers.project_path_controller import ProjectPathController
+from controllers.sniffing_controller.store_sniffing_configurations_controller import \
+    StoreSniffingConfigurationsController
 from controllers.synthesis_files_controller.config_file_controller import ConfigFileController
 from controllers.synthesis_files_controller.sof_file_controller import SofFileController
 from core.command_executor import CommandExecutor
@@ -51,6 +53,8 @@ class StartConfigButtonController(QObject):
             self.generate_svf_file()
             self.send_svf_file()
             ConfigFileController.get_instance().send_config_file(True)
+            store_sniffing_configurations_controller = StoreSniffingConfigurationsController()
+            store_sniffing_configurations_controller.store_sniffing_configurations()
             create_success_bar(log_messages.CONFIGURATION_SUCCESS)
         except CalledProcessError:
             create_error_bar(log_messages.NO_ENV_PATH)

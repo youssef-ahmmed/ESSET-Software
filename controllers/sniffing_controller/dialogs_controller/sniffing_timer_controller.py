@@ -2,8 +2,6 @@ from enum import IntEnum
 
 from PyQt5.QtCore import QObject
 
-from controllers.sniffing_controller.store_sniffing_configurations_controller import \
-    StoreSniffingConfigurationsController
 from controllers.synthesis_files_controller.config_file_controller import ConfigFileController
 from models import log_messages
 from models.log_messages import instance_exists_error
@@ -49,9 +47,8 @@ class SniffingTimerDialogController(QObject):
         try:
             self.sniffing_timer_dialog.accept()
             ConfigFileController.get_instance().send_config_file("sniffing", self.get_sniffing_time())
-            store_sniffing_configurations_controller = StoreSniffingConfigurationsController()
-            store_sniffing_configurations_controller.store_sniffing_configurations(self.get_sniffing_time())
-            # ResetController.clear_all_previous_configuration()
+            # TODO: Update Sniffing Time for sniffed data table
+            # TODO: ResetController.clear_all_previous_configuration()
             create_success_bar(log_messages.SNIFFING_STARTED)
         except Exception:
             create_error_bar(log_messages.FTP_NOT_OPENED)
