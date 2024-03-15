@@ -47,7 +47,7 @@ class BitsInputDialogController(QObject):
         if self.get_bits_configurations():
             self.bits_input_dialog.accept()
             template_generator_controller = TemplateGeneratorController()
-            template_generator_controller.render_uart_templates(self.get_bits_configurations())
+            template_generator_controller.render_bit_templates(self.get_bits_configurations())
             PinPlannerDialogController.get_instance().send_data_to_pin_planner()
             if self.sniffing_type == "One_Bit":
                 create_success_bar(log_messages.ONE_BIT_CONFIG_SET)

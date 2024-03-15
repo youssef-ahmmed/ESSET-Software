@@ -1,35 +1,31 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use work.Common_Ports.all;
-
 entity {{ top_level_name }} is
     generic (
         N: positive := 8  -- Number of output channels
     );
 
     port (
-        {%- if option == "UART" %}
+        {%- if option == "UART Receiver" or option == "UART Transmitter" %}
         -- UART Ports
         i_TX_DV: in std_logic;
         i_TX_Byte   : in  std_logic_vector(N-1 downto 0);
         o_TX_Active : out std_logic;
         o_TX_Serial : out std_logic;
         o_TX_Done   : out std_logic;
-        {%- endif %}
 
-        {%- if option == "SPI Slave" %}
-         --SPI Slave ports
+        {%- elif option == "SPI Slave" %}
+         -- SPI Slave ports
          i_SPI_clk: in std_logic;
-        {%- endif %}
 
-        {%- if option == "SPI Master" %}
-         --SPI Master ports
+        {%- elif option == "SPI Master" %}
+         -- SPI Master ports
          o_SPI_MOSI:out std_logic;
          o_sck:out std_logic;
-         o_SS:out std_logic
-        {%- endif %}
+         o_SS:out std_logic;
 
-        {%- if option == "NBits" %}
+       {%- elif option == "NBits" %}
         -- NBits Sniffing Port
         i_Nbit: in std_logic_vector(N-1 downto 0);
         {%- endif %}
@@ -38,9 +34,14 @@ entity {{ top_level_name }} is
         i_1bit: in std_logic;
         o_Nbit: out std_logic_vector(N-1 downto 0);
         clk: in std_logic;
-        o_status: out std_logic
-    );
+        o_status: out std_logic;
+        i_ACK: in std_logic;
+        -- ack of RPI that the DV signal has been detected
+        i_sck_RPI: in std_logic;
+        -- output of communication module
+        o_1bit: out std_logic
 
+    );
 end {{ top_level_name }};
 
 architecture behav of {{ top_level_name }} is
@@ -55,9 +56,8 @@ begin
         clk => clk,
         o_status => o_status
     );
-    {%- endif %}
 
-    {%- if option == "NBit" %}
+    {%- elif option == "NBit" %}
     -- NBit_Sniffing instance
     NBit_Sniffing_instance : entity work.NBit_Sniffing
     port map (
@@ -66,64 +66,78 @@ begin
         clk => clk,
         o_status => o_status
     );
-    {%- endif %}
 
-    {%- if option == "UART" %}
+    {%- elif option == "UART Receiver" %}
     -- UART Receiver instance
-    UART_Receiver_Instance: entity work.UART_Receiver
-        port map(
-        i_Clk => clk,
-        i_RX_Serial => i_1bit,
-        o_RX_DV => o_status,
-        o_RX_Byte => data_signal_buffer
-    );
+     UART_Receiver_Instance: entity work.UART_Receiver
+     port map(
+         i_Clk => clk,
+         i_RX_Serial => i_1bit,
+         o_RX_DV => r_DV,
+         --o_RX_DV => o_status,
+         o_RX_Byte => data_sniffing_out_buffer
+     );
 
+    {%- elif option == "UART Transmitter" %}
     -- UART Transmitter instance
-    UART_Transmitter_Instance: entity work.UART_Transmitter
+    UART_Transimitter_Instance: entity work.UART_Transmitter
     port map(
         i_Clk => clk,
-        i_TX_DV => i_TX_DV,
-        i_TX_Byte => i_TX_Byte,
-        o_TX_Active => o_TX_Active,
-        o_TX_Serial => o_TX_Serial,
-        o_TX_Done => o_TX_Done
+        i_TX_DV => r_cDV,
+        i_TX_Byte => r_output,
+        o_TX_Serial => o_TX_Serial
     );
+
+    {%- elif option == "SPI Slave"  %}
+    -- SPI Slave instance
+    SPI_Slave_Instance: entity work.SPI_Slave
+    port map(
+        i_MOSI => i_1bit,
+        o_DV => o_status,
+        o_Rec_Data => data_signal_buffer,
+        i_SCK => i_SPI_clk
+    );
+
+    {%- elif option == "SPI Master"  %}
+    -- SPI Master instance
+    SPI_Master_Instance: entity work.SPI_Master
+    port map(
+        o_MOSI => o_SPI_MOSI ,
+        o_sck => o_sck ,
+        o_SS => o_SS,
+        i_clk => clk,
+        i_TX_Byte =>X"35",
+        i_TX_DV =>'1'
+    );
+
+    {%- elif option == "Conditional ByPass"  %}
+    -- ConditionalByPass instance
+    Conditional_ByPass_Instance: entity work.ConditionalByPass
+    port map(
+        clk =>clk,
+        i_input => data_sniffing_out_buffer,
+        i_DV => r_DV,
+        o_DV => r_cDV,
+        o_output => r_output,
+        o_status => o_status
+    );
+
+    {%- elif option == "Stream Finder"  %}
+    -- Stream Finder instance
+
+    {%- elif option == "Stream Finder With Flip Bits"  %}
+    -- Stream Finder With Flip Bits instance
     {%- endif %}
 
-    {%- if option == "SPI Slave"  %}
-        --Instantiate SPI Slave
-        SPI_Slave_Instance: entity work.SPI_Slave
-        port map(
-            i_MOSI => i_1bit,
-            o_DV => o_status,
-            o_Rec_Data => data_signal_buffer,
-            i_SCK => i_SPI_clk
-        );
-    {%- endif %}
-
-    {%- if option == "SPI Master"  %}
-        --Instantiate SPI Master
-        SPI_Master_Instance: entity work.SPI_Master
-        port map(
-            o_MOSI => o_SPI_MOSI ,
-            o_sck => o_sck ,
-            o_SS => o_SS,
-            i_clk => clk,
-            i_TX_Byte =>X"35",
-            i_TX_DV =>'1'
-        );
-    {%- endif %}
-
-
-    -- Communication_Protocol instance
+    -- Communication Protocol instance
     Communication_Module_instance : entity work.Communication_Module
     port map (
-        -- Connect to the common ports
-        i_Nbit_comm => data_signal_buffer,
-        o_Nbit_comm => o_Nbit
+        clk => clk,
+        in_comm_channel => data_sniffing_out_buffer,
+        out_comm_channel => o_Nbit,
+        i_DV=>r_DV,
+        o_DV=>o_status,
+        i_ACK => i_Ack
     );
-
-    -- Connect the status signal from Data_Sniffing to an external signal
-    -- o_status <= status_signal;
 
 end behav;

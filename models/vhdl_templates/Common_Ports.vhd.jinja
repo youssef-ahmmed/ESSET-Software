@@ -6,8 +6,11 @@ package Common_Ports is
     constant N: positive := 8; -- Number of signal channels
 
     -- Common ports shared between Data_Sniffing and Communication_Module
-    signal data_signal_buffer: std_logic_vector(N-1 downto 0);
-    signal status_signal: std_logic;
+    signal data_sniffing_out_buffer: std_logic_vector(N-1 downto 0);
+    signal data_sniffing_status_internal: std_logic;
+    signal r_DV:std_logic;
+    signal r_cDV:std_logic;
+    signal r_output: std_logic_vector(7 downto 0);
 
 end Common_Ports;
 

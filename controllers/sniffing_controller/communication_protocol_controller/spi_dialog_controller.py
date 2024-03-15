@@ -2,6 +2,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QMessageBox
 
 from controllers.project_path_controller import ProjectPathController
+from controllers.sniffing_controller.attack_operation_select_controller import AttackOperationSelectController
 from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_controller import PinPlannerDialogController
 from controllers.sniffing_controller.template_generator_controller import TemplateGeneratorController
 from models import log_messages
@@ -31,6 +32,7 @@ class SpiDialogController(QObject):
         self.spi_setting_dialog = spi_setting_dialog
         self.project_path_controller = ProjectPathController.get_instance()
         self.spi_configurations = []
+        self.selected_attack_operation = None
 
         self.handle_spi_settings_buttons()
 
@@ -47,8 +49,7 @@ class SpiDialogController(QObject):
         self.spi_configurations = self.collect_spi_settings()
         if self.spi_configurations:
             self.spi_setting_dialog.accept()
-            template_generator_controller = TemplateGeneratorController()
-            template_generator_controller.render_spi_slave_templates(self.collect_spi_settings())
+            self.generate_spi_templates()
             PinPlannerDialogController.get_instance().send_data_to_pin_planner()
             create_success_bar(log_messages.SPI_CONFIG_SET)
 
@@ -80,7 +81,7 @@ class SpiDialogController(QObject):
             "Enable": enable
         }
         spi_configurations = {
-            'option': 'SPI Slave',
+            'option': self.get_spi_option(),
             'MOSI': mosi,
             'MISO': miso,
             'Clock': clock,
@@ -102,3 +103,22 @@ class SpiDialogController(QObject):
             return
 
         return spi_configurations
+
+    def generate_spi_templates(self):
+        template_generator_controller = TemplateGeneratorController()
+        self.selected_attack_operation = AttackOperationSelectController.get_instance().get_selected_attack_operation()
+
+        attack_operation_templates = {
+            "Sniffing": template_generator_controller.render_spi_slave_templates,
+            "Replay Attack": template_generator_controller.render_spi_master_templates
+        }
+
+        if self.selected_attack_operation in attack_operation_templates:
+            attack_operation_templates[self.selected_attack_operation](self.collect_spi_settings())
+
+    def get_spi_option(self):
+        spi_options = {
+            "Sniffing": "SPI Slave",
+            "Replay Attack": "SPI Master",
+        }
+        return spi_options.get(self.selected_attack_operation)
