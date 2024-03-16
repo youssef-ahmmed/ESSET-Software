@@ -1,16 +1,12 @@
 from qfluentwidgets import MessageBoxBase, SubtitleLabel, ComboBox
 
 
-class BitPositionDialog(MessageBoxBase):
+class BytePositionDialog(MessageBoxBase):
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.titleLabel = SubtitleLabel('Select Byte Position You Want To Flip: ', self)
         self.positions = ComboBox()
-
-        self.byte_positions = ['0', '1', '2', '3', '4', '5', '6', '7']
-
-        self.positions.addItems(self.byte_positions)
 
         self.viewLayout.addWidget(self.titleLabel)
         self.viewLayout.addWidget(self.positions)
@@ -29,3 +25,6 @@ class BitPositionDialog(MessageBoxBase):
             self.byte_positions.append(str(i))
 
         self.positions.addItems(self.byte_positions)
+
+    def get_selected_byte(self):
+        return self.positions.currentText()
