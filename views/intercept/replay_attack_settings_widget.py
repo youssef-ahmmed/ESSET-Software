@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from qfluentwidgets import StrongBodyLabel
 
+from controllers.intercept_controller.intercept_search_timestamp_controller import InterceptSearchTimestampController
 from views.common.search_timestamp import SearchTimestamp
 from views.intercept.custom_data_widget import CustomDataWidget
 from views.intercept.data_operation_widget import DataOperationWidget
@@ -11,6 +12,8 @@ class ReplayAttackSettingsWidget(QWidget):
         super().__init__()
 
         self.search_timestamp = SearchTimestamp()
+        InterceptSearchTimestampController.get_instance(self.search_timestamp)
+
         self.custom_data_widget = CustomDataWidget()
         self.data_operation_widget = DataOperationWidget()
 
