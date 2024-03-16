@@ -17,10 +17,13 @@ from views.display.display_widget import DisplayWidget
 from views.intercept.intercept_widget import InterceptWidget
 from views.sniffing.sniffing_widget import SniffingWidget
 
+main_window_manager.main_window = None
+
 
 class MainWindow(FramelessWindow):
     def __init__(self):
         super().__init__()
+        main_window_manager.main_window = self
         self.setTitleBar(CustomTitleBar(self))
 
         self.layout = QHBoxLayout(self)
@@ -114,5 +117,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = MainWindow()
     window.showMaximized()
-    main_window_manager.main_window = window
     app.exec_()
