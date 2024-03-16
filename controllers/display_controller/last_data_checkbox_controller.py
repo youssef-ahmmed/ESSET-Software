@@ -1,12 +1,14 @@
 from PyQt5.QtCore import Qt
 
-from controllers.display_controller.abstract_classes.abstract_data_display import AbstractDataDisplay
-from controllers.display_controller.search_timestamp_controller import SearchTimestampController
+from controllers.display_controller.display_search_timestamp_controller import DisplaySearchTimestampController
+from controllers.display_controller.display_terminal_controller import DisplayTerminalController
+from models import log_messages
 from models.dao.channels_data_dao import ChannelsDataDao
 from models.log_messages import instance_exists_error
+from views.common.info_bar import create_success_bar
 
 
-class LastDataCheckboxController(AbstractDataDisplay):
+class LastDataCheckboxController:
 
     _instance = None
 
@@ -34,7 +36,10 @@ class LastDataCheckboxController(AbstractDataDisplay):
 
     def toggle_search_timestamp_combobox(self):
         state = self.is_last_data_checkbox_enabled()
-        SearchTimestampController.get_instance().toggle_search_timestamp_combobox(not state)
+        DisplaySearchTimestampController.get_instance().toggle_search_timestamp_combobox(not state)
 
-    def display_terminal_data(self):
-        self.display_data_on_terminal(ChannelsDataDao.get_all_by_last_id())
+    @staticmethod
+    def display_terminal_data():
+        channel_obj = ChannelsDataDao.get_all_by_last_id()[0]
+        DisplayTerminalController.get_instance().write_text(str(channel_obj.channel_data)[2:-1])
+        create_success_bar(log_messages.DATA_DISPLAYED)
