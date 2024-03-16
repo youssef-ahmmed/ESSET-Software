@@ -1,12 +1,17 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from qfluentwidgets import CheckBox, PlainTextEdit
 
+from controllers.intercept_controller.custom_data_checkbox_controller import CustomDataCheckboxController
+from controllers.intercept_controller.custom_data_terminal_controller import CustomDataTerminalController
+
 
 class CustomDataWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.custom_data_checkbox = CheckBox("Write Your Custom Data")
+        CustomDataCheckboxController.get_instance(self.custom_data_checkbox)
         self.custom_data = PlainTextEdit()
+        CustomDataTerminalController.get_instance(self.custom_data)
 
         self.set_custom_data_properties()
         self.create_layout()
