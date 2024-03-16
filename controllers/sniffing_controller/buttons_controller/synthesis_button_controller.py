@@ -4,7 +4,7 @@ from PyQt5.QtCore import QObject, pyqtSignal, QThread
 
 from controllers.project_path_controller import ProjectPathController
 from controllers.sniffing_controller.template_generator_controller import TemplateGeneratorController
-from controllers.sniffing_controller.terminal_controller import TerminalController
+from controllers.sniffing_controller.synthesis_terminal_controller import SynthesisTerminalController
 from core.script_executor import ScriptExecutor
 from models import log_messages
 from models.log_messages import instance_exists_error
@@ -66,8 +66,8 @@ class SynthesisButtonController(QObject):
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
         self.thread.finished.connect(self.thread.deleteLater)
-        self.worker.progress.connect(TerminalController.get_instance().append_line)
-        TerminalController.get_instance().clear_terminal()
+        self.worker.progress.connect(SynthesisTerminalController.get_instance().append_line)
+        SynthesisTerminalController.get_instance().clear_terminal()
         self.thread.start()
         self.synthesis_button.setEnabled(False)
         self.thread.finished.connect(lambda: self.synthesis_button.setEnabled(True))
