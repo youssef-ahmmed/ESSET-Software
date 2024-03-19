@@ -4,7 +4,7 @@ from controllers.sniffing_controller.communication_protocol_controller.uart_dial
     UartDialogController
 from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_controller import PinPlannerDialogController
 from controllers.sniffing_controller.number_bits_select_controller import NumberBitsSelectController
-from controllers.sniffing_controller.terminal_controller import TerminalController
+from controllers.sniffing_controller.synthesis_terminal_controller import SynthesisTerminalController
 
 
 class ResetController:
@@ -20,7 +20,7 @@ class ResetController:
         if connection_way != 'Choose':
             number_bit_selected.restart_settings()
 
-        TerminalController.get_instance().clear_terminal()
+        SynthesisTerminalController.get_instance().clear_terminal()
         PinPlannerDialogController.get_instance().reset_pin_planner_table()
 
     @staticmethod

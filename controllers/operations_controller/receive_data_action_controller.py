@@ -1,6 +1,7 @@
 from datetime import timedelta, datetime
 
-from controllers.display_controller.search_timestamp_controller import SearchTimestampController
+from controllers.display_controller.display_search_timestamp_controller import DisplaySearchTimestampController
+from controllers.intercept_controller.intercept_search_timestamp_controller import InterceptSearchTimestampController
 from controllers.project_path_controller import ProjectPathController
 from core.ftp_receiver import FtpReceiver
 from models import log_messages
@@ -21,7 +22,8 @@ class ReceiveDataActionController:
                 return
             self.initiate_ftp_connection()
             self.store_sniffed_data()
-            SearchTimestampController.get_instance().update_timestamp_combobox()
+            DisplaySearchTimestampController.get_instance().update_timestamp_combobox()
+            InterceptSearchTimestampController.get_instance().update_timestamp_combobox()
             create_success_bar(log_messages.RECEIVED_SUCCESS)
         except Exception:
             create_error_bar(log_messages.FTP_NOT_OPENED)

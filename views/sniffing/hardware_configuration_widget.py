@@ -4,7 +4,7 @@ from controllers.sniffing_controller.attack_operation_select_controller import A
 from controllers.sniffing_controller.comm_protocol_select_controller import CommProtocolSelectController
 from controllers.sniffing_controller.dialogs_controller.bits_input_dialog_controller import BitsInputDialogController
 from controllers.sniffing_controller.number_bits_select_controller import NumberBitsSelectController
-from controllers.sniffing_controller.terminal_controller import TerminalController
+from controllers.sniffing_controller.synthesis_terminal_controller import SynthesisTerminalController
 from views.common.output_terminal import OutputTerminal
 from views.sniffing.attack_operation_select import AttackOperationSelect
 from views.sniffing.buttons.configuration_buttons import ConfigurationButtons
@@ -36,7 +36,7 @@ class HardwareConfigurations(QWidget):
         self.terminal = OutputTerminal()
         self.configuration_buttons = ConfigurationButtons()
 
-        TerminalController.get_instance(self.terminal.terminal)
+        SynthesisTerminalController.get_instance(self.terminal.terminal)
 
         self.init_ui()
         self.start_communication()

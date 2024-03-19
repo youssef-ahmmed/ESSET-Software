@@ -6,7 +6,7 @@ from qfluentwidgets import PrimaryPushButton
 from controllers.display_controller.display_button_controller import DisplayButtonController
 from controllers.display_controller.display_terminal_controller import DisplayTerminalController
 from controllers.display_controller.last_data_checkbox_controller import LastDataCheckboxController
-from controllers.display_controller.search_timestamp_controller import SearchTimestampController
+from controllers.display_controller.display_search_timestamp_controller import DisplaySearchTimestampController
 from views.common.output_terminal import OutputTerminal
 from views.display.channel_buttons import ChannelButtons
 from views.display.last_data_checkbox import LastDataCheckbox
@@ -28,7 +28,7 @@ class DisplaySettingsWidget(QWidget):
         self.last_data_checkbox = LastDataCheckbox()
         self.display_button = PrimaryPushButton(FIF.TRAIN, "Display")
 
-        SearchTimestampController.get_instance(self.search_timestamp)
+        DisplaySearchTimestampController.get_instance(self.search_timestamp)
         DisplayTerminalController.get_instance(self.display_terminal.terminal)
         DisplayButtonController.get_instance(self.display_button)
         LastDataCheckboxController.get_instance(self.last_data_checkbox.last_data_checkbox)

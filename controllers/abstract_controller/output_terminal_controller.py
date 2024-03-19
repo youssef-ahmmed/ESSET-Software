@@ -1,9 +1,10 @@
+from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QTextCursor
 
 from models.log_messages import instance_exists_error
 
 
-class TerminalController:
+class OutputTerminalController(QObject):
     _instance = None
     PREFIX_COLORS = {
         'Info': 'darkgreen',
@@ -11,26 +12,27 @@ class TerminalController:
         'Error': 'red',
     }
 
-    @staticmethod
-    def get_instance(terminal=None):
-        if TerminalController._instance is None:
-            TerminalController._instance = TerminalController(terminal)
-        return TerminalController._instance
+    def __init__(self, output_terminal):
+        super(OutputTerminalController, self).__init__()
 
-    def __init__(self, terminal):
-        super(TerminalController, self).__init__()
-
-        if TerminalController._instance is not None:
+        if self.__class__._instance is not None:
             raise Exception(instance_exists_error(self.__class__.__name__))
 
-        self.terminal = terminal
+        self.output_terminal = output_terminal
 
     def write_text(self, text):
-        self.clear_terminal()
-        self.terminal.insertPlainText(text)
+        self.output_terminal.clear()
+        self.output_terminal.appendPlainText(text)
+
+    def append_text(self, text):
+        current_text = self.output_terminal.toPlainText()
+        self.output_terminal.setPlainText(current_text + text)
+
+    def get_terminal_content(self):
+        return self.output_terminal.toPlainText()
 
     def clear_terminal(self):
-        self.terminal.clear()
+        self.output_terminal.clear()
 
     def append_line(self, line):
         color = 'darkblue'
@@ -41,8 +43,8 @@ class TerminalController:
         self.append_colored_text(line, color)
 
     def append_colored_text(self, text, color):
-        cursor = self.terminal.textCursor()
+        cursor = self.output_terminal.textCursor()
         cursor.movePosition(QTextCursor.End)
         cursor.insertHtml(f'<font color="{color}">{text}</font><br>')
-        self.terminal.setTextCursor(cursor)
-        self.terminal.ensureCursorVisible()
+        self.output_terminal.setTextCursor(cursor)
+        self.output_terminal.ensureCursorVisible()

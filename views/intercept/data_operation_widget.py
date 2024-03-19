@@ -1,8 +1,9 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QButtonGroup
 from qfluentwidgets import CheckBox, RadioButton, StrongBodyLabel
 
+from controllers.intercept_controller.byte_position_dialog_controller import BytePositionDialogController
 from views.common.info_bar import main_window_manager
-from views.intercept.bit_position_dialog import BitPositionDialog
+from views.intercept.byte_position_dialog import BytePositionDialog
 
 
 class DataOperationWidget(QWidget):
@@ -27,11 +28,9 @@ class DataOperationWidget(QWidget):
         self.flip_all_ones = RadioButton("Flip all ones to all zeros")
         self.flip_all_zeros = RadioButton("Flip all zeros to all ones")
         self.flip_all_bits = RadioButton("Flip all bits")
-        
+
         self.flip_bits_options()
 
-        self.edit_data_radio = CheckBox("Edit Data")
-        
     def flip_bits_options(self):
         self.flip_one_byte.setEnabled(False)
         self.flip_all_ones.setEnabled(False)
@@ -49,7 +48,6 @@ class DataOperationWidget(QWidget):
         self.replay_attack_layout.addWidget(self.flip_bits_radio)
 
         self.replay_attack_layout.addLayout(self.flip_operation_layout)
-        self.replay_attack_layout.addWidget(self.edit_data_radio)
 
         self.setLayout(self.replay_attack_layout)
 
@@ -76,10 +74,10 @@ class DataOperationWidget(QWidget):
 
     def show_bit_position_dialog(self, id):
         if id == 1:
-            self.bit_position_dialog = BitPositionDialog(main_window_manager.main_window)
-            self.bit_position_dialog.exec()
+            byte_position_dialog = BytePositionDialog(main_window_manager.main_window)
+            byte_position_dialog_controller = BytePositionDialogController(byte_position_dialog)
+            byte_position_dialog.exec()
 
     def set_enabled(self, enabled):
         self.flip_bits_radio.setEnabled(enabled)
-        self.edit_data_radio.setEnabled(enabled)
         self.toggle_checkbox_visibilty(enabled)

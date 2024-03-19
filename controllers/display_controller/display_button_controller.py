@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QObject
 
 from controllers.display_controller.last_data_checkbox_controller import LastDataCheckboxController
-from controllers.display_controller.search_timestamp_controller import SearchTimestampController
+from controllers.display_controller.display_search_timestamp_controller import DisplaySearchTimestampController
 from controllers.display_controller.waveform_controller import WaveformController
 from models.log_messages import instance_exists_error
 
@@ -35,6 +35,6 @@ class DisplayButtonController(QObject):
         if state:
             LastDataCheckboxController.get_instance().display_terminal_data()
         else:
-            SearchTimestampController.get_instance().display_terminal_data()
+            DisplaySearchTimestampController.get_instance().display_terminal_data()
 
         WaveformController.get_instance().assign_channel_info_to_plot_widget()

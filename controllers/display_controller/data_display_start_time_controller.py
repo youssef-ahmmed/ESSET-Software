@@ -2,7 +2,7 @@ from PyQt5.QtCore import QObject
 
 from controllers.display_controller.abstract_classes.data_display_collector_controller import \
     DataDisplayCollectorController
-from controllers.display_controller.search_timestamp_controller import SearchTimestampController
+from controllers.display_controller.display_search_timestamp_controller import DisplaySearchTimestampController
 from models.dao.channels_data_dao import ChannelsDataDao
 from models.dao.n_bit_sniffing_dao import NBitSniffingDao
 from models.dao.one_bit_sniffing_dao import OneBitDao
@@ -14,9 +14,9 @@ class DataDisplayStartTimeController(DataDisplayCollectorController, QObject):
 
     def __init__(self):
         super().__init__()
-        self.sniffing_option = SearchTimestampController.get_instance().get_sniffing_option()
+        self.sniffing_option = DisplaySearchTimestampController.get_instance().get_sniffing_option()
 
-        self.start_time = SearchTimestampController.get_instance().get_start_time_obj()
+        self.start_time = DisplaySearchTimestampController.get_instance().get_start_time_obj()
         self.channels_data_by_start_time = ChannelsDataDao.get_data_by_start_time(self.start_time)
 
     def get_channels_data_by_start_time(self):

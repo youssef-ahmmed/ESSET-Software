@@ -1,9 +1,7 @@
-from PyQt5.QtCore import QObject
-
-from models.log_messages import instance_exists_error
+from controllers.abstract_controller.output_terminal_controller import OutputTerminalController
 
 
-class DisplayTerminalController(QObject):
+class DisplayTerminalController(OutputTerminalController):
 
     _instance = None
 
@@ -14,17 +12,4 @@ class DisplayTerminalController(QObject):
         return DisplayTerminalController._instance
 
     def __init__(self, display_terminal):
-        super(DisplayTerminalController, self).__init__()
-
-        if DisplayTerminalController._instance is not None:
-            raise Exception(instance_exists_error(self.__class__.__name__))
-
-        self.display_terminal = display_terminal
-
-    def write_text(self, text):
-        self.display_terminal.clear()
-        self.display_terminal.appendPlainText(text)
-
-    def append_text(self, text):
-        self.display_terminal.clear()
-        self.display_terminal.appendPlainText(text)
+        super(DisplayTerminalController, self).__init__(display_terminal)
