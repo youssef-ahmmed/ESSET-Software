@@ -8,19 +8,26 @@ class OperationGeneratorController:
 
     def __init__(self):
         self.attack_operation_option = AttackOperationSelectController.get_instance().get_selected_attack_operation()
+        self.render_functions = {
+            "Sniffing": {
+                "UART": SniffingTemplatesGenerator().render_uart_receiver_templates,
+                "SPI": SniffingTemplatesGenerator().render_spi_slave_templates,
+            },
+            "Replay Attack": {
+                "UART": ReplayAttackTemplatesGenerator().render_uart_transmitter_templates,
+                "SPI": ReplayAttackTemplatesGenerator().render_spi_master_templates,
+            },
+            "Stream Finder": {
+                "UART": lambda config: StreamFinderTemplatesGenerator().render_stream_finder_templates(config, "UART"),
+                "SPI": lambda config: StreamFinderTemplatesGenerator().render_stream_finder_templates(config, "SPI"),
+            },
+        }
 
     def render_uart_templates(self, configuration: dict):
-        if self.attack_operation_option == "Sniffing":
-            SniffingTemplatesGenerator().render_uart_receiver_templates(configuration)
-        elif self.attack_operation_option == "Replay Attack":
-            ReplayAttackTemplatesGenerator().render_uart_transmitter_templates(configuration)
-        elif self.attack_operation_option == "Stream Finder":
-            StreamFinderTemplatesGenerator().render_stream_finder_templates(configuration, "UART")
+        self._render_templates("UART", configuration)
 
     def render_spi_templates(self, configuration: dict):
-        if self.attack_operation_option == "Sniffing":
-            SniffingTemplatesGenerator().render_spi_slave_templates(configuration)
-        elif self.attack_operation_option == "Replay Attack":
-            ReplayAttackTemplatesGenerator().render_spi_master_templates(configuration)
-        elif self.attack_operation_option == "Stream Finder":
-            StreamFinderTemplatesGenerator().render_stream_finder_templates(configuration, "SPI")
+        self._render_templates("SPI", configuration)
+
+    def _render_templates(self, protocol, configuration):
+        self.render_functions.get(self.attack_operation_option, {}).get(protocol)(configuration)
