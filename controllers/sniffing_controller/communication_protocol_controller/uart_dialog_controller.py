@@ -1,9 +1,10 @@
 from PyQt5.QtCore import QObject
 
+from controllers.intercept_controller.stream_finder_input_controller import StreamFinderInputController
 from controllers.project_path_controller import ProjectPathController
 from controllers.sniffing_controller.attack_operation_select_controller import AttackOperationSelectController
 from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_controller import PinPlannerDialogController
-from controllers.sniffing_controller.template_generator_controller import TemplateGeneratorController
+from controllers.template_generator_controller.operation_generator_controller import OperationGeneratorController
 from models import log_messages
 from models.log_messages import instance_exists_error
 from views.common.info_bar import create_success_bar
@@ -29,7 +30,6 @@ class UartDialogController(QObject):
 
         self.uart_setting_dialog = uart_setting_dialog
         self.project_path_controller = ProjectPathController.get_instance()
-        self.selected_attack_operation = None
 
         self.handle_uart_settings_buttons()
 
@@ -45,7 +45,7 @@ class UartDialogController(QObject):
 
         if self.collect_uart_settings():
             self.uart_setting_dialog.accept()
-            self.generate_uart_templates()
+            OperationGeneratorController().render_uart_templates(self.collect_uart_settings())
             PinPlannerDialogController.get_instance().send_data_to_pin_planner()
             create_success_bar(log_messages.UART_CONFIG_SET)
 
@@ -70,6 +70,7 @@ class UartDialogController(QObject):
 
         uart_configurations = {
             'option': self.get_uart_option(),
+            'data_stream': StreamFinderInputController.get_instance().get_input_stream(),
             'clk_per_bit': int(CLOCK_FREQUENCY / bit_rate),
             'baud_rate': int(bit_rate),
             'data_size': int(bits_per_frame),
@@ -81,24 +82,13 @@ class UartDialogController(QObject):
         }
         return uart_configurations
 
-    def generate_uart_templates(self):
-        template_generator_controller = TemplateGeneratorController()
-        self.selected_attack_operation = AttackOperationSelectController.get_instance().get_selected_attack_operation()
-
-        attack_operation_templates = {
-            "Sniffing": template_generator_controller.render_uart_receiver_templates,
-            "Replay Attack": template_generator_controller.render_uart_transmitter_templates
-        }
-
-        if self.selected_attack_operation in attack_operation_templates:
-            attack_operation_templates[self.selected_attack_operation](self.collect_uart_settings())
-
     def get_uart_option(self):
         uart_options = {
             "Sniffing": "UART Receiver",
-            "Replay Attack": "UART Transmitter",
+            "Replay Attack": "UART Transmitter"
         }
-        return uart_options.get(self.selected_attack_operation)
+        return uart_options.get(AttackOperationSelectController
+                                .get_instance().get_selected_attack_operation())
 
     def restart_settings(self):
         self.uart_setting_dialog.reset_settings()

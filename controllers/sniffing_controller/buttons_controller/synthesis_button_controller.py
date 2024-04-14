@@ -3,7 +3,7 @@ import time
 from PyQt5.QtCore import QObject, pyqtSignal, QThread
 
 from controllers.project_path_controller import ProjectPathController
-from controllers.sniffing_controller.template_generator_controller import TemplateGeneratorController
+from controllers.template_generator_controller.template_generator_controller import TemplateGeneratorController
 from controllers.sniffing_controller.synthesis_terminal_controller import SynthesisTerminalController
 from core.script_executor import ScriptExecutor
 from models import log_messages
