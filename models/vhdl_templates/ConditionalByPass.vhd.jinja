@@ -15,7 +15,7 @@ end ConditionalByPass;
 
 architecture behav of ConditionalByPass is
     signal r_input     : std_logic_vector(7 downto 0) := (others => '0');
-    signal r_condition : std_logic_vector(7 downto 0) := X"{{ conditional_data }}";
+    signal r_condition : std_logic_vector(7 downto 0) := X"{{ data_stream }}";
     signal r_status    : std_logic := '0';
 begin
     process(clk)
