@@ -1,6 +1,7 @@
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QMessageBox
 
+from controllers.intercept_controller.stream_finder_actions_controller import StreamFinderActionsController
 from controllers.intercept_controller.stream_finder_input_controller import StreamFinderInputController
 from controllers.project_path_controller import ProjectPathController
 from controllers.sniffing_controller.attack_operation_select_controller import AttackOperationSelectController
@@ -82,7 +83,9 @@ class SpiDialogController(QObject):
             "Enable": enable
         }
         spi_configurations = {
-            'option': self.get_spi_option(),
+            'option': "SPI",
+            'attack_operation': AttackOperationSelectController.get_instance().get_selected_attack_operation(),
+            'action': StreamFinderActionsController.get_instance().get_selected_stream_finder_action(),
             'data_stream': StreamFinderInputController.get_instance().get_input_stream(),
             'MOSI': mosi,
             'MISO': miso,
@@ -93,6 +96,7 @@ class SpiDialogController(QObject):
             'clk_state': int(clock_state),
             'clk_phase': int(clock_phase),
             'data_size': int(bits_per_transfer),
+            'output_size': StreamFinderInputController.get_instance().get_input_stream_size(),
         }
 
         for channel_name, channel_value in settings.items():
@@ -103,7 +107,7 @@ class SpiDialogController(QObject):
         if not clock_rate:
             QMessageBox.warning(None, "Warning", f"No Clock Rate Selected")
             return
-
+        print(spi_configurations)
         return spi_configurations
 
     def get_spi_option(self):
