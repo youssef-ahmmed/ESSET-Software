@@ -1,0 +1,21 @@
+library ieee;
+use ieee.std_logic_1164.all;
+entity AndGate is
+    port(
+    clk: in std_logic;
+    i_enable: in std_logic;
+    i_input: in std_logic;
+    o_output: out std_logic
+    );
+end AndGate;
+architecture behav of AndGate is
+begin
+    process(clk,i_enable)
+    begin
+        if i_enable = '0' then
+            o_output <= i_input;
+        else
+            o_output <= '0';
+            end if;
+     end process;
+end behav;
