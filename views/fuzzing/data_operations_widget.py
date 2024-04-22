@@ -20,6 +20,7 @@ class DataOperationsWidget(QWidget):
     def create_labels(self):
         self.data_type_label = QLabel('Data Type:')
         self.number_bytes_label = QLabel('Number of bytes per message:')
+        self.number_messages_label = QLabel('Number of messages:')
         self.fuzzing_protocol_label = QLabel('Fuzzing on:')
         self.sniffing_protocol_label = QLabel('Sniffing on:')
 
@@ -41,6 +42,8 @@ class DataOperationsWidget(QWidget):
     def create_lineedits(self):
         self.number_bytes_input = LineEdit()
         self.number_bytes_input.setPlaceholderText("Enter the number of bytes per message...")
+        self.number_messages_input = LineEdit()
+        self.number_messages_input.setPlaceholderText("Enter the number of messages...")
 
     def create_layout(self):
         main_layout = QVBoxLayout()
@@ -49,6 +52,11 @@ class DataOperationsWidget(QWidget):
         data_type_layout.addWidget(self.data_type_label)
         data_type_layout.addWidget(self.data_types_combobox)
         main_layout.addLayout(data_type_layout)
+
+        messages_number_layout = QHBoxLayout()
+        messages_number_layout.addWidget(self.number_messages_label)
+        messages_number_layout.addWidget(self.number_messages_input)
+        main_layout.addLayout(messages_number_layout)
 
         bytes_number_layout = QHBoxLayout()
         bytes_number_layout.addWidget(self.number_bytes_label)
