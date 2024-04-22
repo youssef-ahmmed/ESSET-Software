@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QButtonGroup
+from PyQt5.QtWidgets import QWidget, QLabel, QButtonGroup, QHBoxLayout
 from qfluentwidgets import RadioButton
 
 
@@ -15,7 +15,6 @@ class FuzzingModeWidget(QWidget):
 
     def create_fuzzing_mode_components(self):
         self.fuzzing_modes_label = QLabel("Fuzzing Mode:")
-
         self.generator_mode_radio = RadioButton("Generator")
         self.mutation_mode_radio = RadioButton("Mutation")
 
@@ -25,15 +24,8 @@ class FuzzingModeWidget(QWidget):
         self.fuzzing_mode_button_group.addButton(self.mutation_mode_radio, 2)
 
     def create_layout(self):
-        main_layout = QVBoxLayout()
-
-        radio_layout = QVBoxLayout()
-        radio_layout.addWidget(self.generator_mode_radio)
-        radio_layout.addWidget(self.mutation_mode_radio)
-
-        radio_layout.setContentsMargins(90, 0, 0, 0)
-
+        main_layout = QHBoxLayout()
         main_layout.addWidget(self.fuzzing_modes_label)
-        main_layout.addLayout(radio_layout)
-
+        main_layout.addWidget(self.generator_mode_radio)
+        main_layout.addWidget(self.mutation_mode_radio)
         self.setLayout(main_layout)
