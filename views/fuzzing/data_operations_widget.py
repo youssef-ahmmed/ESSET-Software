@@ -77,5 +77,5 @@ class DataOperationsWidget(QWidget):
     def get_selected_data_type(self):
         return self.data_types_combobox.text()
 
-    def get_selected_bytes_input(self):
+    def get_number_bytes_input(self):
         return self.number_bytes_input.text()
