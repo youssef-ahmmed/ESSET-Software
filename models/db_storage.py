@@ -22,7 +22,7 @@ class DBStorage:
     __engine = None
 
     def __init__(self):
-        self.__engine = create_engine(self.__url_mysqldb, pool_pre_ping=True)
+        self.__engine = create_engine(self.__url_sqlitedb, pool_pre_ping=True)
 
     def save(self):
         self.__session.commit()
