@@ -14,6 +14,7 @@ from views.common.settings_menu import SettingsMenu
 from views.custom_component.custom_title_bar import CustomTitleBar
 from views.custom_component.stacked_widget import StackedWidget
 from views.display.display_widget import DisplayWidget
+from views.fuzzing.fuzzing_widget import FuzzingWidget
 from views.intercept.intercept_widget import InterceptWidget
 from views.sniffing.sniffing_widget import SniffingWidget
 
@@ -37,6 +38,9 @@ class MainWindow(FramelessWindow):
         self.display_widget.setObjectName("Display Widget")
         self.intercept_widget = InterceptWidget()
         self.intercept_widget.setObjectName("Intercept Widget")
+        self.fuzzing_widget = FuzzingWidget()
+        self.fuzzing_widget.setObjectName("Fuzzing Widget")
+
         self.settings_menu = SettingsMenu(self)
         self.operations_button = OperationsButton(self)
 
@@ -56,6 +60,7 @@ class MainWindow(FramelessWindow):
         self.add_sub_interface(self.sniffing_widget, QIcon('../assets/icons/config.svg'), 'Config')
         self.add_sub_interface(self.display_widget, QIcon('../assets/icons/display.svg'), 'Display')
         self.add_sub_interface(self.intercept_widget, QIcon('../assets/icons/intercept.png'), 'Intercept')
+        self.add_sub_interface(self.fuzzing_widget, QIcon('../assets/icons/fuzzing.png'), 'Fuzzing')
 
         self.add_navigatiob_bar_button('Attack Operations', FIF.PLAY_SOLID, 'Operations',
                                        self.operations_button.open_operations_menu, NavigationItemPosition.BOTTOM)
