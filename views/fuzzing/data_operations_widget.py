@@ -1,3 +1,4 @@
+from PyQt5.QtGui import QIntValidator
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel, QSpacerItem, QSizePolicy
 from qfluentwidgets import ComboBox, LineEdit
 
@@ -26,7 +27,7 @@ class DataOperationsWidget(QWidget):
 
     def create_comboboxes(self):
         self.data_types_combobox = ComboBox()
-        self.data_types_combobox.addItems(['Choose', 'Int', 'String', 'Mixed'])
+        self.data_types_combobox.addItems(['Choose', 'Number', 'String', 'Mixed'])
 
         self.fuzzing_protocols_combobox = ComboBox()
         self.fuzzing_protocols_combobox.addItems(self.protocol_list)
@@ -44,6 +45,9 @@ class DataOperationsWidget(QWidget):
         self.number_bytes_input.setPlaceholderText("Enter the number of bytes per message...")
         self.number_messages_input = LineEdit()
         self.number_messages_input.setPlaceholderText("Enter the number of messages...")
+
+        self.number_messages_input.setValidator(QIntValidator())
+        self.number_bytes_input.setValidator(QIntValidator())
 
     def create_layout(self):
         main_layout = QVBoxLayout()
@@ -87,3 +91,6 @@ class DataOperationsWidget(QWidget):
 
     def get_number_bytes_input(self):
         return self.number_bytes_input.text()
+
+    def get_number_of_messages(self):
+        return self.number_messages_input.text()
