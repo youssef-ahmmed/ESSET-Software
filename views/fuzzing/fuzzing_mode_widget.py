@@ -29,3 +29,7 @@ class FuzzingModeWidget(QWidget):
         main_layout.addWidget(self.generator_mode_radio)
         main_layout.addWidget(self.mutation_mode_radio)
         self.setLayout(main_layout)
+
+    def get_selected_radio_button(self):
+        selected_button = self.fuzzing_mode_button_group.checkedButton()
+        return selected_button.text() if selected_button else None
