@@ -66,3 +66,13 @@ PINS_RESET = "Hardware Pins Configuration is Reset."
 # Display Button Messages
 DATA_DISPLAYED = "Selected Data Displayed Successfully"
 NO_TIMESTAMP_SET = "No Selected Data to Display"
+
+# Fuzzing Messages
+DATA_TYPE_ERROR = "No selected data type"
+NO_NUMBER_OF_MESSAGES = "Number of messages not found"
+NEGATIVE_NUMBER_OF_MESSAGES = "Value error. Number of messages can't be negative"
+NO_NUMBER_OF_BYTES = "Number of bytes not found"
+NEGATIVE_NUMBER_OF_BYTES = "Value error. Number of bytes can't be negative"
+NO_FUZZING_ON = "Fuzzing on not found"
+NO_SNIFFING_ON = "Sniffing on not found"
+NO_FUZZING_MODE = "Fuzzing mode not found"
