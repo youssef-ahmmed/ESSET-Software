@@ -66,3 +66,20 @@ PINS_RESET = "Hardware Pins Configuration is Reset."
 # Display Button Messages
 DATA_DISPLAYED = "Selected Data Displayed Successfully"
 NO_TIMESTAMP_SET = "No Selected Data to Display"
+
+# Fuzzing Messages
+DATA_TYPE_ERROR = "No selected data type"
+NO_NUMBER_OF_MESSAGES = "Number of messages not found"
+NEGATIVE_NUMBER_OF_MESSAGES = "Value error. Number of messages can't be negative"
+NO_NUMBER_OF_BYTES = "Number of bytes not found"
+NEGATIVE_NUMBER_OF_BYTES = "Value error. Number of bytes can't be negative"
+NO_FUZZING_ON = "Fuzzing on not found"
+NO_SNIFFING_ON = "Sniffing on not found"
+NO_FUZZING_MODE = "Fuzzing mode not found"
+
+NO_GENERATED_DATA = "There is no generation data to send"
+NO_SELECTED_ROWS = "No selected rows from table to send"
+START_END_RANGE_NOT_EXIST = "Start or End range is not provided"
+START_END_RANGE_ERROR = "Start or End row is out of range"
+
+FUZZING_MESSAGES_SEND = "Fuzzing messages sent successfully"

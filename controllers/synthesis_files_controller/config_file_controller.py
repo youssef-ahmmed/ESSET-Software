@@ -27,4 +27,3 @@ class ConfigFileController:
         remote_file_path = 'config/config.json'
         ftp_sender = FtpSender()
         ftp_sender.send_file_via_ftp(self.config_file_path, remote_file_path)
-

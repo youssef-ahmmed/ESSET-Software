@@ -1,5 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
 
+from controllers.fuzzing_controller.data_operation_controller import DataOperationController
+from controllers.fuzzing_controller.fuzzing_mode_controller import FuzzingModeController
 from views.fuzzing.clear_button_widget import ClearButtonWidget
 from views.fuzzing.data_operations_widget import DataOperationsWidget
 from views.fuzzing.fuzzing_mode_widget import FuzzingModeWidget
@@ -17,7 +19,11 @@ class DataPreparationWidget(QWidget):
 
     def create_widgets(self):
         self.data_operations_widget = DataOperationsWidget()
+        DataOperationController.get_instance(self.data_operations_widget)
+
         self.fuzzing_mode_widget = FuzzingModeWidget()
+        FuzzingModeController.get_instance(self.fuzzing_mode_widget)
+
         self.terminal_widget = TerminalWidget()
         self.clear_button_widget = ClearButtonWidget()
         self.generate_button_widget = GenerateButtonWidget()
