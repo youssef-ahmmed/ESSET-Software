@@ -1,5 +1,6 @@
 from PyQt5.QtCore import QObject
 
+from controllers.intercept_controller.stream_finder_actions_controller import StreamFinderActionsController
 from controllers.intercept_controller.stream_finder_input_controller import StreamFinderInputController
 from controllers.project_path_controller import ProjectPathController
 from controllers.sniffing_controller.attack_operation_select_controller import AttackOperationSelectController
@@ -69,7 +70,9 @@ class UartDialogController(QObject):
             return None
 
         uart_configurations = {
-            'option': self.get_uart_option(),
+            'option': "UART",
+            'attack_operation': AttackOperationSelectController.get_instance().get_selected_attack_operation(),
+            'action': StreamFinderActionsController.get_instance().get_selected_stream_finder_action(),
             'data_stream': StreamFinderInputController.get_instance().get_input_stream(),
             'clk_per_bit': int(CLOCK_FREQUENCY / bit_rate),
             'baud_rate': int(bit_rate),
@@ -78,8 +81,10 @@ class UartDialogController(QObject):
             'parity_bit': parity_bit,
             'significant_bit': significant_bit,
             'channel_number': 8,
-            'channel_name': input_channel
+            'channel_name': input_channel,
+            'output_size': StreamFinderInputController.get_instance().get_input_stream_size(),
         }
+        print(uart_configurations)
         return uart_configurations
 
     def get_uart_option(self):

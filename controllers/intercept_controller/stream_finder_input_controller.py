@@ -22,3 +22,7 @@ class StreamFinderInputController(QObject):
 
     def get_input_stream(self):
         return self.stream_finder_input.text()
+
+    def get_input_stream_size(self):
+        text_input = self.stream_finder_input.text()
+        return len(text_input.encode('utf-8'))*8
