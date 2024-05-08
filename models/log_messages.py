@@ -76,3 +76,8 @@ NEGATIVE_NUMBER_OF_BYTES = "Value error. Number of bytes can't be negative"
 NO_FUZZING_ON = "Fuzzing on not found"
 NO_SNIFFING_ON = "Sniffing on not found"
 NO_FUZZING_MODE = "Fuzzing mode not found"
+
+NO_GENERATED_DATA = "There is no generation data to send"
+NO_SELECTED_ROWS = "No selected rows from table to send"
+START_END_RANGE_NOT_EXIST = "Start or End range is not provided"
+START_END_RANGE_ERROR = "Start or End row is out of range"
