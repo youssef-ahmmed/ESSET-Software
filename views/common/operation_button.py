@@ -7,9 +7,7 @@ from controllers.operations_controller.receive_data_action_controller import Rec
 from controllers.operations_controller.replay_attack_action_controller import ReplayAttackActionController
 from controllers.operations_controller.sniffing_action_controller import SniffingActionController
 from controllers.operations_controller.stream_finder_action_controller import StreamFinderActionController
-from controllers.project_path_controller import ProjectPathController
-from models import log_messages
-from views.common.info_bar import create_error_bar
+from validations.project_path_validations import validate_project_path
 
 
 class OperationsButton(QWidget):
@@ -31,8 +29,7 @@ class OperationsButton(QWidget):
                                          self.replay_attack_action, self.stream_finder_action])
 
     def open_operations_menu(self):
-        if not ProjectPathController.get_instance().is_project_path_exists():
-            create_error_bar(log_messages.NO_QUARTUS_PATH)
+        if not validate_project_path():
             return
 
         screen_geometry = QApplication.desktop().availableGeometry()

@@ -4,7 +4,10 @@ from controllers.fuzzing_controller.response_table_controller import ResponseTab
 from core.data_processing import DataProcessing
 from core.generator_based_fuzzing import GeneratorBasedFuzzing
 from core.message_response_fuzzing_writer import MessageResponseFuzzingWriter
+from models import log_messages
 from validations.fuzzing_send_data_validations import validate_send_data
+from validations.project_path_validations import validate_project_path
+from views.common.info_bar import create_success_bar
 from views.fuzzing.response_table_buttons import ResponseTableButtons
 
 
@@ -32,7 +35,7 @@ class SendFuzzingButtonController(QObject):
         )
 
     def send_all_generator_fuzzing_data(self):
-        if not validate_send_data():
+        if not validate_send_data() or not validate_project_path():
             return
 
         generator_fuzzed_data = GeneratorBasedFuzzing.get_fuzzed_data()
@@ -40,9 +43,10 @@ class SendFuzzingButtonController(QObject):
         data_as_hex_list = data_processing.combine_fuzzed_data_to_hex_list()
 
         MessageResponseFuzzingWriter(data_as_hex_list)
+        create_success_bar(log_messages.FUZZING_MESSAGES_SEND)
 
     def send_selected_generator_fuzzing_data(self):
-        if not validate_send_data(send_selected=True):
+        if not validate_send_data(send_selected=True) or not validate_project_path():
             return
 
         messages_indices = ResponseTableController.get_instance().get_messages_indices_from_selected_rows()
@@ -56,3 +60,4 @@ class SendFuzzingButtonController(QObject):
         data_as_hex_list = data_processing.combine_fuzzed_data_to_hex_list()
 
         MessageResponseFuzzingWriter(data_as_hex_list)
+        create_success_bar(log_messages.FUZZING_MESSAGES_SEND)

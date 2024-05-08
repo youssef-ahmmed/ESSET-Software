@@ -13,6 +13,7 @@ from core.ftp_sender import FtpSender
 from models import log_messages
 from models.log_messages import instance_exists_error
 from reusable_functions.os_operations import join_paths
+from validations.project_path_validations import validate_project_path
 from views.common.info_bar import create_error_bar, create_success_bar
 
 
@@ -40,8 +41,7 @@ class StartConfigButtonController(QObject):
         self.start_config_button.clicked.connect(self.start_configuration)
 
     def start_configuration(self) -> None:
-        if not self.project_path_controller.is_project_path_exists():
-            create_error_bar(log_messages.NO_QUARTUS_PATH)
+        if not validate_project_path():
             return
 
         sof_file_path = SofFileController.get_instance().get_sof_file_path()
