@@ -24,6 +24,7 @@ class ResponseTable(QWidget):
     def create_table_rows(self, random_data: list):
         number_of_rows = len(random_data)
         self.response_table.setRowCount(number_of_rows)
+
         for row in range(number_of_rows):
             if isinstance(random_data[row], list):
                 message = QTableWidgetItem(''.join(map(str, random_data[row])))
