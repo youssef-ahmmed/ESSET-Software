@@ -4,6 +4,7 @@ from qfluentwidgets import PrimaryPushButton
 from controllers.fuzzing_controller.fuzzing_terminal_controller import FuzzingTerminalController
 from controllers.fuzzing_controller.generate_button_controller import GenerateButtonController
 from controllers.fuzzing_controller.response_table_controller import ResponseTableController
+from core.generator_based_fuzzing import GeneratorBasedFuzzing
 
 
 class ClearButtonController(QObject):
@@ -28,4 +29,4 @@ class ClearButtonController(QObject):
     def clear_fuzzed_data(self):
         FuzzingTerminalController.get_instance().clear_terminal()
         ResponseTableController.get_instance().clear_all_table_data()
-        GenerateButtonController.get_instance().reset_fuzzed_data()
+        GeneratorBasedFuzzing.set_fuzzed_data()

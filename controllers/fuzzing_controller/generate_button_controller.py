@@ -24,7 +24,6 @@ class GenerateButtonController(QObject):
 
         self.generate_button = generate_button
         self.data_operation_controller = DataOperationController.get_instance()
-        self.fuzzing_data = None
 
         self.start_communication()
 
@@ -48,17 +47,12 @@ class GenerateButtonController(QObject):
         number_of_bytes = self.data_operation_controller.get_number_bytes_input()
         date_type = self.data_operation_controller.get_selected_data_type()
 
-        generator_based_fuzzing = GeneratorBasedFuzzing(int(number_of_messages), int(number_of_bytes))
-        self.fuzzing_data = generator_based_fuzzing.get_random_data_by_type(date_type)
+        generator_fuzzing = GeneratorBasedFuzzing(int(number_of_messages), int(number_of_bytes))
+        generator_fuzzing.generate_random_data_by_type(date_type)
+        fuzzed_data = generator_fuzzing.get_fuzzed_data()
 
-        data_processing = DataProcessing(self.fuzzing_data)
-        data_as_string = data_processing.combine_data_to_string()
+        data_processing = DataProcessing(fuzzed_data)
+        data_as_string = data_processing.combine_fuzzed_data_to_string()
 
         FuzzingTerminalController.get_instance().write_text(data_as_string)
-        ResponseTableController.get_instance().populate_response_table(self.fuzzing_data)
-
-    def get_generated_fuzzed_data(self):
-        return self.fuzzing_data
-
-    def reset_fuzzed_data(self):
-        self.fuzzing_data = None
+        ResponseTableController.get_instance().populate_response_table(fuzzed_data)
