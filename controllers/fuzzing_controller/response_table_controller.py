@@ -22,3 +22,16 @@ class ResponseTableController(QObject):
 
     def clear_all_table_data(self):
         self.response_table.delete_all_data()
+
+    def get_selected_rows(self):
+        return self.response_table.response_table.selectionModel().selectedRows()
+
+    def get_messages_indices_from_selected_rows(self):
+        selected_rows = self.get_selected_rows()
+        messages_indices = []
+
+        for row in selected_rows:
+            row_index = row.row()
+            messages_indices.append(row_index)
+
+        return messages_indices
