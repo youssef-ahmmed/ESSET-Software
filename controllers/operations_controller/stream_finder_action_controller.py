@@ -6,7 +6,7 @@ from reusable_functions.os_operations import join_paths
 from views.common.info_bar import create_success_bar, create_error_bar
 
 
-class StreamFinderActionController: 
+class StreamFinderActionController:
     def __init__(self):
         self.local_config_file_path = join_paths(ProjectPathController.get_instance().get_project_path(),
                                                  'config.json')
