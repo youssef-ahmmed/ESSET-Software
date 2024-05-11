@@ -39,9 +39,6 @@ class ProjectPathController(QObject):
     def get_project_path(self):
         return self.project_path
 
-    def is_project_path_exists(self) -> bool:
-        return self.project_path != ""
-
     def get_script_path(self):
         script_extension = ".sh" if platform.system() == "Linux" else ".bat"
         for file_name in dir_list(self.project_path):

@@ -4,6 +4,7 @@ from qfluentwidgets import PrimaryPushButton
 from controllers.project_path_controller import ProjectPathController
 from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_controller import PinPlannerDialogController
 from models.log_messages import instance_exists_error
+from validations.project_path_validations import validate_project_path
 from views.common.message_box import MessageBox
 
 
@@ -30,8 +31,7 @@ class ChannelPinsButtonController(QObject):
         self.channel_pins_button.clicked.connect(self.open_pin_planner_dialog)
 
     def open_pin_planner_dialog(self):
-        project_path_exist: bool = ProjectPathController.get_instance().is_project_path_exists()
-        if not project_path_exist:
+        if not validate_project_path():
             MessageBox.show_project_path_error_dialog(self.channel_pins_button)
             return
 
