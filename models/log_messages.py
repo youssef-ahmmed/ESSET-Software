@@ -67,6 +67,11 @@ PINS_RESET = "Hardware Pins Configuration is Reset."
 DATA_DISPLAYED = "Selected Data Displayed Successfully"
 NO_TIMESTAMP_SET = "No Selected Data to Display"
 
+# Intercept Messages
+REPLAY_ATTACK_SUCCESS = "Replay Attack Started Successfully"
+STREAM_FINDER_SUCCESS = "Stream Finder Started Successfully"
+
+
 # Fuzzing Messages
 DATA_TYPE_ERROR = "No selected data type"
 NO_NUMBER_OF_MESSAGES = "Number of messages not found"
