@@ -70,7 +70,7 @@ NO_TIMESTAMP_SET = "No Selected Data to Display"
 # Intercept Messages
 REPLAY_ATTACK_SUCCESS = "Replay Attack Started Successfully"
 STREAM_FINDER_SUCCESS = "Stream Finder Started Successfully"
-
+CONDITIONAL_BYPASS_SUCCESS = "Conditional Bypass Started Successfully"
 
 # Fuzzing Messages
 DATA_TYPE_ERROR = "No selected data type"
