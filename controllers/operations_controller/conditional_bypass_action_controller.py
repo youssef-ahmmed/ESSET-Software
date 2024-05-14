@@ -17,7 +17,7 @@ class ConditionalBypassActionController:
     def start_conditional_bypass(self):
         try:
             self.create_config_file()
-            # self.send_files_via_ftp()
+            self.send_files_via_ftp()
             create_success_bar(log_messages.CONDITIONAL_BYPASS_SUCCESS)
         except Exception:
             create_error_bar(log_messages.FTP_NOT_OPENED)
