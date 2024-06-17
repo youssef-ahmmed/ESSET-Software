@@ -1,13 +1,16 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTableWidgetItem
-from qfluentwidgets import FluentIcon as FIF
+from qfluentwidgets import FluentIcon as FIF, MessageBox
 from qfluentwidgets import TableWidget, ToolButton
+
+from views.common.info_bar import main_window_manager
 
 
 class ResponseTable(QWidget):
     def __init__(self):
         super().__init__()
 
+        self.info_buttons = []
         self.response_table = TableWidget()
         self.init_ui()
 
@@ -37,7 +40,21 @@ class ResponseTable(QWidget):
 
             self.response_table.setItem(row, 0, message)
             self.response_table.setItem(row, 1, response)
-            self.response_table.setCellWidget(row, 2, ToolButton(FIF.MESSAGE, self.response_table))
+            info_button = ToolButton(FIF.MESSAGE, self.response_table)
+            info_button.clicked.connect(lambda _, r=row: self.show_info_dialog(r))
+            self.info_buttons.append(info_button)
+            self.response_table.setCellWidget(row, 2, info_button)
+
+    def show_info_dialog(self, row_number):
+        message = self.response_table.item(row_number, 0).text()
+        response = self.response_table.item(row_number, 1).text()
+
+        title = f'Message Number [{row_number + 1}]'
+        content = f"Message: {message}\n\nResponse: {response}"
+
+        info_dialog = MessageBox(title, content, main_window_manager.main_window)
+        info_dialog.cancelButton.hide()
+        info_dialog.exec()
 
     def delete_all_data(self):
         self.response_table.clearContents()

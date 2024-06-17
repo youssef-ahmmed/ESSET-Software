@@ -6,24 +6,24 @@ from reusable_functions.os_operations import join_paths
 from views.common.info_bar import create_success_bar, create_error_bar
 
 
-class StreamFinderActionController:
+class ConditionalBypassActionController:
     def __init__(self):
         self.local_config_file_path = join_paths(ProjectPathController.get_instance().get_project_path(),
                                                  'config.json')
         self.remote_config_file_path = 'config/config.json'
 
-        self.start_stream_finder()
+        self.start_conditional_bypass()
 
-    def start_stream_finder(self):
+    def start_conditional_bypass(self):
         try:
             self.create_config_file()
             self.send_files_via_ftp()
-            create_success_bar(log_messages.STREAM_FINDER_SUCCESS)
+            create_success_bar(log_messages.CONDITIONAL_BYPASS_SUCCESS)
         except Exception:
             create_error_bar(log_messages.FTP_NOT_OPENED)
 
     def create_config_file(self):
-        config_writer = ConfigurationWriter(operation="Stream Finder")
+        config_writer = ConfigurationWriter(operation="Conditional Bypass")
         config_writer.create_config_file(self.local_config_file_path)
 
     def send_files_via_ftp(self):

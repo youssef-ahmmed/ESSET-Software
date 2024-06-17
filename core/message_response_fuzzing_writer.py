@@ -13,6 +13,6 @@ class MessageResponseFuzzingWriter:
 
     def create_fuzzing_message_response_file(self):
         path_name = join_paths(ProjectPathController.get_instance().get_project_path(),
-                               "MessageResponseFuzzing.json")
+                               "fuzzing_data.json")
         with open(path_name, 'w') as file:
             json.dump(self.message_response, file, indent=4)
