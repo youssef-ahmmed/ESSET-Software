@@ -43,6 +43,7 @@ class SendFuzzingButtonController(QObject):
         data_as_hex_list = data_processing.combine_fuzzed_data_to_hex_list()
 
         MessageResponseFuzzingWriter(data_as_hex_list)
+
         create_success_bar(log_messages.FUZZING_MESSAGES_SEND)
 
     def send_selected_generator_fuzzing_data(self):
