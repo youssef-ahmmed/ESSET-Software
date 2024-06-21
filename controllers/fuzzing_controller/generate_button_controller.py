@@ -50,9 +50,10 @@ class GenerateButtonController(QObject):
         generator_fuzzing = GeneratorBasedFuzzing(int(number_of_messages), int(number_of_bytes))
         generator_fuzzing.generate_random_data_by_type(date_type)
         fuzzed_data = generator_fuzzing.get_fuzzed_data()
+        formatted_data = [[item, 'None', 'None'] for item in fuzzed_data]
 
         data_processing = DataProcessing(fuzzed_data)
         data_as_string = data_processing.combine_fuzzed_data_to_string()
 
         FuzzingTerminalController.get_instance().write_text(data_as_string)
-        ResponseTableController.get_instance().populate_response_table(fuzzed_data)
+        ResponseTableController.get_instance().populate_response_table(formatted_data)
