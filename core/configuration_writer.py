@@ -2,11 +2,11 @@ import json
 
 
 class ConfigurationWriter:
-    def __init__(self, programming: bool, operations: str, sniffing_time: int):
+    def __init__(self, programming: bool = False, operation: str = "", timer: int = 0):
         self.config = {
             "programming": programming,
-            "operations": operations,
-            "sniffing_time": sniffing_time
+            "operations": operation,
+            "timer": timer
         }
 
     def create_config_file(self, filename):

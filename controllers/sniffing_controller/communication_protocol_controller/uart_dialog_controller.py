@@ -8,6 +8,7 @@ from controllers.sniffing_controller.dialogs_controller.pin_planner_dialog_contr
 from controllers.template_generator_controller.operation_generator_controller import OperationGeneratorController
 from models import log_messages
 from models.log_messages import instance_exists_error
+from validations.project_path_validations import validate_project_path
 from views.common.info_bar import create_success_bar
 from views.common.message_box import MessageBox
 
@@ -40,7 +41,7 @@ class UartDialogController(QObject):
         self.uart_setting_dialog.save_button.clicked.connect(self.save_uart_settings)
 
     def save_uart_settings(self):
-        if not self.project_path_controller.get_project_path():
+        if not validate_project_path():
             MessageBox.show_project_path_error_dialog(self.uart_setting_dialog.save_button)
             return
 
@@ -86,14 +87,6 @@ class UartDialogController(QObject):
         }
         print(uart_configurations)
         return uart_configurations
-
-    def get_uart_option(self):
-        uart_options = {
-            "Sniffing": "UART Receiver",
-            "Replay Attack": "UART Transmitter"
-        }
-        return uart_options.get(AttackOperationSelectController
-                                .get_instance().get_selected_attack_operation())
 
     def restart_settings(self):
         self.uart_setting_dialog.reset_settings()
