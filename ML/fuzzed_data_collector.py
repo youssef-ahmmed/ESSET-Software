@@ -26,7 +26,7 @@ class FuzzedDataCollector:
         return fuzzed_data_list
 
     def get_message_response_data(self):
-        json_path = join_paths(self.project_path, "MessageResponseFuzzing.json")
+        json_path = join_paths(self.project_path, "fuzzing_data.json")
         with open(json_path, 'r') as file:
             message_response_data = json.load(file)
 

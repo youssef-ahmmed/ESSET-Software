@@ -10,7 +10,6 @@ class ResponseTable(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.info_buttons = []
         self.response_table = TableWidget()
         self.init_ui()
 
@@ -62,7 +61,6 @@ class ResponseTable(QWidget):
 
             info_button = ToolButton(FIF.MESSAGE, self.response_table)
             info_button.clicked.connect(lambda _, r=row: self.show_info_dialog(r))
-            self.info_buttons.append(info_button)
             self.response_table.setCellWidget(row, 3, info_button)
 
     def show_info_dialog(self, row_number):
