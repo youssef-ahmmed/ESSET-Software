@@ -12,6 +12,7 @@ from models.entities.one_bit_sniffing import OneBit
 from models.entities.spi_protocol import Spi
 from models.entities.uart_protocol import Uart
 from models.entities.channels_data import ChannelsData
+from models.entities.fuzzed_data import FuzzedData
 from models.entities.sniffed_data import SniffedData
 
 
