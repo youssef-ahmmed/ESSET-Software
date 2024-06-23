@@ -5,8 +5,9 @@ from controllers.project_path_controller import ProjectPathController
 from core.configuration_writer import ConfigurationWriter
 from core.ftp_sender import FtpSender
 from models import log_messages
-from reusable_functions.file_operations import write_to_binary_file, read_binary_file
+from reusable_functions.file_operations import write_to_binary_file
 from reusable_functions.os_operations import join_paths
+from validations.replay_attack_validations import validate_replay_attack_data
 from views.common.info_bar import create_error_bar, create_success_bar
 
 
@@ -23,6 +24,9 @@ class ReplayAttackActionController:
         self.start_replay_attack()
 
     def start_replay_attack(self):
+        if not validate_replay_attack_data():
+            return
+
         try:
             self.create_config_file()
             self.create_data_file()
@@ -43,7 +47,6 @@ class ReplayAttackActionController:
 
         bytes_data = data.encode('latin1')
         write_to_binary_file(self.local_data_file_path, bytes_data)
-        print(read_binary_file(self.local_data_file_path))
 
     def send_files_via_ftp(self):
         ftp_sender = FtpSender()
