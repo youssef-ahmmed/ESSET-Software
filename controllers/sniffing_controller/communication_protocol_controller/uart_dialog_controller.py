@@ -9,6 +9,7 @@ from controllers.template_generator_controller.operation_generator_controller im
 from models import log_messages
 from models.log_messages import instance_exists_error
 from validations.project_path_validations import validate_project_path
+from validations.stream_finder_validations import validate_stream_finder
 from views.common.info_bar import create_success_bar
 from views.common.message_box import MessageBox
 
@@ -41,6 +42,9 @@ class UartDialogController(QObject):
         self.uart_setting_dialog.save_button.clicked.connect(self.save_uart_settings)
 
     def save_uart_settings(self):
+        if not validate_stream_finder():
+            return
+
         if not validate_project_path():
             MessageBox.show_project_path_error_dialog(self.uart_setting_dialog.save_button)
             return
@@ -85,7 +89,6 @@ class UartDialogController(QObject):
             'channel_name': input_channel,
             'output_size': StreamFinderInputController.get_instance().get_input_stream_size(),
         }
-        print(uart_configurations)
         return uart_configurations
 
     def restart_settings(self):
