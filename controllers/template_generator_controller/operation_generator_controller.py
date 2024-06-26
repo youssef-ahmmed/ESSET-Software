@@ -14,8 +14,8 @@ class OperationGeneratorController:
                 "SPI": SniffingTemplatesGenerator().render_spi_slave_templates,
             },
             "Replay Attack": {
-                "UART": ReplayAttackTemplatesGenerator().render_uart_transmitter_templates,
-                "SPI": ReplayAttackTemplatesGenerator().render_spi_master_templates,
+                "UART": ReplayAttackTemplatesGenerator().render_uart_templates,
+                "SPI": ReplayAttackTemplatesGenerator().render_spi_templates,
             },
             "Stream Finder": {
                 "UART": lambda config: StreamFinderTemplatesGenerator().render_stream_finder_templates(config, "UART"),
@@ -30,4 +30,6 @@ class OperationGeneratorController:
         self._render_templates("SPI", configuration)
 
     def _render_templates(self, protocol, configuration):
+        if self.attack_operation_option == "Fuzzing":
+            return
         self.render_functions.get(self.attack_operation_option, {}).get(protocol)(configuration)

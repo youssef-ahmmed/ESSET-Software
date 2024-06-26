@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout
 from qfluentwidgets import ComboBox
 
-ATTACK_OPERATIONS = ["Sniffing", "Replay Attack", "Stream Finder"]
+ATTACK_OPERATIONS = ["Sniffing", "Replay Attack", "Stream Finder", "Fuzzing"]
 
 
 class AttackOperationSelect(QWidget):
