@@ -17,6 +17,8 @@ def validate_stream_finder():
         except InputValidationError as e:
             create_error_bar(str(e))
             return False
+    else:
+        return True
 
 
 class InputValidationError(Exception):
