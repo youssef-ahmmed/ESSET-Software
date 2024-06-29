@@ -31,8 +31,6 @@ class SearchTimestampController:
         self.search_timestamp_widget.update_timestamp_items(items)
 
     def get_sniffing_option(self):
-        if self.search_timestamp_widget.time_stamp_combobox.currentText() == "Choose Time Stamp":
-            return
         return self.search_timestamp_widget.time_stamp_combobox.currentText()[22:]
 
     def get_selected_option_data(self):
@@ -41,11 +39,10 @@ class SearchTimestampController:
         return str(channel_obj.channel_data)[2:-1]
 
     def get_start_time_obj(self):
-        if not self.get_selected_start_time():
-            return
         return datetime.strptime(self.get_selected_start_time(), '%Y-%m-%d %H:%M:%S')
 
     def get_selected_start_time(self):
-        if self.search_timestamp_widget.time_stamp_combobox.currentText() == "Choose Time Stamp":
-            return
         return self.search_timestamp_widget.time_stamp_combobox.currentText()[0:19]
+
+    def get_selected_timestamp(self):
+        return self.search_timestamp_widget.time_stamp_combobox.currentText()

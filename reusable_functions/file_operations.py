@@ -32,6 +32,16 @@ def read_binary_file(file_path: str) -> bytes:
         raise Exception(f"Error reading file: {e}")
 
 
+def write_to_binary_file(file_path: str, data: bytes) -> None:
+    try:
+        with open(file_path, 'wb') as file:
+            file.write(data)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"File not found: {file_path}")
+    except Exception as e:
+        raise Exception(f"Error writing to file: {e}")
+
+
 def delete_files(project_path, extension):
 
     for file_name in dir_list(project_path):

@@ -66,6 +66,17 @@ PINS_RESET = "Hardware Pins Configuration is Reset."
 # Display Button Messages
 DATA_DISPLAYED = "Selected Data Displayed Successfully"
 NO_TIMESTAMP_SET = "No Selected Data to Display"
+NO_LAST_ID_DATA = "No Data Stored to Display"
+
+
+# Intercept Messages
+REPLAY_ATTACK_SUCCESS = "Replay Attack Started Successfully"
+STREAM_FINDER_SUCCESS = "Stream Finder Started Successfully"
+CONDITIONAL_BYPASS_SUCCESS = "Conditional Bypass Started Successfully"
+NO_STREAM_FINDER_INPUT = "No Input Data Stream Entered"
+NO_STREAM_FINDER_ACTION = "No Stream Finder Action Selected"
+NO_INTERCEPT_TERMINAL_DATA = "No Data Found in The Intercept Terminal"
+NO_CUSTOM_TERMINAL_DATA = "No Data Found in The Custom Data Terminal"
 
 # Fuzzing Messages
 DATA_TYPE_ERROR = "No selected data type"
@@ -84,3 +95,7 @@ START_END_RANGE_ERROR = "Start or End row is out of range"
 
 FUZZING_DATA_GENERATED = "Fuzzing messages Generated Successfully"
 FUZZING_MESSAGES_SEND = "Fuzzing messages sent successfully"
+FUZZING_MESSAGES_RESPONSE_RECEIVE = "Fuzzing messages and responses received successfully"
+
+LOAD_DATA_NO_FILE = "File CSV not found"
+LOAD_DATA_ERROR = "Error loading CSV file"

@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QFileDialog
 from controllers.project_path_controller import ProjectPathController
 from reusable_functions.dialog_message_box import show_error_message
 from reusable_functions.file_operations import read_text_file, write_to_text_file
+from validations.project_path_validations import validate_project_path
 from views.common.message_box import MessageBox
 
 
@@ -30,11 +31,11 @@ class VhdlEditorButtonsController(QObject):
         self.editor.current_file_path = current_file_path
 
     def load_file(self):
-        project_path = self.project_path_controller.get_project_path()
-        if project_path == "":
+        if not validate_project_path():
             MessageBox.show_project_path_error_dialog(self.editor)
             return
 
+        project_path = self.project_path_controller.get_project_path()
         file_path, _ = QFileDialog.getOpenFileName(
             self.editor_buttons, "Open File", project_path, "Text Files (*.txt);;All Files (*)"
         )
@@ -48,7 +49,7 @@ class VhdlEditorButtonsController(QObject):
                 show_error_message(self.editor_buttons, f"Error loading file: {str(e)}")
 
     def save_file(self):
-        if self.project_path_controller.get_project_path() == "":
+        if not validate_project_path():
             MessageBox.show_project_path_error_dialog(self.editor)
             return
 
@@ -61,11 +62,11 @@ class VhdlEditorButtonsController(QObject):
             self.save_as()
 
     def save_as(self):
-        project_path = self.project_path_controller.get_project_path()
-        if project_path == "":
+        if not validate_project_path():
             MessageBox.show_project_path_error_dialog(self.editor)
             return
 
+        project_path = self.project_path_controller.get_project_path()
         file_path, _ = QFileDialog.getSaveFileName(
             self.editor_buttons, "Save File As", project_path, "Text Files (*.txt);;All Files (*)"
         )

@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget, QHBoxLayout
 from qfluentwidgets import FluentIcon as FIF, PrimaryDropDownPushButton, Action, RoundMenu
 from qfluentwidgets import PrimaryPushButton
 
+from controllers.fuzzing_controller.receive_button_controller import ReceiveButtonController
 from controllers.fuzzing_controller.send_range_dialog_controller import SendRangeDialogController
 from views.fuzzing.send_range_dialog import SendRangeDialog
 
@@ -36,9 +37,12 @@ class ResponseTableButtons(QWidget):
 
     def create_buttons(self):
         self.send_button = PrimaryDropDownPushButton(FIF.SEND_FILL, 'Send')
+        self.receive_button = PrimaryPushButton(FIF.UPDATE, "Receive")
+        ReceiveButtonController.get_instance(self.receive_button)
 
         self.send_button.setMenu(self.menu)
 
     def init_ui(self):
         self.setLayout(QHBoxLayout())
         self.layout().addWidget(self.send_button)
+        self.layout().addWidget(self.receive_button)

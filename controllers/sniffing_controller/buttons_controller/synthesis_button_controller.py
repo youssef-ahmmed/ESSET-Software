@@ -8,6 +8,7 @@ from controllers.sniffing_controller.synthesis_terminal_controller import Synthe
 from core.script_executor import ScriptExecutor
 from models import log_messages
 from models.log_messages import instance_exists_error
+from validations.project_path_validations import validate_project_path
 from views.common.info_bar import create_success_bar, create_error_bar, create_info_bar
 from views.common.message_box import MessageBox
 
@@ -74,14 +75,11 @@ class SynthesisButtonController(QObject):
         self.worker.finished.connect(self.display_log_message)
 
     def get_script_path(self):
-        project_path_controller = ProjectPathController.get_instance()
-        project_path = project_path_controller.get_project_path()
-
-        if not project_path:
+        if not validate_project_path():
             MessageBox.show_project_path_error_dialog(self.synthesis_button)
             return
 
-        script_path = project_path_controller.get_script_path()
+        script_path = ProjectPathController.get_instance().get_script_path()
         if not script_path:
             template_generator_controller = TemplateGeneratorController()
             script_path = template_generator_controller.render_synthesis_script()

@@ -5,7 +5,7 @@ from controllers.display_controller.display_terminal_controller import DisplayTe
 from models import log_messages
 from models.dao.channels_data_dao import ChannelsDataDao
 from models.log_messages import instance_exists_error
-from views.common.info_bar import create_success_bar
+from views.common.info_bar import create_success_bar, create_error_bar
 
 
 class LastDataCheckboxController:
@@ -40,6 +40,9 @@ class LastDataCheckboxController:
 
     @staticmethod
     def display_terminal_data():
-        channel_obj = ChannelsDataDao.get_all_by_last_id()[0]
-        DisplayTerminalController.get_instance().write_text(str(channel_obj.channel_data)[2:-1])
-        create_success_bar(log_messages.DATA_DISPLAYED)
+        try:
+            channel_obj = ChannelsDataDao.get_all_by_last_id()[0]
+            DisplayTerminalController.get_instance().write_text(str(channel_obj.channel_data)[2:-1])
+            create_success_bar(log_messages.DATA_DISPLAYED)
+        except IndexError:
+            create_error_bar(log_messages.NO_LAST_ID_DATA)
