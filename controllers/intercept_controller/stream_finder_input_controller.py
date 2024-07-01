@@ -21,7 +21,7 @@ class StreamFinderInputController(QObject):
         self.stream_finder_input = stream_finder_input
 
     def get_input_stream(self):
-        return self.stream_finder_input.text()
+        return ''.join(format(ord(c), '02x') for c in self.stream_finder_input.text())
 
     def get_input_stream_size(self):
         text_input = self.stream_finder_input.text()

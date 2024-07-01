@@ -62,7 +62,7 @@ class StartConfigButtonController(QObject):
         self.project_path = self.project_path_controller.get_project_path()
         self.local_config_file_path = join_paths(self.project_path, 'config.json')
         self.remote_config_file_path = 'config/config.json'
-        self.local_svf_file_path = join_paths(self.project_path, 'top_level.svf')
+        self.local_svf_file_path = join_paths(self.project_path, 'output_files', 'top_level.svf')
         self.remote_svf_file_path = 'svf/top_level.svf'
 
     def generate_svf_file(self) -> None:
