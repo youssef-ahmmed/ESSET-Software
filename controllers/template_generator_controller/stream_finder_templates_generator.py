@@ -11,8 +11,9 @@ class StreamFinderTemplatesGenerator(TemplateGeneratorController):
         },
         "Drop Communication": {
             "UART": ["ConditionalByPass.vhd.jinja", "AndGate.vhd.jinja", "StreamBuffer.vhd.jinja",
-                     "UART_Receiver.vhd.jinja"],
-            "SPI": ["ConditionalByPass.vhd.jinja", "AndGate.vhd.jinja", "StreamBuffer.vhd.jinja", "SPI_Slave.vhd.jinja"]
+                     "UART_Receiver.vhd.jinja", "UART_Transmitter.vhd.jinja"],
+            "SPI": ["ConditionalByPass.vhd.jinja", "AndGate.vhd.jinja", "StreamBuffer.vhd.jinja",
+                    "SPI_Slave.vhd.jinja", "SPI_Master.vhd.jinja"]
         },
         "Raise Flag": {
             "UART": ["StreamFinder.vhd.jinja", "UART_Receiver.vhd.jinja", "UART_Transmitter.vhd.jinja"],

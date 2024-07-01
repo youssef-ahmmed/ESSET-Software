@@ -93,6 +93,7 @@ NO_SELECTED_ROWS = "No selected rows from table to send"
 START_END_RANGE_NOT_EXIST = "Start or End range is not provided"
 START_END_RANGE_ERROR = "Start or End row is out of range"
 
+FUZZING_DATA_GENERATED = "Fuzzing messages Generated Successfully"
 FUZZING_MESSAGES_SEND = "Fuzzing messages sent successfully"
 FUZZING_MESSAGES_RESPONSE_RECEIVE = "Fuzzing messages and responses received successfully"
 

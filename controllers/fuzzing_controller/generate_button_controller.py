@@ -5,9 +5,13 @@ from controllers.fuzzing_controller.data_operation_controller import DataOperati
 from controllers.fuzzing_controller.fuzzing_mode_controller import FuzzingModeController
 from controllers.fuzzing_controller.fuzzing_terminal_controller import FuzzingTerminalController
 from controllers.fuzzing_controller.response_table_controller import ResponseTableController
+from controllers.template_generator_controller.fuzzing_templates_generator import FuzzingTemplatesGenerator
 from core.data_processing import DataProcessing
 from core.generator_based_fuzzing import GeneratorBasedFuzzing
+from models import log_messages
 from validations.fuzzing_input_validations import validate_fuzzing_inputs
+from validations.project_path_validations import validate_project_path
+from views.common.info_bar import create_success_bar
 
 
 class GenerateButtonController(QObject):
@@ -31,13 +35,16 @@ class GenerateButtonController(QObject):
         self.generate_button.clicked.connect(self.generate_fuzzing_data)
 
     def generate_fuzzing_data(self):
-        if not validate_fuzzing_inputs():
+        if not validate_fuzzing_inputs() or not validate_project_path():
             return
 
         fuzzing_mode = FuzzingModeController.get_instance().get_selected_fuzzing_mode()
 
         if fuzzing_mode == "Generator":
             self.generation_based_fuzzing()
+            fuzzing_templates_generator = FuzzingTemplatesGenerator()
+            fuzzing_templates_generator.render_fuzzing_templates()
+            create_success_bar(log_messages.FUZZING_DATA_GENERATED)
         elif fuzzing_mode == "Mutation":
             # TODO: Implementation of mutation based fuzzing
             pass
