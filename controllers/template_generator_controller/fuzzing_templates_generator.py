@@ -13,7 +13,8 @@ class FuzzingTemplatesGenerator(TemplateGeneratorController):
             "attack_operation": self.attack_operation,
             "fuzz_on": self.fuzz_on,
             "sniff_on": self.sniff_on,
-            "clk_per_bit": 434
+            "clk_per_bit": 5208,
+            "output_size": 8
         }
 
     def render_fuzzing_templates(self):
