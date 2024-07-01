@@ -8,7 +8,7 @@ entity {{ top_level_name }} is
     );
 
     port (
-        {%- if option == "UART" %}
+        {%- if option == "UART" or fuzz_on == "UART"%}
         -- UART Ports
         i_TX_DV: in std_logic;
         i_TX_Byte: in std_logic_vector(N-1 downto 0);
@@ -46,7 +46,7 @@ end {{ top_level_name }};
 architecture behav of {{ top_level_name }} is
     signal r_status: std_logic := '0';
     signal r_SV: std_logic := '0'; --stream valid
-    signal r_bytes: std_logic_vector (15 downto 0); -- condition based
+    signal r_bytes: std_logic_vector ({{ output_size - 1 }} downto 0); -- condition based
 begin
 
     {%- if option in ["One_Bit", "NBit"] %}
@@ -59,8 +59,9 @@ begin
         clk => clk,
         o_status => o_status
     );
+    {%- endif %}
 
-    {%- elif option == "UART" %}
+    {%- if (attack_operation in ["Sniffing", "Stream Finder", "Fuzzing"]) and (option == "UART" or sniff_on == "UART") %}
     -- UART Receiver instance
     UART_Receiver_Instance: entity work.UART_Receiver
     port map(
@@ -70,21 +71,21 @@ begin
         i_Start => i_Start_Sniffing,
         o_RX_Byte => data_sniffing_out_buffer
     );
+    {%- endif %}
 
-    {%- if attack_operation == "Replay Attack" %}
+    {%- if (attack_operation in ["Replay Attack", "Fuzzing"]) and (option == "UART" or fuzz_on == "UART") %}
     -- UART Transmitter instance
     UART_Transmitter_Instance: entity work.UART_Transmitter
     port map(
         i_Clk => clk,
-        i_TX_DV => r_cDV,
-        i_TX_Byte => r_output,
+        i_TX_DV => i_TX_DV,
+        i_TX_Byte => i_TX_Byte,
         o_TX_Serial => o_TX_Serial,
         o_TX_Done => o_TX_Done
     );
     {%- endif %}
 
-
-    {%- elif option == "SPI" %}
+    {%- if (attack_operation in ["Sniffing", "Stream Finder", "Fuzzing"]) and (option == "SPI" or sniff_on == "SPI") %}
     -- SPI Slave instance
     SPI_Slave_Instance: entity work.SPI_Slave
     port map(
@@ -93,8 +94,9 @@ begin
         o_Rec_Data => data_sniffing_out_buffer,
         i_SCK => i_SPI_clk
     );
+    {%- endif %}
 
-    {%- if attack_operation == "Replay Attack" %}
+    {%- if (attack_operation in ["Replay Attack", "Stream Finder", "Fuzzing"]) and (option == "SPI" and fuzz_on == "SPI") %}
     -- SPI Master instance
     SPI_Master_Instance: entity work.SPI_Master
     port map(
@@ -105,8 +107,6 @@ begin
         i_TX_Byte => X"35",
         i_TX_DV => '1'
     );
-    {%- endif %}
-
     {%- endif %}
 
     {%- if attack_operation == "Stream Finder" and action == "Drop Communication" %}
@@ -139,6 +139,7 @@ begin
     );
     {%- endif %}
 
+    {%- if attack_operation in ["Sniffing", "Stream Finder", "Fuzzing"] %}
     -- Communication Protocol instance
     Communication_Module_instance: entity work.Communication_Module
     port map (
@@ -149,5 +150,6 @@ begin
         o_DV => o_status,
         i_ACK => i_Ack
     );
+    {%- endif %}
 
 end behav;

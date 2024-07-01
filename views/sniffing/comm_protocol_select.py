@@ -30,7 +30,7 @@ class CommunicationProtocolSelect(QWidget):
         comm_label = QLabel("Communication Protocol")
 
         self.protocol_combo = ComboBox()
-        self.protocol_combo.addItems(["Choose", "UART", "SPI", "I2C"])
+        self.protocol_combo.addItems(["Choose", "UART", "SPI"])
 
         layout.addWidget(comm_label)
         layout.addWidget(self.protocol_combo)
