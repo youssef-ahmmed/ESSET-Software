@@ -19,7 +19,7 @@ class ReplayAttackActionController:
 
         self.local_data_file_path = join_paths(ProjectPathController.get_instance().get_project_path(),
                                                'data.bin')
-        self.remote_data_file_path = 'data/data.bin'
+        self.remote_data_file_path = 'replay_attack/data.bin'
 
         self.start_replay_attack()
 
@@ -30,7 +30,8 @@ class ReplayAttackActionController:
         try:
             self.create_config_file()
             self.create_data_file()
-            self.send_files_via_ftp()
+            self.send_data_via_ftp()
+            self.send_config_via_ftp()
             create_success_bar(log_messages.REPLAY_ATTACK_SUCCESS)
         except Exception:
             create_error_bar(log_messages.FTP_NOT_OPENED)
@@ -48,7 +49,10 @@ class ReplayAttackActionController:
         bytes_data = data.encode('latin1')
         write_to_binary_file(self.local_data_file_path, bytes_data)
 
-    def send_files_via_ftp(self):
+    def send_data_via_ftp(self):
+        ftp_sender = FtpSender()
+        ftp_sender.send_file_via_ftp(self.local_data_file_path, self.remote_data_file_path)
+
+    def send_config_via_ftp(self):
         ftp_sender = FtpSender()
         ftp_sender.send_file_via_ftp(self.local_config_file_path, self.remote_config_file_path)
-        ftp_sender.send_file_via_ftp(self.local_data_file_path, self.remote_data_file_path)
