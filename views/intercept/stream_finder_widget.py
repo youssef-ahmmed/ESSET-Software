@@ -1,7 +1,9 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel
-from qfluentwidgets import ComboBox, LineEdit, CheckBox
+from qfluentwidgets import ComboBox, LineEdit, CheckBox, PrimaryPushButton
+from qfluentwidgets import FluentIcon as FIF
 
 from controllers.intercept_controller.intercept_terminal_controller import InterceptTerminalController
+from controllers.intercept_controller.receive_intercept_status_controller import ReceiveInterceptStatusController
 from controllers.intercept_controller.stream_finder_actions_controller import StreamFinderActionsController
 from controllers.intercept_controller.stream_finder_input_controller import StreamFinderInputController
 from views.common.output_terminal import OutputTerminal
@@ -39,11 +41,15 @@ class StreamFinderWidget(QWidget):
         self.terminal = OutputTerminal()
         InterceptTerminalController.get_instance(self.terminal.terminal)
 
+        self.receive_intercept_status = PrimaryPushButton(FIF.FEEDBACK,"Receive Intercept Status")
+        ReceiveInterceptStatusController.get_instance(self.receive_intercept_status)
+
     def create_layout(self):
         self.layout = QVBoxLayout()
 
         self.layout.addLayout(self.stream_layout)
         self.layout.addWidget(self.terminal)
+        self.layout.addWidget(self.receive_intercept_status)
 
         self.setLayout(self.layout)
 

@@ -77,6 +77,8 @@ NO_STREAM_FINDER_INPUT = "No Input Data Stream Entered"
 NO_STREAM_FINDER_ACTION = "No Stream Finder Action Selected"
 NO_INTERCEPT_TERMINAL_DATA = "No Data Found in The Intercept Terminal"
 NO_CUSTOM_TERMINAL_DATA = "No Data Found in The Custom Data Terminal"
+CONDITION_FOUND = "Stream Found and Communication Stopped"
+CONDITION_NOT_FOUND = "Stream Not Found and Communication Passed"
 
 # Fuzzing Messages
 DATA_TYPE_ERROR = "No selected data type"
