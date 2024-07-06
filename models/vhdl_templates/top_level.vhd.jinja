@@ -35,11 +35,8 @@ entity {{ top_level_name }} is
         o_Nbit: out std_logic_vector(N-1 downto 0);
         clk: in std_logic;
         o_status: out std_logic;
-        i_ACK: in std_logic
-        -- ack of RPI that the DV signal has been detected
-        -- i_sck_RPI: in std_logic;
-        -- output of communication module
-        -- o_1bit: out std_logic
+        i_ACK: in std_logic;
+        o_cond_status: out std_logic
     );
 end {{ top_level_name }};
 
@@ -139,7 +136,7 @@ begin
     );
     {%- endif %}
 
-    {%- if attack_operation in ["Sniffing", "Stream Finder", "Fuzzing"] %}
+    {%- if attack_operation in ["Sniffing", "Fuzzing"] %}
     -- Communication Protocol instance
     Communication_Module_instance: entity work.Communication_Module
     port map (
@@ -151,5 +148,7 @@ begin
         i_ACK => i_Ack
     );
     {%- endif %}
-
+    {%- if attack_operation in ["Stream Finder"] %}
+    o_cond_status <= r_status;
+    {%- endif %}
 end behav;
