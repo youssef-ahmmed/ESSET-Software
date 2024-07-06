@@ -49,7 +49,8 @@ class StartConfigButtonController(QObject):
             self.set_files_paths()
             self.generate_svf_file()
             self.create_config_file()
-            self.send_files_via_ftp()
+            self.send_svf_via_ftp()
+            self.send_config_via_ftp()
             store_sniffing_configurations_controller = StoreSniffingConfigurationsController()
             store_sniffing_configurations_controller.store_sniffing_configurations()
             create_success_bar(log_messages.CONFIGURATION_SUCCESS)
@@ -72,10 +73,13 @@ class StartConfigButtonController(QObject):
         CommandExecutor(quartus_cpf_command).execute_command()
 
     def create_config_file(self):
-        config_writer = ConfigurationWriter(programming=True)
+        config_writer = ConfigurationWriter(programming=True, svf_file=self.remote_svf_file_path)
         config_writer.create_config_file(self.local_config_file_path)
 
-    def send_files_via_ftp(self):
+    def send_svf_via_ftp(self):
+        ftp_sender = FtpSender()
+        ftp_sender.send_file_via_ftp(self.local_svf_file_path, self.remote_svf_file_path)
+
+    def send_config_via_ftp(self):
         ftp_sender = FtpSender()
         ftp_sender.send_file_via_ftp(self.local_config_file_path, self.remote_config_file_path)
-        ftp_sender.send_file_via_ftp(self.local_svf_file_path, self.remote_svf_file_path)
