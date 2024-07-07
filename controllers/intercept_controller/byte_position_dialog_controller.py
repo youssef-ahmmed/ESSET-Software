@@ -25,8 +25,8 @@ class BytePositionDialogController(QObject):
     def flip_one_byte(self):
         hex_str = InterceptTerminalController.get_instance().get_terminal_content()
         index = int(self.byte_position_dialog.get_selected_byte())
-        hex_str = hex_str.replace('\\x', '')
+        hex_str = hex_str.replace('0x', '')
         byte_arr = bytearray.fromhex(hex_str)
         byte_arr[index] = ~byte_arr[index] & 0xFF
-        flipped_hex = ''.join('\\x{:02x}'.format(byte) for byte in byte_arr)
+        flipped_hex = ''.join('0x{:02x}'.format(byte) for byte in byte_arr)
         InterceptTerminalController.get_instance().write_text(flipped_hex)

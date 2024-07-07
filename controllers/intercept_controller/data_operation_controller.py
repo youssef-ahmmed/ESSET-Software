@@ -30,7 +30,7 @@ class DataOperationController(QObject):
 
     def flip_bits(self, flip_type):
         hex_str = InterceptTerminalController.get_instance().get_terminal_content()
-        hex_str = hex_str.replace('\\x', '')
+        hex_str = hex_str.replace('0x', '')
         byte_arr = bytearray.fromhex(hex_str)
 
         for i in range(len(byte_arr)):
@@ -41,7 +41,7 @@ class DataOperationController(QObject):
             elif flip_type == 'all':
                 byte_arr[i] = byte_arr[i] ^ 0xFF
 
-        flipped_hex = ''.join('\\x{:02x}'.format(byte) for byte in byte_arr)
+        flipped_hex = ''.join('0x{:02x}'.format(byte) for byte in byte_arr)
         InterceptTerminalController.get_instance().write_text(flipped_hex)
 
     def flip_all_ones_to_zeros(self):
