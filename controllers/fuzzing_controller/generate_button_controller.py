@@ -38,16 +38,10 @@ class GenerateButtonController(QObject):
         if not validate_fuzzing_inputs() or not validate_project_path():
             return
 
-        fuzzing_mode = FuzzingModeController.get_instance().get_selected_fuzzing_mode()
-
-        if fuzzing_mode == "Generator":
-            self.generation_based_fuzzing()
-            fuzzing_templates_generator = FuzzingTemplatesGenerator()
-            fuzzing_templates_generator.render_fuzzing_templates()
-            create_success_bar(log_messages.FUZZING_DATA_GENERATED)
-        elif fuzzing_mode == "Mutation":
-            # TODO: Implementation of mutation based fuzzing
-            pass
+        self.generation_based_fuzzing()
+        fuzzing_templates_generator = FuzzingTemplatesGenerator()
+        fuzzing_templates_generator.render_fuzzing_templates()
+        create_success_bar(log_messages.FUZZING_DATA_GENERATED)
 
     def generation_based_fuzzing(self):
         number_of_messages = self.data_operation_controller.get_number_of_messages()

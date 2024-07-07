@@ -13,7 +13,6 @@ def validate_fuzzing_inputs():
         fuzzing_input_validation.validate_number_of_bytes()
         fuzzing_input_validation.validate_fuzzing_on()
         fuzzing_input_validation.validate_sniffing_on()
-        fuzzing_input_validation.validate_fuzzing_mode()
 
         return True
     except InputValidationError as e:
