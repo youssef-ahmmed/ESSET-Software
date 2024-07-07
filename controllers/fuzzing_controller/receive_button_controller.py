@@ -5,7 +5,10 @@ from ML.fuzzed_data_collector import FuzzedDataCollector
 from ML.model_preprocessing import ModelPreprocessing
 from controllers.data_store_controller.fuzzed_data_store_controller import FuzzedDataStoreController
 from controllers.fuzzing_controller.response_table_controller import ResponseTableController
+from controllers.project_path_controller import ProjectPathController
+from core.ftp_receiver import FtpReceiver
 from models import log_messages
+from reusable_functions.os_operations import join_paths
 from validations.project_path_validations import validate_project_path
 from views.common.info_bar import create_success_bar
 from views.fuzzing.response_table import ResponseTable
@@ -34,6 +37,9 @@ class ReceiveButtonController(QObject):
     def receive_message_response(self):
         if not validate_project_path():
             return
+        ftp_receiver = FtpReceiver()
+        local_file_path = join_paths(ProjectPathController.get_instance().get_project_path(), 'fuzzing_data.json')
+        ftp_receiver.receive_file_via_ftp(local_file_path, 'fuzzing/fuzzing_data.json')
         FuzzedDataStoreController().store_fuzzed_data()
         FuzzedDataCollector().write_data_to_csv()
         create_success_bar(log_messages.FUZZING_MESSAGES_RESPONSE_RECEIVE)

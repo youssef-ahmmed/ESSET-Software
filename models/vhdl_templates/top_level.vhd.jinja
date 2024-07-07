@@ -58,7 +58,7 @@ begin
     );
     {%- endif %}
 
-    {%- if (attack_operation in ["Sniffing", "Stream Finder", "Fuzzing"]) and (option == "UART" or sniff_on == "UART") %}
+    {%- if (attack_operation in ["Sniffing", "Conditional Bypass", "Stream Finder", "Fuzzing"]) and (option == "UART" or sniff_on == "UART") %}
     -- UART Receiver instance
     UART_Receiver_Instance: entity work.UART_Receiver
     port map(
@@ -82,7 +82,7 @@ begin
     );
     {%- endif %}
 
-    {%- if (attack_operation in ["Sniffing", "Stream Finder", "Fuzzing"]) and (option == "SPI" or sniff_on == "SPI") %}
+    {%- if (attack_operation in ["Sniffing", "Conditional Bypass", "Stream Finder", "Fuzzing"]) and (option == "SPI" or sniff_on == "SPI") %}
     -- SPI Slave instance
     SPI_Slave_Instance: entity work.SPI_Slave
     port map(
@@ -93,7 +93,7 @@ begin
     );
     {%- endif %}
 
-    {%- if (attack_operation in ["Replay Attack", "Stream Finder", "Fuzzing"]) and (option == "SPI" and fuzz_on == "SPI") %}
+    {%- if (attack_operation in ["Replay Attack", "Fuzzing"]) and (option == "SPI" and fuzz_on == "SPI") %}
     -- SPI Master instance
     SPI_Master_Instance: entity work.SPI_Master
     port map(
@@ -106,7 +106,7 @@ begin
     );
     {%- endif %}
 
-    {%- if attack_operation == "Stream Finder" and action == "Drop Communication" %}
+    {%- if attack_operation == "Conditional Bypass" %}
     -- Conditional Bypass instance
     Conditional_ByPass_Instance: entity work.ConditionalByPass
     port map(
@@ -148,7 +148,7 @@ begin
         i_ACK => i_Ack
     );
     {%- endif %}
-    {%- if attack_operation in ["Stream Finder"] %}
+    {%- if attack_operation in ["Conditional Bypass"] %}
     o_cond_status <= r_status;
     {%- endif %}
 end behav;

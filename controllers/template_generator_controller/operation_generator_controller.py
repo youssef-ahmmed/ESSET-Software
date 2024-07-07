@@ -1,4 +1,6 @@
 from controllers.sniffing_controller.attack_operation_select_controller import AttackOperationSelectController
+from controllers.template_generator_controller.conditional_bypass_templates_generator import \
+    ConditionalBypassTemplatesGenerator
 from controllers.template_generator_controller.replay_attack_templates_generator import ReplayAttackTemplatesGenerator
 from controllers.template_generator_controller.sniffing_templates_generator import SniffingTemplatesGenerator
 from controllers.template_generator_controller.stream_finder_templates_generator import StreamFinderTemplatesGenerator
@@ -17,9 +19,13 @@ class OperationGeneratorController:
                 "UART": ReplayAttackTemplatesGenerator().render_uart_templates,
                 "SPI": ReplayAttackTemplatesGenerator().render_spi_templates,
             },
+            "Conditional Bypass": {
+                "UART": ConditionalBypassTemplatesGenerator().render_uart_conditional_bypass_templates,
+                "SPI": ConditionalBypassTemplatesGenerator().render_spi_conditional_bypass_templates,
+            },
             "Stream Finder": {
-                "UART": lambda config: StreamFinderTemplatesGenerator().render_stream_finder_templates(config, "UART"),
-                "SPI": lambda config: StreamFinderTemplatesGenerator().render_stream_finder_templates(config, "SPI"),
+                "UART": StreamFinderTemplatesGenerator().render_uart_stream_finder_templates,
+                "SPI": StreamFinderTemplatesGenerator().render_spi_stream_finder_templates,
             },
         }
 

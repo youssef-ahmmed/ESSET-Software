@@ -1,7 +1,6 @@
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QMessageBox
 
-from controllers.intercept_controller.stream_finder_actions_controller import StreamFinderActionsController
 from controllers.intercept_controller.stream_finder_input_controller import StreamFinderInputController
 from controllers.project_path_controller import ProjectPathController
 from controllers.sniffing_controller.attack_operation_select_controller import AttackOperationSelectController
@@ -90,7 +89,6 @@ class SpiDialogController(QObject):
         spi_configurations = {
             'option': "SPI",
             'attack_operation': AttackOperationSelectController.get_instance().get_selected_attack_operation(),
-            'action': StreamFinderActionsController.get_instance().get_selected_stream_finder_action(),
             'data_stream': StreamFinderInputController.get_instance().get_input_stream(),
             'MOSI': mosi,
             'MISO': miso,
