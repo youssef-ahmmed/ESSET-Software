@@ -41,8 +41,8 @@ class ReceiveInterceptStatusController(QObject):
 
         try:
             ftp_receiver = FtpReceiver()
-            local_file_path = join_paths(ProjectPathController.get_instance().get_project_path(), 'condition.bin')
-            remote_file_path = 'conditional_bypass/condition.bin'
+            local_file_path = join_paths(ProjectPathController.get_instance().get_project_path(), 'stream.bin')
+            remote_file_path = 'intercept/stream.bin'
             ftp_receiver.receive_file_via_ftp(local_file_path, remote_file_path)
             condition = int(read_binary_file(local_file_path), 16)
             if condition:
