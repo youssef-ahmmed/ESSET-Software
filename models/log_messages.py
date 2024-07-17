@@ -41,7 +41,7 @@ RECEIVE_SUCCESS = "Data Received Successfully"
 PORT_NOT_OPEN_ERROR = "Port is not open"
 TIMEOUT_ERROR = "Timeout in Sending Data"
 CONFIGURATION_ERROR = "Device Can Not Be Found or Can Not Be Configured"
-CONFIGURATION_SUCCESS = "Configuration Send Successfully"
+CONFIGURATION_SUCCESS = "The Tool is Configured Successfully"
 
 # Bit Sniffing Messages
 ONE_BIT_CONFIG_SET = "One Bit Sniffing Configurations Set Successfully."
@@ -77,6 +77,8 @@ NO_STREAM_FINDER_INPUT = "No Input Data Stream Entered"
 NO_STREAM_FINDER_ACTION = "No Stream Finder Action Selected"
 NO_INTERCEPT_TERMINAL_DATA = "No Data Found in The Intercept Terminal"
 NO_CUSTOM_TERMINAL_DATA = "No Data Found in The Custom Data Terminal"
+CONDITION_FOUND = "Stream Found and Communication Stopped"
+CONDITION_NOT_FOUND = "Stream Not Found and Communication Passed"
 
 # Fuzzing Messages
 DATA_TYPE_ERROR = "No selected data type"

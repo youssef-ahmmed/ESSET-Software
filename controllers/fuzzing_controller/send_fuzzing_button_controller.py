@@ -67,7 +67,8 @@ class SendFuzzingButtonController(QObject):
         self.create_config_file()
 
         try:
-            self.send_files_via_ftp()
+            self.send_fuzzing_data_via_ftp()
+            self.send_config_via_ftp()
             create_success_bar(log_messages.FUZZING_MESSAGES_SEND)
         except Exception:
             create_error_bar(log_messages.FTP_NOT_OPENED)
@@ -84,7 +85,10 @@ class SendFuzzingButtonController(QObject):
         config_writer = ConfigurationWriter(operation="Fuzzing")
         config_writer.create_config_file(self.local_config_file_path)
 
-    def send_files_via_ftp(self):
+    def send_fuzzing_data_via_ftp(self):
+        ftp_sender = FtpSender()
+        ftp_sender.send_file_via_ftp(self.local_data_file_path, self.remote_data_file_path)
+
+    def send_config_via_ftp(self):
         ftp_sender = FtpSender()
         ftp_sender.send_file_via_ftp(self.local_config_file_path, self.remote_config_file_path)
-        ftp_sender.send_file_via_ftp(self.local_data_file_path, self.remote_data_file_path)
