@@ -31,12 +31,14 @@ entity {{ top_level_name }} is
         {%- endif %}
 
         -- General Ports
+        {%- if attack_operation in ["Conditional Bypass"] %}
+        o_cond_status: out std_logic;
+        {%- endif %}
         i_1bit: in std_logic;
         o_Nbit: out std_logic_vector(N-1 downto 0);
         clk: in std_logic;
         o_status: out std_logic;
-        i_ACK: in std_logic;
-        o_cond_status: out std_logic
+        i_ACK: in std_logic
     );
 end {{ top_level_name }};
 
